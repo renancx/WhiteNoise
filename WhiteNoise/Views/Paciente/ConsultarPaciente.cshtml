@@ -1,0 +1,43 @@
+﻿@model WhiteNoise.Models.Paciente.Paciente
+
+@{ 
+    ViewData["Title"] = "Detalhes do Paciente";
+}
+
+<div>
+    <h3>Detalhes</h3>
+
+    <div>
+        <ul>
+            <li>
+                <b>Id</b>
+                <span> @Model.Id</span>
+            </li>
+            <li>
+                <b>Nome</b>
+                <span> @Model.Nome</span>
+            </li>
+            <li>
+                <b>Cpf</b>
+                <span> @Model.Cpf</span>
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <h3>Telefones</h3>
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Número</th>
+            </tr>
+            <tr>
+                @foreach (var item in Model.Telefones)
+                {
+                    <td>@item.Tipo</td>
+                    <td>@item.Numero</td>
+                }
+            </tr>
+        </table>
+    </div>
+</div>
