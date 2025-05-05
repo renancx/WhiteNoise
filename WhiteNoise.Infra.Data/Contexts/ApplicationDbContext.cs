@@ -22,7 +22,18 @@ namespace WhiteNoise.Infra.Data.Contexts
                 property.SetColumnType("varchar(90)");
             }
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(x => x.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+            }
+
             base.OnModelCreating(modelBuilder);
         }
     }
 }
+
+//add-migration -c ApplicationDbContext -o C:\Users\renan.loewenstein\source\repos\WhiteNoise\WhiteNoise.Infra.Data\Migrations\ {NomeMigration} -v
+
+//dotnet ef database update -p WhiteNoise.Infra.Data -s WhiteNoise -c ApplicationDbContext
