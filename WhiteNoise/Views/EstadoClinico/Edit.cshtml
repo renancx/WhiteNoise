@@ -5,24 +5,22 @@
     ViewData["Title"] = "Editar Estado Clínico";
 }
 
-@Html.RenderPartialAsync("_Header");
-
 <div class="panel">
     <h3>Editar Estado Clínico</h3>
 
-    <div>            
-        <input type="hidden" asp-for="Id"/> 
+    <form asp-action="Edit" asp-controller="EstadoClinico" asp-route-id="@Model.Id" method="post">
+        @* @Html.AntiForgeryToken() *@
+        <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" asp-for="Id" />
 
-        <label asp-for="Descricao"></label>
-        <input asp-for="Descricao" />
         <div>
-            <input type="submit" value="Cadastrar" class="btn" />
+            <label asp-for="Descricao"></label>
+            <input asp-for="Descricao" class="form-control" />
         </div>
-    </div>
 
-    <div>
-        <a class="btn" asp-controller="EstadoClinico" asp-action="Index">Voltar</a>
-    </div>
+        <div>
+            <input type="submit" value="Confirmar" class="btn btn-success" />
+            <a class="btn btn-secondary" asp-controller="EstadoClinico" asp-action="Index">Cancelar</a>
+        </div>
+    </form>
 </div>
-
-@Html.RenderPartialAsync("_Footer");

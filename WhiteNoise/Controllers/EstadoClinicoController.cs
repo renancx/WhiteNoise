@@ -67,7 +67,7 @@ namespace WhiteNoise.Controllers
             return View(estadoClinico);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(Guid id, EstadoClinico estadoClinico)
         {
             if (id != estadoClinico.Id)
@@ -109,7 +109,7 @@ namespace WhiteNoise.Controllers
         }
 
 
-        [HttpDelete, ActionName("Delete")]
+        [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var estadoClinico = await _context.EstadoClinico.FindAsync(id);

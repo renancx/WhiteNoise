@@ -5,29 +5,19 @@
     ViewData["Title"] = "Deletar Estado Clínico";
 }
 
-@Html.RenderPartialAsync("_Header");
-
 <div class="panel">
     <h3>Deletar Estado Clínico</h3>
 
     <div>
-        <input type="hidden" asp-for="Id" />
-
         <label asp-for="Descricao"></label>
-        <input asp-for="Descricao" />
-        <div>
-            <input type="submit" value="Cadastrar" class="btn" />
-        </div>
+        <input asp-for="Descricao" disabled class="form-control" />
     </div>
 
-    <form asp-controller="EstadoClinico" action="Delete">
+    <form asp-controller="EstadoClinico" asp-action="DeleteConfirmed" method="post">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn" />
+        <div>
+            <input type="submit" value="Deletar" class="btn btn-danger" />
+            <a class="btn btn-secondary" asp-controller="EstadoClinico" asp-action="Index">Cancelar</a>
+        </div>
     </form>
-
-    <div>
-        <a class="btn" asp-controller="EstadoClinico" asp-action="Index">Voltar</a>
-    </div>
 </div>
-
-@Html.RenderPartialAsync("_Footer");
