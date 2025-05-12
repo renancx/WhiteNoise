@@ -7,11 +7,20 @@
 }
 
 <div class="panel">
-    <h3>Listagem de Estado Clínico</h3>
-
-    <p>
-        <a class="btn" asp-controller="EstadoClinico" asp-action="Create">Adicionar</a>
-    </p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">@ViewData["Title"]</h2>
+        <a class="btn btn-lg btn-primary rounded-pill shadow-sm"
+           asp-controller="EstadoClinico" asp-action="Create">
+            <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
+        </a>
+    </div>
+    
+    <div class="row col-12 d-flex justify-content-between">
+        <vc:estado-clinico estado="Estavel"></vc:estado-clinico>
+        <vc:estado-clinico estado="Observacao"></vc:estado-clinico>
+        <vc:estado-clinico estado="Grave"></vc:estado-clinico>
+        <vc:estado-clinico estado="Critico"></vc:estado-clinico>
+    </div>
 
     <div class="row col-12">
 
