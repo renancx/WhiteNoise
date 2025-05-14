@@ -16,8 +16,8 @@ namespace WhiteNoise.ViewComponents.EstadoClinico
 
         public IViewComponentResult Invoke(string estado)
         {
-            var totalGeral = Totalizador.ObterTotalizadorPaciente(_context);
-            decimal totalEstadoClinico = Totalizador.ObterTotalPacientesPorEstadoClinico(_context, estado);
+            var totalGeral = EstadoClinicoHelper.ObterTotalizadorPaciente(_context);
+            decimal totalEstadoClinico = EstadoClinicoHelper.ObterTotalPacientesPorEstadoClinico(_context, estado);
             decimal progresso = (totalGeral > 0) ? (totalEstadoClinico * 100) / totalGeral : 0;
             var percentual = progresso.ToString("F1");
 

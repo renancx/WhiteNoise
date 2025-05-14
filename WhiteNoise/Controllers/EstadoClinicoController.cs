@@ -1,38 +1,39 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Infra.Data.Contexts;
+using WhiteNoise.Domain.Interfaces.Repositories;
 
 namespace WhiteNoise.Controllers
 {
     public class EstadoClinicoController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        #region Private Fields
+        private readonly IEstadoClinicoRepository _estadoClinicoRepository;
 
-        public EstadoClinicoController(ApplicationDbContext context)
+        #endregion
+
+        #region Constructors
+        public EstadoClinicoController(IEstadoClinicoRepository estadoClinicoRepository)
         {
-            _context = context;
-        } 
+            _estadoClinicoRepository = estadoClinicoRepository;
+        }
 
+        #endregion
+
+        #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var model = await _context.EstadoClinico.ToListAsync();
-
-            return View(model);
+            var estadosClinicos = await _estadoClinicoRepository.ObterTodos();
+            return View(estadosClinicos);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var estadoClinico = await _context.EstadoClinico.FirstOrDefaultAsync(x => x.Id == id);
-
-            if(estadoClinico != null)
-                return View(estadoClinico);
-
-            return BadRequest("Erro ao exibir o registro");
+            var estadoClinico = await _estadoClinicoRepository.ObterPorId(id);
+            return View(estadoClinico);
         }
 
         [HttpGet]
@@ -47,19 +48,16 @@ namespace WhiteNoise.Controllers
             if (ModelState.IsValid)
             {
                 estadoClinico.Id = Guid.NewGuid();
-                _context.Add(estadoClinico);
-                await _context.SaveChangesAsync();
-
+                await _estadoClinicoRepository.Adicionar(estadoClinico);
                 return RedirectToAction(nameof(Index));
             }
-
             return View(estadoClinico);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var estadoClinico = await _context.EstadoClinico.FindAsync(id);
+            var estadoClinico = await _estadoClinicoRepository.ObterPorId(id);
 
             if (estadoClinico == null)
                 return NotFound();
@@ -76,15 +74,13 @@ namespace WhiteNoise.Controllers
             if(ModelState.IsValid)
             {
                 try {
-                    _context.Update(estadoClinico);
-                    await _context.SaveChangesAsync();
-                } catch(DbUpdateConcurrencyException)
-                {
-                    if (!EstadoClinicoExists(estadoClinico.Id))
+                    await _estadoClinicoRepository.Atualizar(estadoClinico);
+                } 
+                catch(DbUpdateConcurrencyException) {
+                    if (_estadoClinicoRepository.ObterPorId(id).Result == null)
                     {
                         return NotFound();
-                    } else
-                    {
+                    } else {
                         throw;
                     }
                 }
@@ -96,39 +92,29 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var estadoClinico = await _context.EstadoClinico.FirstOrDefaultAsync(x => x.Id == id);
+            var estadoClinico = await _estadoClinicoRepository.ObterPorId(id);
 
-            if (estadoClinico == null)
-            {
+            if (estadoClinico == null) {
                 return NotFound();
             }
-            else
-            {
+            else {
                 return View(estadoClinico);
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var estadoClinico = await _context.EstadoClinico.FindAsync(id);
-
             try {
-                _context.EstadoClinico.Remove(estadoClinico);
-                await _context.SaveChangesAsync();
-            } catch (Exception ex)
-            {
+                await _estadoClinicoRepository.Remover(id);
+            } 
+            catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
-
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EstadoClinicoExists(Guid id)
-        {
-            return _context.EstadoClinico.Any(x => x.Id == id);
-        }
+        #endregion
     }
 }
