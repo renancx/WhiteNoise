@@ -8,7 +8,11 @@ namespace WhiteNoise.Mappers
     {
         public PacienteMapper()
         {
-            CreateMap<Paciente, PacienteViewModel>();
+            CreateMap<PacienteViewModel, Paciente>();
+
+            CreateMap<Paciente, PacienteViewModel>()
+                .ForMember(dest => dest.EstadoClinicoDescricao,
+                           opt => opt.MapFrom(src => src.EstadoClinico.Descricao));
         }
     }
 }

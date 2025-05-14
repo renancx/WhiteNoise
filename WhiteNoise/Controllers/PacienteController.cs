@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
@@ -15,14 +16,16 @@ namespace WhiteNoise.Controllers
         #region Private Fields
         private readonly IMapper _mapper;
         private readonly IPacienteRepository _pacienteRepository;
+        private readonly IEstadoClinicoRepository _estadoClinicoRepository;
 
         #endregion
 
         #region Constructors
-        public PacienteController(IMapper mapper, IPacienteRepository pacienteRepository)
+        public PacienteController(IMapper mapper, IPacienteRepository pacienteRepository, IEstadoClinicoRepository estadoClinicoRepository)
         {
             _mapper = mapper;
             _pacienteRepository = pacienteRepository;
+            _estadoClinicoRepository = estadoClinicoRepository;
         }
 
         #endregion
@@ -53,8 +56,11 @@ namespace WhiteNoise.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var estados = await _estadoClinicoRepository.ObterTodos();
+            ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
+
             return View();
         }
 
@@ -80,19 +86,25 @@ namespace WhiteNoise.Controllers
             if (paciente == null)
                 return NotFound();
 
-            return View(paciente);
+            var estados = await _estadoClinicoRepository.ObterTodos();
+            ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
+
+            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+
+            return View(pacienteViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, Paciente paciente)
+        public async Task<IActionResult> Edit(Guid id, PacienteViewModel pacienteViewModel)
         {
-            if (id != paciente.Id)
+            if (id != pacienteViewModel.Id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var paciente = _mapper.Map<Paciente>(pacienteViewModel);
                     await _pacienteRepository.Atualizar(paciente);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -108,7 +120,8 @@ namespace WhiteNoise.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(paciente);
+
+            return View(pacienteViewModel);
         }
 
         [HttpGet]
@@ -120,10 +133,10 @@ namespace WhiteNoise.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                return View(paciente);
-            }
+
+            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+
+            return View(pacienteViewModel);
         }
 
         [HttpPost]

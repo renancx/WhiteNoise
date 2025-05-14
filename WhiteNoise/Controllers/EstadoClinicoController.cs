@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,15 @@ namespace WhiteNoise.Controllers
     {
         #region Private Fields
         private readonly IEstadoClinicoRepository _estadoClinicoRepository;
+        private readonly IPacienteRepository _pacienteRepository;
 
         #endregion
 
         #region Constructors
-        public EstadoClinicoController(IEstadoClinicoRepository estadoClinicoRepository)
+        public EstadoClinicoController(IEstadoClinicoRepository estadoClinicoRepository, IPacienteRepository pacienteRepository)
         {
             _estadoClinicoRepository = estadoClinicoRepository;
+            _pacienteRepository = pacienteRepository;
         }
 
         #endregion
@@ -105,10 +108,17 @@ namespace WhiteNoise.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            try {
+            var pacientes = await _pacienteRepository.ObterPorEstadoClinicoId(id);
+
+            if (pacientes != null && pacientes.Any())
+                return RedirectToAction(nameof(Index));
+
+            try
+            {
                 await _estadoClinicoRepository.Remover(id);
-            } 
-            catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
 

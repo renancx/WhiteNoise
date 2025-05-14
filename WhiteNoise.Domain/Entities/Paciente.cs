@@ -28,7 +28,7 @@ namespace WhiteNoise.Domain.Entities
         [Display(Name = "E-mail")]
         public string? Email { get; set; }
 
-        public bool Ativo { get; set; }
+        public bool Ativo { get; set; } = true;
 
         public string? Cpf { get; set; }
 
