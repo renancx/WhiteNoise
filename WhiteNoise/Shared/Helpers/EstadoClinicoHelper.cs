@@ -2,7 +2,7 @@
 using WhiteNoise.Infra.Data.Contexts;
 using System.Linq;
 
-namespace WhiteNoise.Helpers
+namespace WhiteNoise.Shared.Helpers
 {
     public static class EstadoClinicoHelper
     {

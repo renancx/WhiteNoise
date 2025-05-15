@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WhiteNoise.Infra.Data.Contexts;
-using WhiteNoise.Helpers;
 using WhiteNoise.Models.EstadoClinico;
+using WhiteNoise.Shared.Helpers;
 
-namespace WhiteNoise.ViewComponents.EstadoClinico
+namespace WhiteNoise.Shared.ViewComponents.EstadoClinico
 {
     public class EstadoClinicoViewComponent : ViewComponent
     {
@@ -18,7 +18,7 @@ namespace WhiteNoise.ViewComponents.EstadoClinico
         {
             var totalGeral = EstadoClinicoHelper.ObterTotalizadorPaciente(_context);
             decimal totalEstadoClinico = EstadoClinicoHelper.ObterTotalPacientesPorEstadoClinico(_context, estado);
-            decimal progresso = (totalGeral > 0) ? (totalEstadoClinico * 100) / totalGeral : 0;
+            decimal progresso = totalGeral > 0 ? totalEstadoClinico * 100 / totalGeral : 0;
             var percentual = progresso.ToString("F1");
 
             var model = new EstadoClinicoContadorModel

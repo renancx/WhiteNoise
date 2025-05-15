@@ -24,7 +24,7 @@
 
     <div class="row col-12">
 
-        <table class="table table-borderless table-hover">
+        @* <table class="table table-borderless table-hover">
             <thead>
                 <tr class="d-flex justify-content-between">
                     <th>Descrição</th>
@@ -44,7 +44,9 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </table> *@
+
+        <table-grid controller="EstadoClinico" items="@Model"></table-grid>
 
     </div>
 

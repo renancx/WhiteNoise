@@ -4,7 +4,7 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Novo Paciente</a>
 </p>
-<table class="table">
+@* <table class="table">
     <thead>
         <tr>
             <th>Nome</th>
@@ -32,4 +32,6 @@
         </tr>
     }
     </tbody>
-</table>
+</table> *@
+
+<table-grid controller="Paciente" items="@Model"></table-grid>
