@@ -11,6 +11,6 @@ namespace WhiteNoise.Domain.Entities
         Particular = 2,
 
         [Description("Outros")]
-        Outros = 3
+        Outros = 99
     }
 }
