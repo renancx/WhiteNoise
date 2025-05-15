@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using WhiteNoise.Models.Paciente;
 
 namespace WhiteNoise.Controllers
 {
+    [Authorize]
     public class PacienteController : BaseController
     {
         #region Private Fields

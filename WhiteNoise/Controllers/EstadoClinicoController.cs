@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
@@ -8,6 +9,7 @@ using WhiteNoise.Domain.Interfaces.Repositories;
 
 namespace WhiteNoise.Controllers
 {
+    [Authorize]
     public class EstadoClinicoController : Controller
     {
         #region Private Fields
