@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WhiteNoise.Infra.Data.Contexts;
 
 namespace WhiteNoise.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516181817_NewTablesCreation")]
+    partial class NewTablesCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +90,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.Property<DateTime>("DataEntrada")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("LeitoId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Motivo")
                         .HasColumnType("varchar(90)");
 
@@ -99,26 +98,7 @@ namespace WhiteNoise.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeitoId");
-
                     b.ToTable("Internacao");
-                });
-
-            modelBuilder.Entity("WhiteNoise.Domain.Entities.Leito", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Leito");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Paciente", b =>
@@ -206,13 +186,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasOne("WhiteNoise.Domain.Entities.Prontuario", null)
                         .WithMany("Alergias")
                         .HasForeignKey("ProntuarioId");
-                });
-
-            modelBuilder.Entity("WhiteNoise.Domain.Entities.Internacao", b =>
-                {
-                    b.HasOne("WhiteNoise.Domain.Entities.Leito", "Leito")
-                        .WithMany()
-                        .HasForeignKey("LeitoId");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Paciente", b =>

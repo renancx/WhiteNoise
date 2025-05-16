@@ -7,6 +7,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20250515182924_AddIdentityAuthentication.cs" />
     <Compile Remove="Migrations\20250515182924_AddIdentityAuthentication.Designer.cs" />
+    <Compile Remove="Migrations\20250516183206_NewTablesCreation2.cs" />
+    <Compile Remove="Migrations\20250516183206_NewTablesCreation2.Designer.cs" />
+    <Compile Remove="Migrations\20250516183732_DepartamentoTableCreation.cs" />
+    <Compile Remove="Migrations\20250516183732_DepartamentoTableCreation.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

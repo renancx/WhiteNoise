@@ -1,28 +1,22 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WhiteNoise.Domain.Enums
 {
     public enum TipoSaidaEnum
     {
         [Display(Name = "Recebeu alta")]
-        [Description("Recebeu alta")]
         Alta = 1,
 
-        [Description("Transferido")]
-        [Display(Name = "Recebeu alta")]
+        [Display(Name = "Transferido")]
         Transferido = 2,
 
-        [Description("Saiu à Revelia")]
-        [Display(Name = "Recebeu alta")]
+        [Display(Name = "Saiu à Revelia")]
         Revelia = 3,
 
-        [Description("Veio a Óbito")]
-        [Display(Name = "Recebeu alta")]
+        [Display(Name = "Veio a Óbito")]
         Obito = 4,
 
-        [Description("Outros")]
-        [Display(Name = "Recebeu alta")]
+        [Display(Name = "Outros")]
         Outros = 99
     }
 }

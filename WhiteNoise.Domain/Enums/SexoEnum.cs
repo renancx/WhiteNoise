@@ -1,14 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WhiteNoise.Domain.Enums
 {
     public enum SexoEnum
     {
-        [Description("Masculino")]
+        [Display(Name = "Masculino")]
         Masculino = 1,
 
-        [Description("Feminino")]
+        [Display(Name = "Feminino")]
         Feminino = 2
-
     }
 }

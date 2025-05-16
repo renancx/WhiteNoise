@@ -5,23 +5,12 @@ using WhiteNoise.Domain.Enums;
 
 namespace WhiteNoise.Domain.Entities
 {
-    public class Paciente : EntityBase
+    public class Profissional : EntityBase
     {
-        public Paciente()
-        {
-            Ativo = true;
-        }
-
-        [Display(Name = "Estado Clínico")]
-        public virtual EstadoClinico EstadoClinico { get; set; }
-
         public string? Nome { get; set; }
 
         [Display(Name = "Data Nascimento")]
         public DateTime DataNascimento { get; set; }
-
-        [Display(Name = "Data Internação")]
-        public DateTime DataInternacao { get; set; }
 
         [Display(Name = "E-mail")]
         public string? Email { get; set; }
@@ -30,17 +19,10 @@ namespace WhiteNoise.Domain.Entities
 
         public string? Cpf { get; set; }
 
-        [Display(Name = "Tipo Paciente")]
-        public TipoPacienteEnum TipoPaciente { get; set; }
-
         public SexoEnum Sexo { get; set; }
 
-        public string? Motivo { get; set; }
-
-        public Prontuario Prontuario { get; set; }
-
-        public Internacao Internacao { get; set; }
-
         public Agendamento Agendamento { get; set; }
+
+        public Departamento Departamento { get; set; }
     }
 }

@@ -36,4 +36,4 @@ namespace WhiteNoise.Infra.Data.Contexts
 
 //add-migration -c ApplicationDbContext -o C:\Users\renan.loewenstein\source\repos\WhiteNoise\WhiteNoise.Infra.Data\Migrations\ {NomeMigration} -v
 
-//dotnet ef database update -p WhiteNoise.Infra.Data -s WhiteNoise -c ApplicationDbContext
+//dotnet ef database update -p WhiteNoise.Infra.Data -s WhiteNoise -c ApplicationDbContext -v

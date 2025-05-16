@@ -1,16 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WhiteNoise.Domain.Entities
 {
     public enum TipoPacienteEnum
     {
-        [Description("Conveniado")]
+        [Display(Name = "Conveniado")]
         Conveniado = 1,
 
-        [Description("Particular")]
+        [Display(Name = "Particular")]
         Particular = 2,
 
-        [Description("Outros")]
+        [Display(Name = "Outros")]
         Outros = 99
     }
 }
