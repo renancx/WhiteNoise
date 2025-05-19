@@ -9,45 +9,13 @@ using WhiteNoise.Infra.Data.Contexts;
 
 namespace WhiteNoise.Infra.Data.Repositories
 {
-    public class PacienteRepository : IPacienteRepository
+    public class PacienteRepository : Repository<Paciente>, IPacienteRepository
     {
-        #region Private Fields
-        private readonly ApplicationDbContext _context;
-
-        #endregion
-
-        #region Constructors
-        public PacienteRepository(ApplicationDbContext context)
+        public PacienteRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
-        #endregion
-
-        #region CRUD Operations
-        public async Task Adicionar(Paciente paciente)
-        {
-            await _context.Paciente.AddAsync(paciente);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task Atualizar(Paciente paciente)
-        {
-            _context.Paciente.Update(paciente);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task Remover(Guid? id)
-        {
-            var paciente = await _context.Paciente.FindAsync(id) ?? throw new KeyNotFoundException("Registro não encontrado.");
-            _context.Paciente.Remove(paciente);
-            await _context.SaveChangesAsync();
-        }
-
-        #endregion
-
-        #region Queries
-        public async Task<List<Paciente>> ObterTodos()
+        public override async Task<List<Paciente>> ObterTodos()
         {
             var pacientes = await _context.Paciente
                 .Include(x => x.EstadoClinico)
@@ -57,7 +25,7 @@ namespace WhiteNoise.Infra.Data.Repositories
             return pacientes;
         }
 
-        public async Task<Paciente> ObterPorId(Guid? id)
+        public override async Task<Paciente> ObterPorId(Guid? id)
         {
             var paciente = await _context.Paciente
                 .Include(x => x.EstadoClinico)
@@ -78,7 +46,5 @@ namespace WhiteNoise.Infra.Data.Repositories
 
             return pacientes;
         }
-
-        #endregion
     }
 }

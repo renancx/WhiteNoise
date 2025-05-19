@@ -2,7 +2,8 @@
 
 namespace WhiteNoise.Domain.Interfaces.Repositories
 {
-    public interface IEstadoClinicoRepository : IBaseRepository<EstadoClinico>
+    public interface IProfissionalRepository : IBaseRepository<Profissional>
     {
+
     }
 }

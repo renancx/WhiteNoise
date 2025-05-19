@@ -14,6 +14,7 @@ namespace WhiteNoise.Domain.Entities
 
         public TipoSaidaEnum? TipoSaida { get; set; } = null;
 
-        public Leito Leito { get; set; }
+        public Guid? LeitoId { get; set; }
+        public virtual Leito Leito { get; set; }
     }
 }

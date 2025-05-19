@@ -1,4 +1,5 @@
-﻿using WhiteNoise.Domain.Entities.Base;
+﻿using System;
+using WhiteNoise.Domain.Entities.Base;
 
 namespace WhiteNoise.Domain.Entities
 {
@@ -6,8 +7,12 @@ namespace WhiteNoise.Domain.Entities
     {
         public string? Descricao { get; set; }
 
-        public Leito Leito { get; set; }
+        public Guid? LeitoId { get; set; }
 
-        public Profissional Profissional { get; set; }
+        public virtual Leito Leito { get; set; }
+        
+        public Guid? ProfissionalId { get; set; }
+        
+        public virtual Profissional Profissional { get; set; }
     }
 }

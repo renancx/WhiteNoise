@@ -10,7 +10,7 @@ namespace WhiteNoise.Models.Paciente
         public Guid Id { get; set; }
 
         [Display(Name = "Estado Clínico")]
-        public Guid EstadoClinicoId { get; set; }
+        public Guid? EstadoClinicoId { get; set; }
 
         public string? EstadoClinicoDescricao { get; set; }
 
