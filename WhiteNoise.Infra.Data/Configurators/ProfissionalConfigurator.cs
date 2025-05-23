@@ -4,9 +4,9 @@ using WhiteNoise.Domain.Entities;
 
 namespace WhiteNoise.Infra.Data.Configurators
 {
-    public class PacienteConfigurator : IEntityTypeConfiguration<Paciente>
+    public class ProfissionalConfigurator : IEntityTypeConfiguration<Profissional>
     {
-        public void Configure(EntityTypeBuilder<Paciente> builder)
+        public void Configure(EntityTypeBuilder<Profissional> builder)
         {
             builder.HasKey(x => x.Id);
 
@@ -15,10 +15,6 @@ namespace WhiteNoise.Infra.Data.Configurators
             builder.Property(x => x.Cpf).IsRequired().HasColumnType("varchar(11)").HasMaxLength(11).IsFixedLength(true);
 
             builder.Property(x => x.Email).IsRequired().HasColumnType("varchar(100)");
-
-            builder.Property(x => x.Motivo).HasColumnType("varchar(150)");
-
-            builder.HasOne(p => p.Prontuario).WithMany().HasForeignKey(p => p.ProntuarioId).IsRequired(false).OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

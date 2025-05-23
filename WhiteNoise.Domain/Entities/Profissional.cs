@@ -23,8 +23,5 @@ namespace WhiteNoise.Domain.Entities
 
         public Guid? AgendamentoId { get; set; }
         public virtual Agendamento Agendamento { get; set; }
-
-        public Guid? DepartamentoId { get; set; }
-        public virtual Departamento Departamento { get; set; }
     }
 }

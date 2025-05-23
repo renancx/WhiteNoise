@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WhiteNoise.Domain.Entities;
+﻿using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Infra.Data.Contexts;
 

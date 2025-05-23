@@ -39,7 +39,7 @@ namespace WhiteNoise.Domain.Entities
 
         public string? Motivo { get; set; }
 
-        public Guid? ProntuarioId { get; set; }
+        public Guid ProntuarioId { get; set; }
         public virtual Prontuario Prontuario { get; set; }
 
         public Guid? InternacaoId { get; set; }

@@ -12,7 +12,7 @@ using WhiteNoise.Models.Paciente;
 
 namespace WhiteNoise.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class PacienteController : BaseController
     {
         #region Private Fields

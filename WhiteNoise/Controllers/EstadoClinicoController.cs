@@ -9,7 +9,7 @@ using WhiteNoise.Domain.Interfaces.Repositories;
 
 namespace WhiteNoise.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class EstadoClinicoController : Controller
     {
         #region Private Fields

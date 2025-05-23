@@ -1,0 +1,10 @@
+﻿@model IEnumerable<WhiteNoise.Models.Profissional.ProfissionalViewModel>
+
+<div>
+    <h2>Lista de Profissionais</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Novo Profissional</a>
+    </p>
+
+    <table-grid controller="Profissional" items="@Model"></table-grid>
+</div>  

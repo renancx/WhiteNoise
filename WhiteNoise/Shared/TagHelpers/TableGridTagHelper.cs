@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Shared.TagHelpers
 {
@@ -29,11 +30,12 @@ namespace WhiteNoise.Shared.TagHelpers
 
         private void TableHeader(TagHelperOutput output, PropertyInfo[] props)
         {
-            output.Content.AppendHtml("<thead>");
+            output.Content.AppendHtml("<thead class=\"thead-dark\">");
             output.Content.AppendHtml("<tr>");
             foreach (var prop in props)
             {
-                if (!prop.PropertyType.ToString().Contains("System.Collection"))
+                if (!prop.PropertyType.ToString().Contains("System.Collection") &&
+                !prop.IsDefined(typeof(HiddenInGridAttribute)))
                 {
                     var name = GetPropertyName(prop);
                     output.Content.AppendHtml(!name.Equals("Id") ? $"<th>{name}</th>" : "<th>Ação</th>");
@@ -51,18 +53,21 @@ namespace WhiteNoise.Shared.TagHelpers
                 output.Content.AppendHtml("<tr>");
                 foreach (var prop in props)
                 {
-                    var value = GetPropertyValue(prop, item);
-                    if (prop.Name.Equals("Id"))
+                    if (!prop.PropertyType.ToString().Contains("Collection") &&
+                        !prop.IsDefined(typeof(HiddenInGridAttribute)))
                     {
-                        var controller = Controller ?? prop.ReflectedType.Name;
-                        output.Content.AppendHtml($"<td><a href='/{controller}/Details/{value}' class='btn btn-default'>Detalhes</a>");
-                        output.Content.AppendHtml($"<a href='/{controller}/Edit/{value}' class='btn btn-info'>Editar</a>");
-                        output.Content.AppendHtml($"<a href='/{controller}/Delete/{value}' class='btn btn-danger'>Excluir</a></td>");
-                    }
-                    else
-                    {
-                        if (!prop.PropertyType.ToString().Contains("Collection"))
+                        var value = GetPropertyValue(prop, item);
+                        if (prop.Name.Equals("Id"))
+                        {
+                            var controller = Controller ?? prop.ReflectedType.Name;
+                            output.Content.AppendHtml($"<td><a href='/{controller}/Details/{value}' class='btn btn-secondary'>Detalhes</a>");
+                            output.Content.AppendHtml($"<a href='/{controller}/Edit/{value}' class='btn btn-info'>Editar</a>");
+                            output.Content.AppendHtml($"<a href='/{controller}/Delete/{value}' class='btn btn-danger'>Excluir</a></td>");
+                        }
+                        else
+                        {
                             output.Content.AppendHtml($"<td>{value}</td>");
+                        }
                     }
                 }
                 output.Content.AppendHtml("</tr>");

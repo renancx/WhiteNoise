@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WhiteNoise.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;

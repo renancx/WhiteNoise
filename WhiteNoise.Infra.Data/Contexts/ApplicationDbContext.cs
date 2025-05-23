@@ -10,8 +10,17 @@ namespace WhiteNoise.Infra.Data.Contexts
             : base(options)
         {
         }
-        public DbSet<Paciente> Paciente { get; set; }
+        #region DbSets
+        public DbSet<Agendamento> Agendamento { get; set; }
+        public DbSet<Alergia> Alergia { get; set; }
+        public DbSet<Departamento> Departamento { get; set; }
         public DbSet<EstadoClinico> EstadoClinico { get; set; }
+        public DbSet<Internacao> Internacao { get; set; }
+        public DbSet<Leito> Leito { get; set; }
+        public DbSet<Paciente> Paciente { get; set; }
+        public DbSet<Profissional> Profissional { get; set; }
+        public DbSet<Prontuario> Prontuario { get; set; }
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
