@@ -49,10 +49,14 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("varchar(90)");
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
 
                     b.Property<Guid?>("ProntuarioId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -186,7 +190,7 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
-                    b.Property<Guid>("ProntuarioId")
+                    b.Property<Guid?>("ProntuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Sexo")

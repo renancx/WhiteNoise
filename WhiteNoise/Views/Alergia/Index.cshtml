@@ -1,17 +1,21 @@
-﻿@model IEnumerable<WhiteNoise.Models.Paciente.PacienteViewModel>
+﻿@using WhiteNoise.Models.Alergia
+
+@model IEnumerable<AlergiaViewModel>
 
 @{
-    ViewData["Title"] = "Listagem de Pacientes";
+    ViewData["Title"] = "Listagem de Alergias";
 }
 
 <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">@ViewData["Title"]</h2>
         <a class="btn btn-lg btn-primary rounded-pill shadow-sm"
-           asp-controller="Paciente" asp-action="Create">
+           asp-controller="Alergia" asp-action="Create">
             <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
         </a>
     </div>
 
-    <table-grid controller="Paciente" items="@Model"></table-grid>
+    <div class="row col-12">
+        <table-grid controller="Alergia" items="@Model"></table-grid>
+    </div>
 </div>

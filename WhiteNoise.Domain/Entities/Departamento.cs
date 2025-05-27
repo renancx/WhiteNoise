@@ -13,6 +13,6 @@ namespace WhiteNoise.Domain.Entities
         
         public Guid? ProfissionalId { get; set; }
         
-        public virtual Profissional Profissional { get; set; }
+        public virtual Profissional? Profissional { get; set; }
     }
 }

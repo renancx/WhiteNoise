@@ -16,7 +16,7 @@ namespace WhiteNoise.Infra.Data.Contexts
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityUser>().ToTable("IdentityUser");
+            builder.Entity<ApplicationUser>().ToTable("IdentityUser");
             builder.Entity<IdentityRole>().ToTable("IdentityRole");
             builder.Entity<IdentityUserRole<string>>().ToTable("IdentityUserRole");
             builder.Entity<IdentityUserClaim<string>>().ToTable("IdentityUserClaim");

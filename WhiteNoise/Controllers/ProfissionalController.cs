@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
-using WhiteNoise.Models.Paciente;
 using WhiteNoise.Models.Profissional;
 
 namespace WhiteNoise.Controllers
@@ -48,9 +47,6 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-        //    var estados = await _estadoClinicoRepository.ObterTodos();
-        //    ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
-
             return View();
         }        
 
@@ -76,10 +72,7 @@ namespace WhiteNoise.Controllers
             if (profissional == null)
                 return NotFound();
 
-            //var estados = await _estadoClinicoRepository.ObterTodos();
-            //ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
-
-            var profissionalViewModel = _mapper.Map<PacienteViewModel>(profissional);
+            var profissionalViewModel = _mapper.Map<ProfissionalViewModel>(profissional);
 
             return View(profissionalViewModel);
         }
@@ -124,7 +117,7 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var profissionalViewModel = _mapper.Map<PacienteViewModel>(profissional);
+            var profissionalViewModel = _mapper.Map<ProfissionalViewModel>(profissional);
 
             return View(profissionalViewModel);
         }

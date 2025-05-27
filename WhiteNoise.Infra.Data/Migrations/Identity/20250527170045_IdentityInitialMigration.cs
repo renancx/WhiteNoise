@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WhiteNoise.Infra.Data.Migrations.Identity
 {
-    public partial class AddIdentityAuthentication : Migration
+    public partial class IdentityInitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,7 +39,10 @@ namespace WhiteNoise.Infra.Data.Migrations.Identity
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Apelido = table.Column<string>(nullable: true),
+                    NomeCompleto = table.Column<string>(nullable: true),
+                    DataNascimento = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

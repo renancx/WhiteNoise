@@ -2,9 +2,7 @@
 
 @model IEnumerable<WhiteNoise.Domain.Entities.EstadoClinico>
 
-@{
-    ViewData["Title"] = "Listagem de Estado Clínico";
-}
+@{ ViewData["Title"] = "Listagem de Estado Clínico"; }
 
 <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -23,34 +21,6 @@
     </div>
 
     <div class="row col-12">
-
-        @* <table class="table table-borderless table-hover">
-            <thead>
-                <tr class="d-flex justify-content-between">
-                    <th>Descrição</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr class="d-flex justify-content-between">
-                        <td>@item.Descricao</td>
-                        <td>
-                            <a class="btn" asp-controller="EstadoClinico" asp-action="Details" asp-route-id="@item.Id">Visualizar</a>
-                            <a class="btn" asp-controller="EstadoClinico" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                            <a class="btn" asp-controller="EstadoClinico" asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table> *@
-
         <table-grid controller="EstadoClinico" items="@Model"></table-grid>
-
-    </div>
-
-    <div>
-        <a class="btn" asp-controller="EstadoClinico" asp-action="Index">Voltar</a>
     </div>
 </div>

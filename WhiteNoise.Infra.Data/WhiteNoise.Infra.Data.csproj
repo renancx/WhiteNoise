@@ -11,6 +11,16 @@
     <Compile Remove="Migrations\20250516183206_NewTablesCreation2.Designer.cs" />
     <Compile Remove="Migrations\20250516183732_DepartamentoTableCreation.cs" />
     <Compile Remove="Migrations\20250516183732_DepartamentoTableCreation.Designer.cs" />
+    <Compile Remove="Migrations\20250523195151_ApplicationUserSetup.cs" />
+    <Compile Remove="Migrations\20250523195151_ApplicationUserSetup.Designer.cs" />
+    <Compile Remove="Migrations\20250527135723_PacienteFK.cs" />
+    <Compile Remove="Migrations\20250527135723_PacienteFK.Designer.cs" />
+    <Compile Remove="Migrations\20250527140322_PacienteFK.cs" />
+    <Compile Remove="Migrations\20250527140322_PacienteFK.Designer.cs" />
+    <Compile Remove="Migrations\20250527141808_test.cs" />
+    <Compile Remove="Migrations\20250527141808_test.Designer.cs" />
+    <Compile Remove="Migrations\20250527144227_test.cs" />
+    <Compile Remove="Migrations\20250527144227_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

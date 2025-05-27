@@ -10,8 +10,8 @@ using WhiteNoise.Infra.Data.Contexts;
 namespace WhiteNoise.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250516184115_DepartamentoTableCreation")]
-    partial class DepartamentoTableCreation
+    [Migration("20250527174605_AlergiaTableUpdate")]
+    partial class AlergiaTableUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,16 +51,44 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("varchar(90)");
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
 
                     b.Property<Guid?>("ProntuarioId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProntuarioId");
 
                     b.ToTable("Alergia");
+                });
+
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Departamento", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(90)");
+
+                    b.Property<Guid?>("LeitoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProfissionalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeitoId");
+
+                    b.HasIndex("ProfissionalId");
+
+                    b.ToTable("Departamento");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.EstadoClinico", b =>
@@ -186,6 +214,45 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.ToTable("Paciente");
                 });
 
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Profissional", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AgendamentoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("varchar(11)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(11);
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(80)");
+
+                    b.Property<int>("Sexo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgendamentoId");
+
+                    b.ToTable("Profissional");
+                });
+
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Prontuario", b =>
                 {
                     b.Property<Guid>("Id")
@@ -208,6 +275,17 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasOne("WhiteNoise.Domain.Entities.Prontuario", null)
                         .WithMany("Alergias")
                         .HasForeignKey("ProntuarioId");
+                });
+
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Departamento", b =>
+                {
+                    b.HasOne("WhiteNoise.Domain.Entities.Leito", "Leito")
+                        .WithMany()
+                        .HasForeignKey("LeitoId");
+
+                    b.HasOne("WhiteNoise.Domain.Entities.Profissional", "Profissional")
+                        .WithMany()
+                        .HasForeignKey("ProfissionalId");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Internacao", b =>
@@ -234,6 +312,13 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasOne("WhiteNoise.Domain.Entities.Prontuario", "Prontuario")
                         .WithMany()
                         .HasForeignKey("ProntuarioId");
+                });
+
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Profissional", b =>
+                {
+                    b.HasOne("WhiteNoise.Domain.Entities.Agendamento", "Agendamento")
+                        .WithMany()
+                        .HasForeignKey("AgendamentoId");
                 });
 #pragma warning restore 612, 618
         }

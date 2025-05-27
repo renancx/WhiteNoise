@@ -1,0 +1,28 @@
+﻿@using WhiteNoise.Domain.Entities;
+@model Alergia
+
+@{
+    ViewData["Title"] = "Deletar Alergia";
+}
+
+<div>
+    <h3>Deletar Alergia</h3>
+
+    <div>
+        <label asp-for="Nome"></label>
+        <input asp-for="Nome" disabled class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Tipo"></label>
+        <input asp-for="Tipo" disabled class="form-control" />
+    </div>
+
+    <form asp-controller="Alergia" asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <input type="submit" value="Deletar" class="btn btn-danger" />
+            <a class="btn btn-secondary" asp-controller="Alergia" asp-action="Index">Cancelar</a>
+        </div>
+    </form>
+</div>

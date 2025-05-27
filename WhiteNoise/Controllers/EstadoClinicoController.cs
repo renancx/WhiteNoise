@@ -10,7 +10,7 @@ using WhiteNoise.Domain.Interfaces.Repositories;
 namespace WhiteNoise.Controllers
 {
     //[Authorize]
-    public class EstadoClinicoController : Controller
+    public class EstadoClinicoController : BaseController
     {
         #region Private Fields
         private readonly IEstadoClinicoRepository _estadoClinicoRepository;

@@ -1,10 +1,18 @@
 ﻿@model IEnumerable<WhiteNoise.Models.Profissional.ProfissionalViewModel>
 
+@{
+    ViewData["Title"] = "Listagem de Profissionais";
+}
+
+
 <div>
-    <h2>Lista de Profissionais</h2>
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Novo Profissional</a>
-    </p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">@ViewData["Title"]</h2>
+        <a class="btn btn-lg btn-primary rounded-pill shadow-sm"
+           asp-controller="Profissional" asp-action="Create">
+            <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
+        </a>
+    </div>
 
     <table-grid controller="Profissional" items="@Model"></table-grid>
 </div>  

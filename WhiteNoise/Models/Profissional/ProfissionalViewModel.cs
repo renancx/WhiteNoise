@@ -25,14 +25,9 @@ namespace WhiteNoise.Models.Profissional
 
         public SexoEnum Sexo { get; set; }
 
+        public Guid Id { get; set; }
+
         [HiddenInGrid]
         public Guid? AgendamentoId { get; set; }
-        public virtual Agendamento Agendamento { get; set; }
-
-        [HiddenInGrid]
-        public Guid? DepartamentoId { get; set; }
-        public virtual Departamento Departamento { get; set; }
-
-        public Guid Id { get; set; }
     }
 }

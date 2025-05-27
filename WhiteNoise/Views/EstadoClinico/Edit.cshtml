@@ -1,16 +1,13 @@
 ﻿@using WhiteNoise.Domain.Entities;
 @model EstadoClinico
 
-@{
-    ViewData["Title"] = "Editar Estado Clínico";
-}
+@{ ViewData["Title"] = "Editar Estado Clínico"; }
 
 <div>
     <h3>Editar Estado Clínico</h3>
 
     <form asp-action="Edit" asp-controller="EstadoClinico" asp-route-id="@Model.Id" method="post">
         <input type="hidden" name="_method" value="PUT" />
-        @* <input type="hidden" asp-for="Id" /> *@
 
         <div>
             <label asp-for="Descricao"></label>

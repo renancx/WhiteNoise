@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WhiteNoise.Infra.Data.Contexts;
+using WhiteNoise.Infra.Data.Identity;
 using WhiteNoise.Infra.Data.Repositories;
 
 namespace WhiteNoise
@@ -34,7 +35,7 @@ namespace WhiteNoise
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddDefaultIdentity<ApplicationUser>(options => 
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequireUppercase = false;

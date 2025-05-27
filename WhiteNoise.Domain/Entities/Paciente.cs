@@ -15,7 +15,7 @@ namespace WhiteNoise.Domain.Entities
         [Display(Name = "Estado Clínico")]
         public Guid? EstadoClinicoId { get; set; }
 
-        public virtual EstadoClinico EstadoClinico { get; set; }
+        public virtual EstadoClinico? EstadoClinico { get; set; }
 
         public string? Nome { get; set; }
 
@@ -39,13 +39,13 @@ namespace WhiteNoise.Domain.Entities
 
         public string? Motivo { get; set; }
 
-        public Guid ProntuarioId { get; set; }
-        public virtual Prontuario Prontuario { get; set; }
+        public Guid? ProntuarioId { get; set; }
+        public virtual Prontuario? Prontuario { get; set; }
 
         public Guid? InternacaoId { get; set; }
-        public virtual Internacao Internacao { get; set; }
+        public virtual Internacao? Internacao { get; set; }
 
         public Guid? AgendamentoId { get; set; }
-        public virtual Agendamento Agendamento { get; set; }
+        public virtual Agendamento? Agendamento { get; set; }
     }
 }

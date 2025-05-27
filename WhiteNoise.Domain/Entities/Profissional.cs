@@ -22,6 +22,6 @@ namespace WhiteNoise.Domain.Entities
         public SexoEnum Sexo { get; set; }
 
         public Guid? AgendamentoId { get; set; }
-        public virtual Agendamento Agendamento { get; set; }
+        public virtual Agendamento? Agendamento { get; set; }
     }
 }
