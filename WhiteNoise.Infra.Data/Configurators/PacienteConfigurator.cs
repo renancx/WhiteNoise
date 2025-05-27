@@ -1,27 +1,60 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WhiteNoise.Domain.Entities;
 
-public class PacienteConfigurator : IEntityTypeConfiguration<Paciente>
+namespace WhiteNoise.Infra.Data.Configurators
 {
-    public void Configure(EntityTypeBuilder<Paciente> builder)
+    public class PacienteConfigurator : IEntityTypeConfiguration<Paciente>
     {
-        builder.HasKey(x => x.Id);
+        public void Configure(EntityTypeBuilder<Paciente> builder)
+        {
+            builder.HasOne(p => p.EstadoClinico)
+                   .WithMany()
+                   .HasForeignKey(p => p.EstadoClinicoId)
+                   .OnDelete(DeleteBehavior.Restrict);
 
-        builder.Property(x => x.Nome).IsRequired().HasColumnType("varchar(80)");
+            builder.HasOne(p => p.Prontuario)
+                   .WithMany()
+                   .HasForeignKey(p => p.ProntuarioId)
+                   .OnDelete(DeleteBehavior.Restrict);
 
-        builder.Property(x => x.Cpf).IsRequired().HasColumnType("varchar(11)").HasMaxLength(11).IsFixedLength(true);
+            builder.HasMany(p => p.Internacoes)
+                   .WithOne(i => i.Paciente)
+                   .HasForeignKey(i => i.PacienteId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(x => x.Email).IsRequired().HasColumnType("varchar(100)");
+            builder.HasMany(p => p.Agendamentos)
+                   .WithOne(a => a.Paciente)
+                   .HasForeignKey(a => a.PacienteId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(x => x.Motivo).HasColumnType("varchar(150)");
+            builder.Property(p => p.Nome)
+                   .IsRequired()
+                   .HasMaxLength(100);
 
-        builder.HasOne(p => p.Prontuario).WithMany().HasForeignKey(p => p.ProntuarioId).IsRequired(false).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(p => p.DataNascimento)
+                   .IsRequired();
 
-        builder.HasOne(p => p.Agendamento).WithMany().HasForeignKey(p => p.AgendamentoId).IsRequired(false).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(p => p.DataInternacao)
+                   .IsRequired();
 
-        builder.HasOne(p => p.Internacao).WithMany().HasForeignKey(p => p.InternacaoId).IsRequired(false).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(p => p.Email)
+                   .HasMaxLength(100);
 
-        builder.HasOne(p => p.EstadoClinico).WithMany().HasForeignKey(p => p.EstadoClinicoId).IsRequired(false).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(p => p.Cpf)
+                   .HasMaxLength(11);
+
+            builder.Property(p => p.Motivo)
+                   .HasMaxLength(500);
+
+            builder.Property(p => p.Ativo)
+                   .HasDefaultValue(true);
+
+            builder.Property(p => p.TipoPaciente)
+                   .IsRequired();
+
+            builder.Property(p => p.Sexo)
+                   .IsRequired();
+        }
     }
 }

@@ -1,0 +1,38 @@
+﻿@using WhiteNoise.Models.Agendamento
+@model AgendamentoViewModel
+
+@{
+    ViewData["Title"] = "Deletar Agendamento";
+}
+
+<div>
+    <h3>Deletar Agendamento</h3>
+
+    <div>
+        <label asp-for="DataHora"></label>
+        <input asp-for="DataHora" disabled class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Tipo"></label>
+        <input asp-for="Tipo" disabled class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Status"></label>
+        <input asp-for="Status" disabled class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Observacoes"></label>
+        <input asp-for="Observacoes" disabled class="form-control" />
+    </div>
+
+    <form asp-controller="Agendamento" asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <input type="submit" value="Deletar" class="btn btn-danger" />
+            <a class="btn btn-secondary" asp-controller="Agendamento" asp-action="Index">Cancelar</a>
+        </div>
+    </form>
+</div>

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Profissional;
-
 namespace WhiteNoise.Controllers
 {
     //[Authorize]
@@ -16,14 +16,16 @@ namespace WhiteNoise.Controllers
         #region Private Fields
         private readonly IMapper _mapper; 
         private readonly IProfissionalRepository _profissionalRepository;
+        private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public ProfissionalController(IMapper mapper, IProfissionalRepository profissionalRepository)
+        public ProfissionalController(IMapper mapper, IProfissionalRepository profissionalRepository, INotyfService notyf)
         {
             _profissionalRepository = profissionalRepository;
             _mapper = mapper;
+            _notyf = notyf;
         }
         #endregion
 
@@ -58,9 +60,11 @@ namespace WhiteNoise.Controllers
                 var profissional = _mapper.Map<Profissional>(profissionalViewModel);
                 profissional.Id = Guid.NewGuid();
                 await _profissionalRepository.Adicionar(profissional);
+                _notyf.Success("As informações foram salvas com sucesso.");
                 return RedirectToAction(nameof(Index));
-
             }
+
+            _notyf.Error("Ocorreu um erro ao salvar as informações.");
             return View(profissionalViewModel);
         }
                 
@@ -98,12 +102,15 @@ namespace WhiteNoise.Controllers
                     }
                     else
                     {
+                        _notyf.Error("Ocorreu um erro ao salvar as informações.");
                         throw;
                     }
                 }
+                _notyf.Success("As informações foram salvas com sucesso.");
                 return RedirectToAction(nameof(Index));
             }
 
+            _notyf.Error("Preencha todas as informações obrigatórias.");
             return View(profissionalViewModel);
         }
         
@@ -131,9 +138,11 @@ namespace WhiteNoise.Controllers
             }
             catch (Exception ex)
             {
+                _notyf.Success("Ocorreu um erro ao excluir o registro.");
                 return BadRequest(ex.Message);
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
         #endregion

@@ -1,4 +1,5 @@
 using System;
+using AspNetCoreHero.ToastNotification;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,6 +53,12 @@ namespace WhiteNoise
                 .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Repository")))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
+            );
+
+            services.AddNotyf(config=>{
+                config.DurationInSeconds = 3;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.TopRight; }
             );
 
         }

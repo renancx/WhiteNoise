@@ -8,13 +8,38 @@ namespace WhiteNoise.Infra.Data.Configurators
     {
         public void Configure(EntityTypeBuilder<Profissional> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.Property(p => p.Nome)
+                   .IsRequired()
+                   .HasMaxLength(100);
 
-            builder.Property(x => x.Nome).IsRequired().HasColumnType("varchar(80)");
+            builder.Property(p => p.DataNascimento)
+                   .IsRequired();
 
-            builder.Property(x => x.Cpf).IsRequired().HasColumnType("varchar(11)").HasMaxLength(11).IsFixedLength(true);
+            builder.Property(p => p.Email)
+                   .HasMaxLength(100);
 
-            builder.Property(x => x.Email).IsRequired().HasColumnType("varchar(100)");
+            builder.Property(p => p.Ativo)
+                   .IsRequired()
+                   .HasDefaultValue(true);
+
+            builder.Property(p => p.Cpf)
+                   .HasMaxLength(11);
+
+            builder.Property(p => p.Sexo)
+                   .IsRequired();
+
+            builder.HasIndex(p => p.Cpf)
+                   .IsUnique();
+
+            builder.HasOne(p => p.Departamento)
+                   .WithMany()
+                   .HasForeignKey(p => p.DepartamentoId)
+                   .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(p => p.Agendamentos)
+                   .WithOne(a => a.Profissional)
+                   .HasForeignKey(a => a.ProfissionalId)
+                   .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

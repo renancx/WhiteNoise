@@ -10,8 +10,8 @@ using WhiteNoise.Infra.Data.Contexts;
 namespace WhiteNoise.Infra.Data.Migrations.Identity
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20250527170045_IdentityInitialMigration")]
-    partial class IdentityInitialMigration
+    [Migration("20250527200142_ApplicationUserConfig")]
+    partial class ApplicationUserConfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

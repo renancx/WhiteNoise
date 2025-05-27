@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using WhiteNoise.Domain.Entities.Base;
 using WhiteNoise.Domain.Enums;
@@ -40,12 +41,11 @@ namespace WhiteNoise.Domain.Entities
         public string? Motivo { get; set; }
 
         public Guid? ProntuarioId { get; set; }
+
         public virtual Prontuario? Prontuario { get; set; }
 
-        public Guid? InternacaoId { get; set; }
-        public virtual Internacao? Internacao { get; set; }
+        public virtual ICollection<Internacao> Internacoes { get; set; } = new List<Internacao>();
 
-        public Guid? AgendamentoId { get; set; }
-        public virtual Agendamento? Agendamento { get; set; }
+        public virtual ICollection<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using WhiteNoise.Domain.Entities.Base;
 using WhiteNoise.Domain.Enums;
@@ -21,7 +22,9 @@ namespace WhiteNoise.Domain.Entities
 
         public SexoEnum Sexo { get; set; }
 
-        public Guid? AgendamentoId { get; set; }
-        public virtual Agendamento? Agendamento { get; set; }
+        public Guid? DepartamentoId { get; set; }
+        public virtual Departamento? Departamento { get; set; } = null;
+
+        public virtual ICollection<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
     }
 }

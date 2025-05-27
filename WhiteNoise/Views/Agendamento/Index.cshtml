@@ -1,0 +1,21 @@
+﻿@using WhiteNoise.Models.Agendamento
+
+@model IEnumerable<AgendamentoViewModel>
+
+@{
+    ViewData["Title"] = "Listagem de Agendamentos";
+}
+
+<div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">@ViewData["Title"]</h2>
+        <a class="btn btn-lg btn-primary rounded-pill shadow-sm"
+           asp-controller="Agendamento" asp-action="Create">
+            <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
+        </a>
+    </div>
+
+    <div class="row col-12">
+        <table-grid controller="Agendamento" items="@Model"></table-grid>
+    </div>
+</div>

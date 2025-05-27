@@ -14,7 +14,10 @@ namespace WhiteNoise.Domain.Entities
 
         public TipoSaidaEnum? TipoSaida { get; set; } = null;
 
-        public Guid? LeitoId { get; set; }
-        public virtual Leito? Leito { get; set; }
+        public Guid? PacienteId { get; set; }
+        public virtual Paciente Paciente { get; set; }
+
+        public Guid? DepartamentoId { get; set; }
+        public virtual Departamento? Departamento { get; set; }
     }
 }

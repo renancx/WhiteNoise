@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WhiteNoise.Domain.Entities.Base;
 
 namespace WhiteNoise.Domain.Entities
@@ -7,12 +8,10 @@ namespace WhiteNoise.Domain.Entities
     {
         public string? Descricao { get; set; }
 
-        public Guid? LeitoId { get; set; }
+        public virtual ICollection<Leito> Leitos { get; set; }
 
-        public virtual Leito Leito { get; set; }
-        
-        public Guid? ProfissionalId { get; set; }
-        
-        public virtual Profissional? Profissional { get; set; }
+        public virtual ICollection<Profissional> Profissionais { get; set; }
+
+        public virtual ICollection<Internacao> Internacoes { get; set; }
     }
 }
