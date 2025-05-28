@@ -12,6 +12,6 @@ namespace WhiteNoise.Domain.Entities
         public StatusLeitoEnum Status { get; set; }
 
         public Guid? DepartamentoId { get; set; }
-        public virtual Departamento? Departamento { get; set; } = null;
+        public virtual Departamento? Departamento { get; set; }
     }
 }

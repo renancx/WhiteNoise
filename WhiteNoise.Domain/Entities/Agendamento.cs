@@ -15,9 +15,11 @@ namespace WhiteNoise.Domain.Entities
         public string? Observacoes { get; set; }
 
         public Guid? ProfissionalId { get; set; }
+
         public virtual Profissional Profissional { get; set; }
 
         public Guid? PacienteId { get; set; }
+
         public virtual Paciente Paciente { get; set; }
     }
 }

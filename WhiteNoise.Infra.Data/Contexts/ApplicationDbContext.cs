@@ -12,7 +12,6 @@ namespace WhiteNoise.Infra.Data.Contexts
         }
         #region DbSets
         public DbSet<Agendamento> Agendamento { get; set; }
-        public DbSet<Alergia> Alergia { get; set; }
         public DbSet<Departamento> Departamento { get; set; }
         public DbSet<EstadoClinico> EstadoClinico { get; set; }
         public DbSet<Internacao> Internacao { get; set; }

@@ -6,7 +6,7 @@ using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Models.Paciente
 {
-    public class PacienteViewModel
+    public class PacienteFormModel
     {
         [Required(ErrorMessage = "O Nome é obrigatório.")]
         public string? Nome { get; set; }
@@ -15,7 +15,7 @@ namespace WhiteNoise.Models.Paciente
         public Guid? EstadoClinicoId { get; set; }
 
         [Display(Name = "Estado Clínico")]
-        public string? EstadoClinicoDescricao { get; set; }
+        public string? EstadoClinico { get; set; }
         
         [Required(ErrorMessage = "A Data de Nascimento é obrigatória.")]
         [Display(Name = "Data de Nascimento")]
@@ -33,6 +33,7 @@ namespace WhiteNoise.Models.Paciente
         public bool Ativo { get; set; }
 
         [Required(ErrorMessage = "O CPF é obrigatório.")]
+        [Display(Name = "CPF")]
         public string? Cpf { get; set; }
 
         [Display(Name = "Tipo de Paciente")]
@@ -45,12 +46,11 @@ namespace WhiteNoise.Models.Paciente
 
         public Guid Id { get; set; }
 
+        [HiddenInGrid]
+        public Guid? ProntuarioId { get; set; }
 
         [HiddenInGrid]
         public Guid? AgendamentoId { get; set; }
-
-        [HiddenInGrid]
-        public Guid? ProntuarioId { get; set; }
 
         [HiddenInGrid]
         public Guid? InternacaoId { get; set; }

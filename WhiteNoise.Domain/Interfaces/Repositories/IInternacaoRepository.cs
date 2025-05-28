@@ -2,7 +2,7 @@
 
 namespace WhiteNoise.Domain.Interfaces.Repositories
 {
-    public interface IAlergiaRepository : IBaseRepository<Alergia>
+    public interface IInternacaoRepository : IBaseRepository<Internacao>
     {
     }
 }

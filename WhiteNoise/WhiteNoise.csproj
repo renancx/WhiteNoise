@@ -27,6 +27,13 @@
     <ProjectReference Include="..\WhiteNoise.Infra.Data\WhiteNoise.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Departamento\" />
+    <Folder Include="Models\Internacao\" />
+    <Folder Include="Models\Leito\" />
+    <Folder Include="Models\Prontuario\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/ava.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

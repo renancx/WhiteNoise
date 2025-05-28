@@ -4,9 +4,9 @@ using WhiteNoise.Infra.Data.Contexts;
 
 namespace WhiteNoise.Infra.Data.Repositories
 {
-    public class AlergiaRepository : Repository<Alergia>, IAlergiaRepository
+    public class LeitoRepository : Repository<Leito>, ILeitoRepository
     {
-        public AlergiaRepository(ApplicationDbContext context) : base(context)
+        public LeitoRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

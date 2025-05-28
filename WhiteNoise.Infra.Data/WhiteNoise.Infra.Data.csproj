@@ -40,8 +40,4 @@
     <ProjectReference Include="..\WhiteNoise.Domain\WhiteNoise.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\Identity\" />
-  </ItemGroup>
-
 </Project>

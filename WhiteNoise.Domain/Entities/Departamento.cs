@@ -8,10 +8,8 @@ namespace WhiteNoise.Domain.Entities
     {
         public string? Descricao { get; set; }
 
-        public virtual ICollection<Leito> Leitos { get; set; }
+        public virtual ICollection<Leito> Leitos { get; set; } = new List<Leito>();
 
-        public virtual ICollection<Profissional> Profissionais { get; set; }
-
-        public virtual ICollection<Internacao> Internacoes { get; set; }
+        public virtual ICollection<Profissional> Profissionais { get; set; } = new List<Profissional>();
     }
 }

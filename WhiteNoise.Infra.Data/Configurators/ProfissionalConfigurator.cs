@@ -32,7 +32,7 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .IsUnique();
 
             builder.HasOne(p => p.Departamento)
-                   .WithMany()
+                   .WithMany(a => a.Profissionais)
                    .HasForeignKey(p => p.DepartamentoId)
                    .OnDelete(DeleteBehavior.SetNull);
 

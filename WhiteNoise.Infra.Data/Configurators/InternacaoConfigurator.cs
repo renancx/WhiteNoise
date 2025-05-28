@@ -17,7 +17,7 @@ namespace WhiteNoise.Infra.Data.Configurators
 
             builder.Property(i => i.Motivo)
                    .IsRequired()
-                   .HasMaxLength(500)
+                   .HasMaxLength(200)
                    .IsUnicode(false);
 
             builder.Property(i => i.TipoSaida);
@@ -27,10 +27,11 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .HasForeignKey(i => i.PacienteId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(i => i.Departamento)
-                   .WithMany(d => d.Internacoes)
-                   .HasForeignKey(i => i.DepartamentoId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(i => i.Leito)
+              .WithOne()
+              .HasForeignKey<Internacao>(i => i.LeitoId)
+              .IsRequired(false)
+              .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

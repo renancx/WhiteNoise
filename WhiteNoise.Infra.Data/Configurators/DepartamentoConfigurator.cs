@@ -20,13 +20,8 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(d => d.Profissionais)
-                   .WithOne(p => p.Departamento)
-                   .HasForeignKey(p => p.DepartamentoId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasMany(d => d.Internacoes)
-                   .WithOne(i => i.Departamento)
-                   .HasForeignKey(i => i.DepartamentoId)
+                   .WithOne(l => l.Departamento)
+                   .HasForeignKey(l => l.DepartamentoId)
                    .OnDelete(DeleteBehavior.Restrict);
         }
     }

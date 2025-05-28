@@ -13,6 +13,11 @@ namespace WhiteNoise.Infra.Data.Configurators
 
             builder.Property(p => p.Observacao)
                    .HasMaxLength(500);
+
+            builder.HasOne(p => p.Paciente)
+               .WithMany(d => d.Prontuarios)
+               .HasForeignKey(p => p.PacienteId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

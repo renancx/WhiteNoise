@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +35,7 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Index()
         {
             var pacientes = await _pacienteRepository.ObterTodos();
-            var pacientesViewModel = _mapper.Map<List<PacienteViewModel>>(pacientes);
+            var pacientesViewModel = _mapper.Map<List<PacienteGridModel>>(pacientes);
             return View(pacientesViewModel);
         }
 
@@ -44,16 +43,16 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Details(Guid? id)
         {
             var paciente = await _pacienteRepository.ObterPorId(id);
-            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
-            return View(pacienteViewModel);
+            var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
+            return View(pacienteFormModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> ObterPacientesPorEstadoClinico(Guid? id)
         {
             var paciente = await _pacienteRepository.ObterPorEstadoClinicoId(id);
-            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
-            return View(pacienteViewModel);
+            var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
+            return View(pacienteFormModel);
         }
 
         [HttpGet]
@@ -66,17 +65,17 @@ namespace WhiteNoise.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(PacienteViewModel pacienteViewModel)
+        public async Task<IActionResult> Create(PacienteFormModel pacienteFormModel)
         {
             if(ModelState.IsValid)
             {
-                var paciente = _mapper.Map<Paciente>(pacienteViewModel);
+                var paciente = _mapper.Map<Paciente>(pacienteFormModel);
                 paciente.Id = Guid.NewGuid();
                 await _pacienteRepository.Adicionar(paciente);
                 return RedirectToAction(nameof(Index));
 
             }
-            return View(pacienteViewModel);
+            return View(pacienteFormModel);
         }
 
         [HttpGet]
@@ -90,22 +89,22 @@ namespace WhiteNoise.Controllers
             var estados = await _estadoClinicoRepository.ObterTodos();
             ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
 
-            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+            var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
 
-            return View(pacienteViewModel);
+            return View(pacienteFormModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, PacienteViewModel pacienteViewModel)
+        public async Task<IActionResult> Edit(Guid id, PacienteFormModel pacienteFormModel)
         {
-            if (id != pacienteViewModel.Id)
+            if (id != pacienteFormModel.Id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var paciente = _mapper.Map<Paciente>(pacienteViewModel);
+                    var paciente = _mapper.Map<Paciente>(pacienteFormModel);
                     await _pacienteRepository.Atualizar(paciente);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -122,7 +121,7 @@ namespace WhiteNoise.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(pacienteViewModel);
+            return View(pacienteFormModel);
         }
 
         [HttpGet]
@@ -135,9 +134,9 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+            var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
 
-            return View(pacienteViewModel);
+            return View(pacienteFormModel);
         }
 
         [HttpPost]

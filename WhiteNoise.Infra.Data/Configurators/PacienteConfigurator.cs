@@ -13,11 +13,6 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .HasForeignKey(p => p.EstadoClinicoId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(p => p.Prontuario)
-                   .WithMany()
-                   .HasForeignKey(p => p.ProntuarioId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasMany(p => p.Internacoes)
                    .WithOne(i => i.Paciente)
                    .HasForeignKey(i => i.PacienteId)
@@ -45,7 +40,7 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .HasMaxLength(11);
 
             builder.Property(p => p.Motivo)
-                   .HasMaxLength(500);
+                   .HasMaxLength(200);
 
             builder.Property(p => p.Ativo)
                    .HasDefaultValue(true);

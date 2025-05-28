@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using WhiteNoise.Domain.Entities.Base;
 using WhiteNoise.Domain.Enums;
 
@@ -10,10 +9,8 @@ namespace WhiteNoise.Domain.Entities
     {
         public string? Nome { get; set; }
 
-        [Display(Name = "Data Nascimento")]
         public DateTime DataNascimento { get; set; }
 
-        [Display(Name = "E-mail")]
         public string? Email { get; set; }
 
         public bool Ativo { get; set; } = true;
@@ -23,8 +20,8 @@ namespace WhiteNoise.Domain.Entities
         public SexoEnum Sexo { get; set; }
 
         public Guid? DepartamentoId { get; set; }
-        public virtual Departamento? Departamento { get; set; } = null;
+        public virtual Departamento? Departamento { get; set; }
 
-        public virtual ICollection<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
+        public virtual ICollection<Agendamento> Agendamentos { get; set; }
     }
 }

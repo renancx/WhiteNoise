@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
 using WhiteNoise.Shared.Attributes;
 
@@ -12,6 +11,7 @@ namespace WhiteNoise.Models.Profissional
         public string? Nome { get; set; }
 
         [Required(ErrorMessage = "A Data de Nascimento é obrigatória.")]
+        [Display(Name = "Data de Nascimento")]
         public DateTime DataNascimento { get; set; }
 
         [Required(ErrorMessage = "O E-mail é obrigatório.")]
@@ -21,13 +21,17 @@ namespace WhiteNoise.Models.Profissional
         public bool Ativo { get; set; } = true;
 
         [Required(ErrorMessage = "O CPF é obrigatório.")]
+        [Display(Name = "CPF")]
         public string? Cpf { get; set; }
 
         public SexoEnum Sexo { get; set; }
 
-        public Guid Id { get; set; }
-
         [HiddenInGrid]
-        public Guid? AgendamentoId { get; set; }
+        public Guid? DepartamentoId { get; set; }
+
+        [Display(Name = "Departamento")]
+        public string? Departamento { get; set; }
+
+        public Guid Id { get; set; }
     }
 }

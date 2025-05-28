@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WhiteNoise.Infra.Data.Migrations
 {
-    public partial class RefactorDataBase : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,19 +29,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EstadoClinico", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Prontuario",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    DataCriacao = table.Column<DateTime>(nullable: false),
-                    Observacao = table.Column<string>(type: "varchar(90)", maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Prontuario", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,8 +62,7 @@ namespace WhiteNoise.Infra.Data.Migrations
                     Ativo = table.Column<bool>(nullable: false, defaultValue: true),
                     Cpf = table.Column<string>(type: "varchar(90)", maxLength: 11, nullable: true),
                     Sexo = table.Column<int>(nullable: false),
-                    DepartamentoId = table.Column<Guid>(nullable: true),
-                    DepartamentoId1 = table.Column<Guid>(nullable: true)
+                    DepartamentoId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,39 +73,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                         principalTable: "Departamento",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Profissional_Departamento_DepartamentoId1",
-                        column: x => x.DepartamentoId1,
-                        principalTable: "Departamento",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Alergia",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Nome = table.Column<string>(type: "varchar(90)", maxLength: 100, nullable: false),
-                    Tipo = table.Column<int>(nullable: false),
-                    ProntuarioId = table.Column<Guid>(nullable: true),
-                    ProntuarioId1 = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Alergia", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Alergia_Prontuario_ProntuarioId",
-                        column: x => x.ProntuarioId,
-                        principalTable: "Prontuario",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Alergia_Prontuario_ProntuarioId1",
-                        column: x => x.ProntuarioId1,
-                        principalTable: "Prontuario",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,7 +80,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    EstadoClinicoId = table.Column<Guid>(nullable: true),
                     Nome = table.Column<string>(type: "varchar(90)", maxLength: 100, nullable: false),
                     DataNascimento = table.Column<DateTime>(nullable: false),
                     DataInternacao = table.Column<DateTime>(nullable: false),
@@ -136,8 +88,8 @@ namespace WhiteNoise.Infra.Data.Migrations
                     Cpf = table.Column<string>(type: "varchar(90)", maxLength: 11, nullable: true),
                     TipoPaciente = table.Column<int>(nullable: false),
                     Sexo = table.Column<int>(nullable: false),
-                    Motivo = table.Column<string>(type: "varchar(90)", maxLength: 500, nullable: true),
-                    ProntuarioId = table.Column<Guid>(nullable: true)
+                    Motivo = table.Column<string>(type: "varchar(90)", maxLength: 200, nullable: true),
+                    EstadoClinicoId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -146,12 +98,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                         name: "FK_Paciente_EstadoClinico_EstadoClinicoId",
                         column: x => x.EstadoClinicoId,
                         principalTable: "EstadoClinico",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Paciente_Prontuario_ProntuarioId",
-                        column: x => x.ProntuarioId,
-                        principalTable: "Prontuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -192,22 +138,42 @@ namespace WhiteNoise.Infra.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     DataEntrada = table.Column<DateTime>(nullable: false),
                     DataAlta = table.Column<DateTime>(nullable: true),
-                    Motivo = table.Column<string>(type: "varchar(90)", unicode: false, maxLength: 500, nullable: false),
+                    Motivo = table.Column<string>(type: "varchar(90)", unicode: false, maxLength: 200, nullable: false),
                     TipoSaida = table.Column<int>(nullable: true),
                     PacienteId = table.Column<Guid>(nullable: true),
-                    DepartamentoId = table.Column<Guid>(nullable: true)
+                    LeitoId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Internacao", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Internacao_Departamento_DepartamentoId",
-                        column: x => x.DepartamentoId,
-                        principalTable: "Departamento",
+                        name: "FK_Internacao_Leito_LeitoId",
+                        column: x => x.LeitoId,
+                        principalTable: "Leito",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Internacao_Paciente_PacienteId",
+                        column: x => x.PacienteId,
+                        principalTable: "Paciente",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Prontuario",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DataCriacao = table.Column<DateTime>(nullable: false),
+                    Observacao = table.Column<string>(type: "varchar(90)", maxLength: 500, nullable: true),
+                    PacienteId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prontuario", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prontuario_Paciente_PacienteId",
                         column: x => x.PacienteId,
                         principalTable: "Paciente",
                         principalColumn: "Id",
@@ -225,19 +191,11 @@ namespace WhiteNoise.Infra.Data.Migrations
                 column: "ProfissionalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Alergia_ProntuarioId",
-                table: "Alergia",
-                column: "ProntuarioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Alergia_ProntuarioId1",
-                table: "Alergia",
-                column: "ProntuarioId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Internacao_DepartamentoId",
+                name: "IX_Internacao_LeitoId",
                 table: "Internacao",
-                column: "DepartamentoId");
+                column: "LeitoId",
+                unique: true,
+                filter: "[LeitoId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Internacao_PacienteId",
@@ -255,11 +213,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                 column: "EstadoClinicoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Paciente_ProntuarioId",
-                table: "Paciente",
-                column: "ProntuarioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Profissional_Cpf",
                 table: "Profissional",
                 column: "Cpf",
@@ -272,9 +225,9 @@ namespace WhiteNoise.Infra.Data.Migrations
                 column: "DepartamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profissional_DepartamentoId1",
-                table: "Profissional",
-                column: "DepartamentoId1");
+                name: "IX_Prontuario_PacienteId",
+                table: "Prontuario",
+                column: "PacienteId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -283,16 +236,16 @@ namespace WhiteNoise.Infra.Data.Migrations
                 name: "Agendamento");
 
             migrationBuilder.DropTable(
-                name: "Alergia");
-
-            migrationBuilder.DropTable(
                 name: "Internacao");
 
             migrationBuilder.DropTable(
-                name: "Leito");
+                name: "Prontuario");
 
             migrationBuilder.DropTable(
                 name: "Profissional");
+
+            migrationBuilder.DropTable(
+                name: "Leito");
 
             migrationBuilder.DropTable(
                 name: "Paciente");
@@ -302,9 +255,6 @@ namespace WhiteNoise.Infra.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "EstadoClinico");
-
-            migrationBuilder.DropTable(
-                name: "Prontuario");
         }
     }
 }
