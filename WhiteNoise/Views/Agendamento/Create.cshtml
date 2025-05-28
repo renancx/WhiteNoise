@@ -1,6 +1,6 @@
 ﻿@using WhiteNoise.Domain.Entities
 @using WhiteNoise.Domain.Enums
-@model WhiteNoise.Models.Agendamento.AgendamentoViewModel
+@model WhiteNoise.Models.Agendamento.AgendamentoFormModel
 
 @{
     ViewData["Title"] = "Cadastrar Agendamento";
@@ -37,17 +37,21 @@
 
         <div class="row col-12">
             <div class="form-group col-6">
-                <label asp-for="Paciente" class="control-label"></label>
-                <input asp-for="Paciente" class="form-control" />
-                <span asp-validation-for="Paciente" class="text-danger"></span>
+                <label asp-for="PacienteId"></label>
+            <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
+                <option value="">-- Selecione --</option>
+            </select>
+            <span asp-validation-for="PacienteId" class="text-danger"></span>
             </div>
         </div>
 
         <div class="row col-12">
             <div class="form-group col-6">
-                <label asp-for="Profissional" class="control-label"></label>
-                <input asp-for="Profissional" class="form-control" />
-                <span asp-validation-for="Profissional" class="text-danger"></span>
+                <label asp-for="ProfissionalId"></label>
+                <select asp-for="ProfissionalId" class="form-control" asp-items="Model.Profissionais">
+                    <option value="">-- Selecione --</option>
+                </select>
+                <span asp-validation-for="ProfissionalId" class="text-danger"></span>
             </div>
         </div>
 

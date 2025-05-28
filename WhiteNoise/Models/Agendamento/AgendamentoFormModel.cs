@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
-using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Models.Agendamento
 {
-    public class AgendamentoViewModel
+    public class AgendamentoFormModel
     {
         [Display(Name = "Data/Hora")] 
         public DateTime DataHora { get; set; }
@@ -17,17 +18,19 @@ namespace WhiteNoise.Models.Agendamento
         [Display(Name = "Observações")]
         public string? Observacoes { get; set; }
 
-        [HiddenInGrid]
+        [Display(Name = "Paciente")]
+        [Required(ErrorMessage = "Informe um profissional.")]
         public Guid? PacienteId { get; set; }
-        
-        public string Paciente { get; set; }
 
-        [HiddenInGrid]
+        [Display(Name = "Profissional")]
+        [Required(ErrorMessage = "Informe um profissional.")]
         public Guid? ProfissionalId { get; set; }
 
-        public string Profissional { get; set; }
-
         public Guid Id { get; set; }
+
+        public SelectList? Pacientes { get; set; }
+
+        public SelectList? Profissionais { get; set; }
 
     }
 }

@@ -34,8 +34,8 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Index()
         {
             var profissionais = await _profissionalRepository.ObterTodos();
-            var profissionaisViewModel = _mapper.Map<List<ProfissionalViewModel>>(profissionais);
-            return View(profissionaisViewModel);
+            var profissionaisGridModel = _mapper.Map<List<ProfissionalGridModel>>(profissionais);
+            return View(profissionaisGridModel);
         }
 
         [HttpGet]

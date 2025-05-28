@@ -8,10 +8,14 @@ namespace WhiteNoise.Mappers
     {
         public AgendamentoMapper()
         {
-            CreateMap<AgendamentoViewModel, Agendamento>();
+            CreateMap<AgendamentoFormModel, Agendamento>();
 
-            CreateMap<Agendamento, AgendamentoViewModel>()
-                .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome));
+            CreateMap<Agendamento, AgendamentoFormModel>();
+
+            //Grid
+            CreateMap<Agendamento, AgendamentoGridModel>()
+                .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome))
+                .ForMember(x => x.Profissional, opt => opt.MapFrom(src => src.Profissional.Nome));
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
-using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Models.Paciente
 {
@@ -10,8 +9,8 @@ namespace WhiteNoise.Models.Paciente
     {
         public string? Nome { get; set; }
         
-        [HiddenInGrid]
-        public Guid? EstadoClinicoId { get; set; }
+        //[HiddenInGrid]
+        //public Guid? EstadoClinicoId { get; set; }
 
         [Display(Name = "Estado Clínico")]
         public string? EstadoClinico { get; set; }

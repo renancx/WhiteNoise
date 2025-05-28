@@ -3,32 +3,26 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
-using WhiteNoise.Infra.Data.Repositories;
-using WhiteNoise.Models.Agendamento;
+using WhiteNoise.Models.Leito;
 
 namespace WhiteNoise.Controllers
 {
-    public class AgendamentoController : BaseController
+    public class LeitoController : BaseController
     {
         #region Private Fields
-        private readonly IAgendamentoRepository _agendamentoRepository;
-        private readonly IProfissionalRepository _profissionalRepository;
-        private readonly IPacienteRepository _pacienteRepository;
+        private readonly ILeitoRepository _agendamentoRepository;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
-        public AgendamentoController(IMapper mapper, IAgendamentoRepository agendamentoRepository, IPacienteRepository pacienteRepository, IProfissionalRepository profissionalRepository)
+        public LeitoController(IMapper mapper, ILeitoRepository agendamentoRepository)
         {
             _agendamentoRepository = agendamentoRepository;
-            _pacienteRepository = pacienteRepository;
             _mapper = mapper;
-            _profissionalRepository = profissionalRepository;
         }
 
         #endregion
@@ -37,7 +31,7 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Index()
         {
             var agendamentos = await _agendamentoRepository.ObterTodos();
-            var agendamentosGridModel = _mapper.Map<List<AgendamentoGridModel>>(agendamentos);
+            var agendamentosGridModel = _mapper.Map<List<LeitoGridModel>>(agendamentos);
             return View(agendamentosGridModel);
         }
 
@@ -45,32 +39,22 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var agendamento = await _agendamentoRepository.ObterPorId(id);
-            var agendamentoFormModel = _mapper.Map<AgendamentoFormModel>(agendamento);
+            var agendamentoFormModel = _mapper.Map<LeitoFormModel>(agendamento);
             return View(agendamentoFormModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var pacientes = await _pacienteRepository.ObterTodos();
-            var profissionais = await _profissionalRepository.ObterTodos();
-
-            var model = new AgendamentoFormModel
-            {
-                Pacientes = new SelectList(pacientes, "Id", "Nome"),
-                Profissionais = new SelectList(profissionais, "Id", "Nome")
-            };
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AgendamentoFormModel agendamentoFormModel)
+        public async Task<IActionResult> Create(LeitoFormModel agendamentoFormModel)
         {
             if (ModelState.IsValid)
             {
-                var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
-
+                var agendamento = _mapper.Map<Leito>(agendamentoFormModel);
                 agendamento.Id = Guid.NewGuid();
                 await _agendamentoRepository.Adicionar(agendamento);
                 return RedirectToAction(nameof(Index));
@@ -87,13 +71,13 @@ namespace WhiteNoise.Controllers
             if (agendamento == null)
                 return NotFound();
 
-            var agendamentoFormModel = _mapper.Map<AgendamentoFormModel>(agendamento);
+            var agendamentoFormModel = _mapper.Map<LeitoFormModel>(agendamento);
 
             return View(agendamentoFormModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, AgendamentoFormModel agendamentoFormModel)
+        public async Task<IActionResult> Edit(Guid id, LeitoFormModel agendamentoFormModel)
         {
             if (id != agendamentoFormModel.Id)
                 return NotFound();
@@ -102,7 +86,7 @@ namespace WhiteNoise.Controllers
             {
                 try
                 {
-                    var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
+                    var agendamento = _mapper.Map<Leito>(agendamentoFormModel);
                     await _agendamentoRepository.Atualizar(agendamento);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -132,7 +116,7 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var agendamentoFormModel = _mapper.Map<AgendamentoFormModel>(agendamento);
+            var agendamentoFormModel = _mapper.Map<LeitoFormModel>(agendamento);
 
             return View(agendamentoFormModel);
 

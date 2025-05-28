@@ -16,6 +16,8 @@ namespace WhiteNoise.Infra.Data.Configurators
             builder.Property(l => l.Status)
                    .IsRequired();
 
+            builder.Property(l => l.Descricao);
+
             builder.HasOne(l => l.Departamento)
                    .WithMany(d => d.Leitos)
                    .HasForeignKey(l => l.DepartamentoId)

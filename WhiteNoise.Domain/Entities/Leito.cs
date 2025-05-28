@@ -7,6 +7,8 @@ namespace WhiteNoise.Domain.Entities
 {
     public class Leito : EntityBase
     {
+        public string? Descricao { get; set; }
+
         public TipoLeitoEnum Tipo { get; set; }
 
         public StatusLeitoEnum Status { get; set; }

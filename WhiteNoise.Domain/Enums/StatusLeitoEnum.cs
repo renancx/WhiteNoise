@@ -8,7 +8,7 @@ namespace WhiteNoise.Domain.Enums
         Livre = 1,
 
         [Display(Name = "Ocupado")]
-        Ocupado = 0,
+        Ocupado = 2,
 
         [Display(Name = "Em Manutenção")]
         EmManutencao = 3,
