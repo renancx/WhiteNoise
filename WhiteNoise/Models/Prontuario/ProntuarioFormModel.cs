@@ -12,6 +12,7 @@ namespace WhiteNoise.Models.Prontuario
         public string Observacao { get; set; }
 
         [Display(Name = "Paciente")]
+        [Required(ErrorMessage = "Informe um paciente.")]
         public Guid? PacienteId { get; set; }
 
         public SelectList? Pacientes { get; set; }

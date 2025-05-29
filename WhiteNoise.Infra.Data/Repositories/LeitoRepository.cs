@@ -52,5 +52,12 @@ namespace WhiteNoise.Infra.Data.Repositories
 
             leito.Status = status;
         }
+
+        public async Task<IEnumerable<Leito>> ObterPorStatusOuId(Guid? id, StatusLeitoEnum status)
+        {
+            return await _context.Leito
+                .Where(l => l.Status == status || l.Id == id)
+                .ToListAsync();
+        }
     }
 }

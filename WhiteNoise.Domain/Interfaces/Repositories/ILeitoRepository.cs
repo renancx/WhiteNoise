@@ -11,5 +11,7 @@ namespace WhiteNoise.Domain.Interfaces.Repositories
         Task<List<Leito>> ObterTodosPorStatus(StatusLeitoEnum status);
 
         Task AtualizarStatus(Guid? leitoId, StatusLeitoEnum status);
+
+        Task<IEnumerable<Leito>> ObterPorStatusOuId(Guid? id, StatusLeitoEnum status);
     }
 }

@@ -7,15 +7,21 @@
 }
 
 <div>
-    <h3>Editar Estado Clínico</h3>
+    <h3>Editar Internação</h3>
 
-    <form asp-action="Edit" asp-controller="Internacao" asp-route-id="@Model.Id" method="post">
+    <form asp-action="Edit" asp-controller="Internacao" asp-route-id="@Model.Id" method="post" autocomplete="off">
         <input type="hidden" name="_method" value="PUT" />
 
         <div class="form-group">
             <label asp-for="DataEntrada" class="control-label"></label>
             <input asp-for="DataEntrada" class="form-control" />
             <span asp-validation-for="DataEntrada" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Motivo" class="control-label"></label>
+            <input asp-for="Motivo" class="form-control" />
+            <span asp-validation-for="Motivo" class="text-danger"></span>
         </div>
 
         <div class="form-group">

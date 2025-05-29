@@ -9,7 +9,7 @@
 <div>
     <h3>Editar Estado Clínico</h3>
 
-    <form asp-action="Edit" asp-controller="Agendamento" asp-route-id="@Model.Id" method="post">
+    <form asp-action="Edit" asp-controller="Agendamento" asp-route-id="@Model.Id" method="post" autocomplete="off">
         <input type="hidden" name="_method" value="PUT" />
 
         <div class="form-group">

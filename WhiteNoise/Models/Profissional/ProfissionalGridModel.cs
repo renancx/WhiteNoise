@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using WhiteNoise.Domain.Enums;
-using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Models.Profissional
 {

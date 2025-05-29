@@ -44,7 +44,7 @@ namespace WhiteNoise.Controllers
         private async Task PopularSelectListsInternacao(InternacaoFormModel model) 
         {
             var pacientes = await _pacienteRepository.ObterTodos();
-            var leitos = await _leitoRepository.ObterTodosPorStatus(StatusLeitoEnum.Livre);
+            var leitos = await _leitoRepository.ObterPorStatusOuId(model.LeitoId, StatusLeitoEnum.Livre);
 
             model.Pacientes = new SelectList(pacientes, "Id", "Nome", model.PacienteId);
             model.Leitos = new SelectList(leitos, "Id", "Descricao", model.LeitoId);
@@ -64,8 +64,8 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var internacao = await _internacaoRepository.ObterPorId(id);
-            var internacaoFormModel = _mapper.Map<InternacaoFormModel>(internacao);
-            return View(internacaoFormModel);
+            var internacaoGridModel = _mapper.Map<InternacaoGridModel>(internacao);
+            return View(internacaoGridModel);
         }
 
         [HttpGet]
@@ -158,9 +158,9 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var internacaoFormModel = _mapper.Map<InternacaoFormModel>(internacao);
+            var internacaoGridModel = _mapper.Map<InternacaoGridModel>(internacao);
 
-            return View(internacaoFormModel);
+            return View(internacaoGridModel);
 
         }
 
