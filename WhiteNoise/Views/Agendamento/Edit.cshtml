@@ -36,6 +36,21 @@
             <span asp-validation-for="Observacoes" class="text-danger"></span>
         </div>
 
+        <div class="form-group">
+            <label asp-for="PacienteId"></label>
+            <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
+            </select>
+            <span asp-validation-for="PacienteId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProfissionalId"></label>
+            <select asp-for="ProfissionalId" class="form-control" asp-items="Model.Profissionais">
+            </select>
+            <span asp-validation-for="ProfissionalId" class="text-danger"></span>
+        </div>
+
+
         <div>
             <input type="submit" value="Confirmar" class="btn btn-success" />
             <a class="btn btn-secondary" asp-controller="Agendamento" asp-action="Index">Cancelar</a>

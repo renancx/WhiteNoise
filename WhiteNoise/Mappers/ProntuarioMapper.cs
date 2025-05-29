@@ -8,8 +8,14 @@ namespace WhiteNoise.Mappers
     {
         public ProntuariolMapper()
         {
+            //Grid
             CreateMap<Prontuario, ProntuarioGridModel>()
                 .ForMember(dest => dest.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome));
+
+            //Form
+            CreateMap<ProntuarioFormModel, Prontuario>();
+
+            CreateMap<Prontuario, ProntuarioFormModel>();
         }
     }
 }

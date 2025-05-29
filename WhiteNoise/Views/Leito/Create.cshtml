@@ -1,5 +1,43 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using WhiteNoise.Domain.Entities
+@using WhiteNoise.Domain.Enums
+@model WhiteNoise.Models.Leito.LeitoFormModel
+
 @{
+    ViewData["Title"] = "Cadastrar Leito";
 }
+
+<div class="container my-5">
+    <h2>Novo Leito</h2>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-2">
+                <label asp-for="Tipo" class="control-label"></label>
+                <select asp-for="Tipo" class="form-control" asp-items="Html.GetEnumSelectList<TipoLeitoEnum>()"></select>
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-2">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<StatusLeitoEnum>()"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="DepartamentoId" class="control-label"></label>
+                <select asp-for="DepartamentoId" class="form-control" asp-items="Model.Departamentos"></select>
+                <span asp-validation-for="DepartamentoId" class="text-danger"></span>
+            </div>
+        </div>                   
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,17 +19,36 @@ namespace WhiteNoise.Controllers
         private readonly IAgendamentoRepository _agendamentoRepository;
         private readonly IProfissionalRepository _profissionalRepository;
         private readonly IPacienteRepository _pacienteRepository;
+        private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
-        public AgendamentoController(IMapper mapper, IAgendamentoRepository agendamentoRepository, IPacienteRepository pacienteRepository, IProfissionalRepository profissionalRepository)
+        public AgendamentoController(IMapper mapper, 
+            IAgendamentoRepository agendamentoRepository, 
+            IPacienteRepository pacienteRepository, 
+            IProfissionalRepository profissionalRepository,
+            INotyfService notyf)
         {
             _agendamentoRepository = agendamentoRepository;
-            _pacienteRepository = pacienteRepository;
-            _mapper = mapper;
             _profissionalRepository = profissionalRepository;
+            _pacienteRepository = pacienteRepository;
+            _notyf = notyf;
+            _mapper = mapper;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task PopularSelectListsAgendamento(AgendamentoFormModel model)
+        {
+            var pacientes = await _pacienteRepository.ObterTodos();
+            var profissionais = await _profissionalRepository.ObterTodos();
+
+            model.Pacientes = new SelectList(pacientes, "Id", "Nome", model.PacienteId);
+            model.Profissionais = new SelectList(profissionais, "Id", "Nome", model.ProfissionalId);
         }
 
         #endregion
@@ -45,21 +65,16 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var agendamento = await _agendamentoRepository.ObterPorId(id);
-            var agendamentoFormModel = _mapper.Map<AgendamentoFormModel>(agendamento);
-            return View(agendamentoFormModel);
+            var agendamentoGridModel = _mapper.Map<AgendamentoGridModel>(agendamento);
+            return View(agendamentoGridModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var pacientes = await _pacienteRepository.ObterTodos();
-            var profissionais = await _profissionalRepository.ObterTodos();
+            var model = new AgendamentoFormModel { };
 
-            var model = new AgendamentoFormModel
-            {
-                Pacientes = new SelectList(pacientes, "Id", "Nome"),
-                Profissionais = new SelectList(profissionais, "Id", "Nome")
-            };
+            await PopularSelectListsAgendamento(model);
 
             return View(model);
         }
@@ -67,16 +82,19 @@ namespace WhiteNoise.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AgendamentoFormModel agendamentoFormModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
-
-                agendamento.Id = Guid.NewGuid();
-                await _agendamentoRepository.Adicionar(agendamento);
-                return RedirectToAction(nameof(Index));
-
+                await PopularSelectListsAgendamento(agendamentoFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(agendamentoFormModel);
             }
-            return View(agendamentoFormModel);
+
+            var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
+
+            agendamento.Id = Guid.NewGuid();
+            await _agendamentoRepository.Adicionar(agendamento);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -88,7 +106,7 @@ namespace WhiteNoise.Controllers
                 return NotFound();
 
             var agendamentoFormModel = _mapper.Map<AgendamentoFormModel>(agendamento);
-
+            await PopularSelectListsAgendamento(agendamentoFormModel);
             return View(agendamentoFormModel);
         }
 
@@ -98,28 +116,26 @@ namespace WhiteNoise.Controllers
             if (id != agendamentoFormModel.Id)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
-                    await _agendamentoRepository.Atualizar(agendamento);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_agendamentoRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await PopularSelectListsAgendamento(agendamentoFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(agendamentoFormModel);
             }
 
-            return View(agendamentoFormModel);
+            try
+            {
+                var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
+                await _agendamentoRepository.Atualizar(agendamento);
+            }
+            catch
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                throw;
+            }
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));            
         }
 
         [HttpGet]
@@ -147,9 +163,11 @@ namespace WhiteNoise.Controllers
             }
             catch (Exception ex)
             {
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
                 return BadRequest(ex.Message);
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
 

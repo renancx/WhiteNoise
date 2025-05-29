@@ -1,5 +1,27 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using WhiteNoise.Domain.Extensions
+@model WhiteNoise.Models.Leito.LeitoGridModel
+
+<div>
+    <h2>Excluir Leito</h2>
+    <h3>Tem certeza que deseja excluir este paciente?</h3>
+    <div>
+        <h4>@Model.Descricao</h4>
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">Tipo</dt>
+                <dd class="col-sm-10">@Model.Tipo.GetEnumDescription()</dd>
+
+                <dt class="col-sm-2">Status</dt>
+                <dd class="col-sm-10">@Model.Status.GetEnumDescription()</dd>
+
+                <dt class="col-sm-2">Departamento</dt>
+                <dd class="col-sm-10">@Model.Departamento</dd>
+            </dl>
+        </div>
+        <form asp-action="DeleteConfirmed" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Excluir</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

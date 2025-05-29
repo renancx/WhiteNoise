@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Paciente;
@@ -17,15 +17,29 @@ namespace WhiteNoise.Controllers
         private readonly IMapper _mapper;
         private readonly IPacienteRepository _pacienteRepository;
         private readonly IEstadoClinicoRepository _estadoClinicoRepository;
+        private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public PacienteController(IMapper mapper, IPacienteRepository pacienteRepository, IEstadoClinicoRepository estadoClinicoRepository)
+        public PacienteController(IMapper mapper, 
+            IPacienteRepository pacienteRepository, 
+            IEstadoClinicoRepository estadoClinicoRepository, 
+            INotyfService notyf)
         {
             _mapper = mapper;
             _pacienteRepository = pacienteRepository;
             _estadoClinicoRepository = estadoClinicoRepository;
+            _notyf = notyf;
+        }
+
+        #endregion
+
+        #region Private Methods
+        private async Task PopularEstadosClinicos(PacienteFormModel model)
+        {
+            var estados = await _estadoClinicoRepository.ObterTodos();
+            model.EstadosClinicos = new SelectList(estados, "Id", "Descricao", model.EstadoClinicoId);
         }
 
         #endregion
@@ -43,8 +57,8 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Details(Guid? id)
         {
             var paciente = await _pacienteRepository.ObterPorId(id);
-            var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
-            return View(pacienteFormModel);
+            var pacienteGridModel = _mapper.Map<PacienteGridModel>(paciente);
+            return View(pacienteGridModel);
         }
 
         [HttpGet]
@@ -58,24 +72,28 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var estados = await _estadoClinicoRepository.ObterTodos();
-            ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
+            var model = new PacienteFormModel();
+            await PopularEstadosClinicos(model);
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(PacienteFormModel pacienteFormModel)
         {
-            if(ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var paciente = _mapper.Map<Paciente>(pacienteFormModel);
-                paciente.Id = Guid.NewGuid();
-                await _pacienteRepository.Adicionar(paciente);
-                return RedirectToAction(nameof(Index));
-
+                await PopularEstadosClinicos(pacienteFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(pacienteFormModel);
             }
-            return View(pacienteFormModel);
+
+            var paciente = _mapper.Map<Paciente>(pacienteFormModel);
+            
+            paciente.Id = Guid.NewGuid();
+            await _pacienteRepository.Adicionar(paciente);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -86,11 +104,8 @@ namespace WhiteNoise.Controllers
             if (paciente == null)
                 return NotFound();
 
-            var estados = await _estadoClinicoRepository.ObterTodos();
-            ViewBag.EstadosClinicos = new SelectList(estados, "Id", "Descricao");
-
             var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
-
+            await PopularEstadosClinicos(pacienteFormModel);
             return View(pacienteFormModel);
         }
 
@@ -100,28 +115,27 @@ namespace WhiteNoise.Controllers
             if (id != pacienteFormModel.Id)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var paciente = _mapper.Map<Paciente>(pacienteFormModel);
-                    await _pacienteRepository.Atualizar(paciente);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_pacienteRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await PopularEstadosClinicos(pacienteFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(pacienteFormModel);
+            }
+
+            try
+            {
+                var paciente = _mapper.Map<Paciente>(pacienteFormModel);
+                await _pacienteRepository.Atualizar(paciente);
+            }
+
+            catch
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(pacienteFormModel);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -134,9 +148,9 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
+            var pacienteGridModel = _mapper.Map<PacienteGridModel>(paciente);
 
-            return View(pacienteFormModel);
+            return View(pacienteGridModel);
         }
 
         [HttpPost]
@@ -146,11 +160,13 @@ namespace WhiteNoise.Controllers
             {
                 await _pacienteRepository.Remover(id);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
+                return RedirectToAction(nameof(Index));
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
 

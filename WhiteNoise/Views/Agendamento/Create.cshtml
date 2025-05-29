@@ -38,10 +38,10 @@
         <div class="row col-12">
             <div class="form-group col-6">
                 <label asp-for="PacienteId"></label>
-            <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
-                <option value="">-- Selecione --</option>
-            </select>
-            <span asp-validation-for="PacienteId" class="text-danger"></span>
+                <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="PacienteId" class="text-danger"></span>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
             <div class="form-group col-6">
                 <label asp-for="ProfissionalId"></label>
                 <select asp-for="ProfissionalId" class="form-control" asp-items="Model.Profissionais">
-                    <option value="">-- Selecione --</option>
+                    <option value="">Selecione...</option>
                 </select>
                 <span asp-validation-for="ProfissionalId" class="text-danger"></span>
             </div>

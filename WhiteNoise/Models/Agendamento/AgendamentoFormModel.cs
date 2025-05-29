@@ -1,15 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
 
 namespace WhiteNoise.Models.Agendamento
 {
     public class AgendamentoFormModel
     {
-        [Display(Name = "Data/Hora")] 
-        public DateTime DataHora { get; set; }
+        [Display(Name = "Data/Hora")]
+        public DateTime DataHora { get; set; } = DateTime.Today;
 
         public TipoAgendamentoEnum Tipo { get; set; }
 
@@ -19,7 +18,7 @@ namespace WhiteNoise.Models.Agendamento
         public string? Observacoes { get; set; }
 
         [Display(Name = "Paciente")]
-        [Required(ErrorMessage = "Informe um profissional.")]
+        [Required(ErrorMessage = "Informe um paciente.")]
         public Guid? PacienteId { get; set; }
 
         [Display(Name = "Profissional")]

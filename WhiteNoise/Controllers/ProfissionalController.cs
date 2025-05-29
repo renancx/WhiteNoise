@@ -55,17 +55,19 @@ namespace WhiteNoise.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProfissionalViewModel profissionalViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var profissional = _mapper.Map<Profissional>(profissionalViewModel);
-                profissional.Id = Guid.NewGuid();
-                await _profissionalRepository.Adicionar(profissional);
-                _notyf.Success("As informações foram salvas com sucesso.");
-                return RedirectToAction(nameof(Index));
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                return View(profissionalViewModel);
             }
 
-            _notyf.Error("Ocorreu um erro ao salvar as informações.");
-            return View(profissionalViewModel);
+            var profissional = _mapper.Map<Profissional>(profissionalViewModel);
+            profissional.Id = Guid.NewGuid();
+
+            await _profissionalRepository.Adicionar(profissional);
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));            
         }
                 
         [HttpGet]
@@ -138,7 +140,7 @@ namespace WhiteNoise.Controllers
             }
             catch (Exception ex)
             {
-                _notyf.Success("Ocorreu um erro ao excluir o registro.");
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
                 return BadRequest(ex.Message);
             }
 

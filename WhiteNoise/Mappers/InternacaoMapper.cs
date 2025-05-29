@@ -8,6 +8,11 @@ namespace WhiteNoise.Mappers
     {
         public InternacaoMapper()
         {
+            //Form
+            CreateMap<InternacaoFormModel, Internacao>();
+
+            CreateMap<Internacao, InternacaoFormModel>();
+
             //Grid
             CreateMap<Internacao, InternacaoGridModel>()
                 .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome))

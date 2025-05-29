@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Prontuario;
@@ -14,15 +15,31 @@ namespace WhiteNoise.Controllers
     {
         #region Private Fields
         private readonly IProntuarioRepository _agendamentoRepository;
+        private readonly IPacienteRepository _pacienteRepository;
+        private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
-        public ProntuarioController(IMapper mapper, IProntuarioRepository agendamentoRepository)
+        public ProntuarioController(IMapper mapper, 
+            IProntuarioRepository agendamentoRepository,
+            INotyfService notyf,
+            IPacienteRepository pacienteRepository)
         {
             _agendamentoRepository = agendamentoRepository;
+            _notyf = notyf;
             _mapper = mapper;
+            _pacienteRepository = pacienteRepository;
+        }
+
+        #endregion
+
+        #region Private Methods
+        private async Task PopularPacientes(ProntuarioFormModel model)
+        {
+            var estados = await _pacienteRepository.ObterTodos();
+            model.Pacientes = new SelectList(estados, "Id", "Nome", model.PacienteId);
         }
 
         #endregion
@@ -39,28 +56,34 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var agendamento = await _agendamentoRepository.ObterPorId(id);
-            var agendamentoFormModel = _mapper.Map<ProntuarioFormModel>(agendamento);
-            return View(agendamentoFormModel);
+            var agendamentoGridModel = _mapper.Map<ProntuarioGridModel>(agendamento);
+            return View(agendamentoGridModel);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new ProntuarioFormModel();
+            await PopularPacientes(model);
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ProntuarioFormModel agendamentoFormModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var agendamento = _mapper.Map<Prontuario>(agendamentoFormModel);
-                agendamento.Id = Guid.NewGuid();
-                await _agendamentoRepository.Adicionar(agendamento);
-                return RedirectToAction(nameof(Index));
-
+                await PopularPacientes(agendamentoFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(agendamentoFormModel);
             }
-            return View(agendamentoFormModel);
+            var agendamento = _mapper.Map<Prontuario>(agendamentoFormModel);
+
+            agendamento.Id = Guid.NewGuid();
+            await _agendamentoRepository.Adicionar(agendamento);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -72,7 +95,7 @@ namespace WhiteNoise.Controllers
                 return NotFound();
 
             var agendamentoFormModel = _mapper.Map<ProntuarioFormModel>(agendamento);
-
+            await PopularPacientes(agendamentoFormModel);
             return View(agendamentoFormModel);
         }
 
@@ -82,28 +105,26 @@ namespace WhiteNoise.Controllers
             if (id != agendamentoFormModel.Id)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var agendamento = _mapper.Map<Prontuario>(agendamentoFormModel);
-                    await _agendamentoRepository.Atualizar(agendamento);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_agendamentoRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await PopularPacientes(agendamentoFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(agendamentoFormModel);
+            }
+
+            try
+            {
+                var agendamento = _mapper.Map<Prontuario>(agendamentoFormModel);
+                await _agendamentoRepository.Atualizar(agendamento);
+            }
+            catch
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(agendamentoFormModel);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -116,9 +137,9 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var agendamentoFormModel = _mapper.Map<ProntuarioFormModel>(agendamento);
+            var agendamentoGridModel = _mapper.Map<ProntuarioGridModel>(agendamento);
 
-            return View(agendamentoFormModel);
+            return View(agendamentoGridModel);
 
         }
 
@@ -129,11 +150,13 @@ namespace WhiteNoise.Controllers
             {
                 await _agendamentoRepository.Remover(id);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
+                return RedirectToAction(nameof(Index));
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
 

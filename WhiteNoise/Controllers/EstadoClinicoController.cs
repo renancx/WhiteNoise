@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 
@@ -15,13 +14,15 @@ namespace WhiteNoise.Controllers
         #region Private Fields
         private readonly IEstadoClinicoRepository _estadoClinicoRepository;
         private readonly IPacienteRepository _pacienteRepository;
+        private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public EstadoClinicoController(IEstadoClinicoRepository estadoClinicoRepository, IPacienteRepository pacienteRepository)
+        public EstadoClinicoController(IEstadoClinicoRepository estadoClinicoRepository, IPacienteRepository pacienteRepository, INotyfService notyf)
         {
             _estadoClinicoRepository = estadoClinicoRepository;
+            _notyf = notyf;
             _pacienteRepository = pacienteRepository;
         }
 
@@ -50,13 +51,16 @@ namespace WhiteNoise.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(EstadoClinico estadoClinico)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                estadoClinico.Id = Guid.NewGuid();
-                await _estadoClinicoRepository.Adicionar(estadoClinico);
-                return RedirectToAction(nameof(Index));
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(estadoClinico);
             }
-            return View(estadoClinico);
+
+            estadoClinico.Id = Guid.NewGuid();
+            await _estadoClinicoRepository.Adicionar(estadoClinico);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -76,22 +80,24 @@ namespace WhiteNoise.Controllers
             if (id != estadoClinico.Id)
                 return NotFound();
 
-            if(ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try {
-                    await _estadoClinicoRepository.Atualizar(estadoClinico);
-                } 
-                catch(DbUpdateConcurrencyException) {
-                    if (_estadoClinicoRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    } else {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(estadoClinico);
             }
-            return View(estadoClinico);
+
+            try
+            {
+                await _estadoClinicoRepository.Atualizar(estadoClinico);
+            } 
+            catch 
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                throw;                
+            }
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));            
         }
 
         [HttpGet]
@@ -113,7 +119,10 @@ namespace WhiteNoise.Controllers
             var pacientes = await _pacienteRepository.ObterPorEstadoClinicoId(id);
 
             if (pacientes != null && pacientes.Any())
+            {
+                _notyf.Success("Não é possível deletar o registro.");
                 return RedirectToAction(nameof(Index));
+            }
 
             try
             {
@@ -121,9 +130,11 @@ namespace WhiteNoise.Controllers
             }
             catch (Exception ex)
             {
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
                 return BadRequest(ex.Message);
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
 

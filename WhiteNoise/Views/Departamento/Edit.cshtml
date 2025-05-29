@@ -1,5 +1,26 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using WhiteNoise.Domain.Enums
+@using WhiteNoise.Models.Departamento
+@model DepartamentoFormModel
+
 @{
+    ViewData["Title"] = "Editar Departamento";
 }
+
+<div>
+    <h3>Editar Estado Clínico</h3>
+
+    <form asp-action="Edit" asp-controller="Departamento" asp-route-id="@Model.Id" method="post">
+        <input type="hidden" name="_method" value="PUT" />
+
+        <div class="form-group">
+            <label asp-for="Descricao" class="control-label"></label>
+            <input asp-for="Descricao" class="form-control" />
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+
+        <div>
+            <input type="submit" value="Confirmar" class="btn btn-success" />
+            <a class="btn btn-secondary" asp-controller="Departamento" asp-action="Index">Cancelar</a>
+        </div>
+    </form>
+</div>

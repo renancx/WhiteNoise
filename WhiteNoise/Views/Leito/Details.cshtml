@@ -1,5 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using WhiteNoise.Domain.Extensions
+@model WhiteNoise.Models.Leito.LeitoGridModel
+
+<div>
+    <h2>Detalhes do Leito</h2>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">Descricao</dt>
+            <dd class="col-sm-10">@Model.Descricao</dd>
+
+            <dt class="col-sm-2">Tipo</dt>
+            <dd class="col-sm-10">@Model.Tipo.GetEnumDescription()</dd>
+
+            <dt class="col-sm-2">Status</dt>
+            <dd class="col-sm-10">@Model.Status.GetEnumDescription()</dd>
+
+            <dt class="col-sm-2">Departamento</dt>
+            <dd class="col-sm-10">@Model.Departamento</dd>
+        </dl>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>

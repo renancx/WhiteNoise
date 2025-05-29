@@ -1,5 +1,5 @@
 ﻿@using WhiteNoise.Models.Agendamento
-@model AgendamentoFormModel
+@model AgendamentoGridModel
 
 @{
     ViewData["Title"] = "Deletar Agendamento";
@@ -26,6 +26,16 @@
     <div>
         <label asp-for="Observacoes"></label>
         <input asp-for="Observacoes" disabled class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Paciente"></label>
+        <input asp-for="Paciente" disabled class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Profissional"></label>
+        <input asp-for="Profissional" disabled class="form-control" />
     </div>
 
     <form asp-controller="Agendamento" asp-action="DeleteConfirmed" method="post">

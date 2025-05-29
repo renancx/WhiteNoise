@@ -5,7 +5,7 @@ namespace WhiteNoise.Domain.Entities
 {
     public class Prontuario : EntityBase
     {
-        public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public DateTime DataCriacao { get; set; }
 
         public string Observacao { get; set; }
 

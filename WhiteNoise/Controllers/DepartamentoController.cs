@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +15,19 @@ namespace WhiteNoise.Controllers
     {
         #region Private Fields
         private readonly IDepartamentoRepository _agendamentoRepository;
+        private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
+
 
         #endregion
 
         #region Constructors
-        public DepartamentoController(IMapper mapper, IDepartamentoRepository agendamentoRepository)
+        public DepartamentoController(IMapper mapper, 
+            IDepartamentoRepository agendamentoRepository,
+            INotyfService notyf)
         {
             _agendamentoRepository = agendamentoRepository;
+            _notyf = notyf;
             _mapper = mapper;
         }
 
@@ -52,15 +58,17 @@ namespace WhiteNoise.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(DepartamentoFormModel agendamentoFormModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var agendamento = _mapper.Map<Departamento>(agendamentoFormModel);
-                agendamento.Id = Guid.NewGuid();
-                await _agendamentoRepository.Adicionar(agendamento);
-                return RedirectToAction(nameof(Index));
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(agendamentoFormModel);
 
             }
-            return View(agendamentoFormModel);
+            var agendamento = _mapper.Map<Departamento>(agendamentoFormModel);
+            agendamento.Id = Guid.NewGuid();
+            await _agendamentoRepository.Adicionar(agendamento);
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -82,28 +90,25 @@ namespace WhiteNoise.Controllers
             if (id != agendamentoFormModel.Id)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var agendamento = _mapper.Map<Departamento>(agendamentoFormModel);
-                    await _agendamentoRepository.Atualizar(agendamento);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_agendamentoRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(agendamentoFormModel);
             }
 
-            return View(agendamentoFormModel);
+            try
+            {
+                var agendamento = _mapper.Map<Departamento>(agendamentoFormModel);
+                await _agendamentoRepository.Atualizar(agendamento);
+            }
+            catch
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                throw;
+            }
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));            
         }
 
         [HttpGet]
@@ -131,9 +136,11 @@ namespace WhiteNoise.Controllers
             }
             catch (Exception ex)
             {
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
                 return BadRequest(ex.Message);
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
 

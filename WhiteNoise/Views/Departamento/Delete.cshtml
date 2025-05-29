@@ -1,5 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using WhiteNoise.Models.Departamento
+@model DepartamentoFormModel
+
 @{
+    ViewData["Title"] = "Deletar Departamento";
 }
+
+<div>
+    <h3>Deletar Departamento</h3>
+
+    <div>
+        <label asp-for="Descricao"></label>
+        <input asp-for="Descricao" disabled class="form-control" />
+    </div>
+
+    <form asp-controller="Departamento" asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <input type="submit" value="Deletar" class="btn btn-danger" />
+            <a class="btn btn-secondary" asp-controller="Departamento" asp-action="Index">Cancelar</a>
+        </div>
+    </form>
+</div>

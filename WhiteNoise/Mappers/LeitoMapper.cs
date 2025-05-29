@@ -11,6 +11,11 @@ namespace WhiteNoise.Mappers
             //Grid
             CreateMap<Leito, LeitoGridModel>()
                 .ForMember(x => x.Departamento, opt => opt.MapFrom(src => src.Departamento.Descricao));
+
+            //Form
+            CreateMap<LeitoFormModel, Leito>();
+
+            CreateMap<Leito, LeitoFormModel>();
         }
     }
 }

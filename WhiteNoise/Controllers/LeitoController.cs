@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Leito;
@@ -13,16 +14,32 @@ namespace WhiteNoise.Controllers
     public class LeitoController : BaseController
     {
         #region Private Fields
-        private readonly ILeitoRepository _agendamentoRepository;
+        private readonly ILeitoRepository _leitoRepository;
+        private readonly IDepartamentoRepository _departamentoRepository;
         private readonly IMapper _mapper;
+        private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public LeitoController(IMapper mapper, ILeitoRepository agendamentoRepository)
+        public LeitoController(IMapper mapper, 
+            ILeitoRepository leitoRepository,
+            INotyfService notyf,
+            IDepartamentoRepository departamentoRepository)
         {
-            _agendamentoRepository = agendamentoRepository;
+            _departamentoRepository = departamentoRepository;
+            _leitoRepository = leitoRepository;
+            _notyf = notyf;
             _mapper = mapper;
+        }
+
+        #endregion
+
+        #region Private Methods
+        private async Task PopularDepartamentos(LeitoFormModel model)
+        {
+            var departamentos = await _departamentoRepository.ObterTodos();
+            model.Departamentos = new SelectList(departamentos, "Id", "Descricao", model.DepartamentoId);
         }
 
         #endregion
@@ -30,95 +47,109 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var agendamentos = await _agendamentoRepository.ObterTodos();
-            var agendamentosGridModel = _mapper.Map<List<LeitoGridModel>>(agendamentos);
-            return View(agendamentosGridModel);
+            var leitos = await _leitoRepository.ObterTodos();
+            var leitosGridModel = _mapper.Map<List<LeitoGridModel>>(leitos);
+            return View(leitosGridModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
-            var agendamentoFormModel = _mapper.Map<LeitoFormModel>(agendamento);
-            return View(agendamentoFormModel);
+            var leito = await _leitoRepository.ObterPorId(id);
+            var leitoGridModel = _mapper.Map<LeitoGridModel>(leito);
+            return View(leitoGridModel);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new LeitoFormModel();
+            await PopularDepartamentos(model);
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LeitoFormModel agendamentoFormModel)
+        public async Task<IActionResult> Create(LeitoFormModel leitoFormModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var agendamento = _mapper.Map<Leito>(agendamentoFormModel);
-                agendamento.Id = Guid.NewGuid();
-                await _agendamentoRepository.Adicionar(agendamento);
-                return RedirectToAction(nameof(Index));
-
+                await PopularDepartamentos(leitoFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(leitoFormModel);
             }
-            return View(agendamentoFormModel);
+
+            try
+            {
+                var leito = _mapper.Map<Leito>(leitoFormModel);
+
+                leito.Id = Guid.NewGuid();
+                await _leitoRepository.Adicionar(leito);
+            }
+            catch
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                return RedirectToAction(nameof(Index));
+            }
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var leito = await _leitoRepository.ObterPorId(id);
 
-            if (agendamento == null)
+            if (leito == null)
                 return NotFound();
 
-            var agendamentoFormModel = _mapper.Map<LeitoFormModel>(agendamento);
-
-            return View(agendamentoFormModel);
+            var leitoFormModel = _mapper.Map<LeitoFormModel>(leito);
+            await PopularDepartamentos(leitoFormModel);
+            return View(leitoFormModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, LeitoFormModel agendamentoFormModel)
+        public async Task<IActionResult> Edit(Guid id, LeitoFormModel leitoFormModel)
         {
-            if (id != agendamentoFormModel.Id)
+            if (id != leitoFormModel.Id)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var agendamento = _mapper.Map<Leito>(agendamentoFormModel);
-                    await _agendamentoRepository.Atualizar(agendamento);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_agendamentoRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await PopularDepartamentos(leitoFormModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(leitoFormModel);
             }
 
-            return View(agendamentoFormModel);
+            try
+            {
+                var leito = _mapper.Map<Leito>(leitoFormModel);
+                await _leitoRepository.Atualizar(leito);
+            }
+            catch
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                throw;
+            }
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var leito = await _leitoRepository.ObterPorId(id);
 
-            if (agendamento == null)
+            if (leito == null)
             {
                 return NotFound();
             }
 
-            var agendamentoFormModel = _mapper.Map<LeitoFormModel>(agendamento);
+            var leitoGridModel = _mapper.Map<LeitoGridModel>(leito);
 
-            return View(agendamentoFormModel);
+            return View(leitoGridModel);
 
         }
 
@@ -127,13 +158,15 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _agendamentoRepository.Remover(id);
+                await _leitoRepository.Remover(id);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                _notyf.Error("Ocorreu um erro ao deletar o registro.");
+                return RedirectToAction(nameof(Index));
             }
 
+            _notyf.Success("As informações foram deletadas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
 

@@ -16,9 +16,7 @@ namespace WhiteNoise.Mappers
                 .ForMember(dest => dest.EstadoClinicoId, opt => opt.MapFrom(src => src.EstadoClinicoId))
                 .ForMember(dest => dest.EstadoClinico, opt => opt.Ignore());
 
-            CreateMap<Paciente, PacienteFormModel>()
-                .ForMember(dest => dest.EstadoClinico, opt => opt.MapFrom(src => src.EstadoClinico.Descricao))
-                .ForMember(dest => dest.EstadoClinicoId, opt => opt.MapFrom(src => src.EstadoClinico.Id));
+            CreateMap<Paciente, PacienteFormModel>();
         }
     }
 }

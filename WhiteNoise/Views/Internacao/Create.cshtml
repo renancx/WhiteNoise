@@ -1,5 +1,71 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using WhiteNoise.Domain.Entities
+@using WhiteNoise.Domain.Enums
+@model WhiteNoise.Models.Internacao.InternacaoFormModel
+
 @{
+    ViewData["Title"] = "Cadastrar Internação";
 }
+
+<div>
+    <h2>Novo Internação</h2>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="DataEntrada" class="control-label"></label>
+                <input asp-for="DataEntrada" class="form-control" />
+                <span asp-validation-for="DataEntrada" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="DataAlta" class="control-label"></label>
+                <input asp-for="DataAlta" class="form-control" />
+                <span asp-validation-for="DataAlta" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="TipoSaida" class="control-label"></label>
+                <select asp-for="TipoSaida" class="form-control" asp-items="Html.GetEnumSelectList<TipoSaidaEnum>()">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="TipoSaida" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="Motivo" class="control-label"></label>
+                <input asp-for="Motivo" class="form-control" />
+                <span asp-validation-for="Motivo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="PacienteId"></label>
+                <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="PacienteId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label asp-for="LeitoId"></label>
+                <select asp-for="LeitoId" class="form-control" asp-items="Model.Leitos">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="LeitoId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>
