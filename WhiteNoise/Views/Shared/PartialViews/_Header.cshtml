@@ -39,7 +39,7 @@
                     <div class="dropdown-menu" aria-labelledby="leitosDropdown">
                         <a class="dropdown-item" asp-controller="Internacao" asp-action="Create"><i class="bi bi-plus-circle me-2"></i> Nova Internação</a>
                         <a class="dropdown-item" asp-controller="Internacao" asp-action="Index"><i class="bi bi-clipboard-data me-2"></i> Lista de Internações</a>
-                        <a class="dropdown-item" asp-controller="Leito" asp-action="Index"><i class="bi bi-list-check me-2"></i> Leitos</a>
+                        <a class="dropdown-item" asp-controller="Leito" asp-action="Index"><i class="bi bi-door-open me-2"></i> Leitos</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -57,10 +57,13 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="agendamentosDropdown">
                         <a class="dropdown-item" style="white-space: nowrap;" asp-controller="Agendamento" asp-action="Create">
-                            <i class="bi bi-calendar-plus me-2"></i> Novo Agendamento
+                            <i class="bi bi-journal-plus me-2"></i> Novo Agendamento
                         </a>
                         <a class="dropdown-item" style="white-space: nowrap;" asp-controller="Agendamento" asp-action="Index">
-                            <i class="bi bi-calendar-week me-2"></i> Lista de Agendamentos
+                            <i class="bi bi-card-checklist me-2"></i> Lista de Agendamentos
+                        </a>
+                        <a class="dropdown-item" style="white-space: nowrap;" asp-controller="Agendamento" asp-action="Calendario">
+                            <i class="bi bi-calendar-event me-2"></i> Calendário
                         </a>
                     </div>
                 </li>

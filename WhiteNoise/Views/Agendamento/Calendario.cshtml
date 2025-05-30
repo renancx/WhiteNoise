@@ -1,0 +1,56 @@
+﻿@using WhiteNoise.Domain.Enums
+@using WhiteNoise.Models.Agendamento
+@model IEnumerable<AgendamentoGridModel>
+
+@{
+    ViewData["Title"] = "Calendário de Agendamentos";
+}
+
+<div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">@ViewData["Title"]</h2>
+        <a class="btn btn-lg btn-primary rounded-pill shadow-sm"
+           asp-controller="Agendamento" asp-action="Create">
+            <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
+        </a>
+    </div>
+
+    <div class="col-12">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'pt-br',
+                allDaySlot: false,
+                height: 800,
+                scrollTime: '06:00:00',
+                showNonCurrentDates: false,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: @Html.Raw(Json.Serialize(Model.Select(a => new
+            {
+                title = a.Paciente + " - " + a.Profissional,
+                start = a.DataHora.ToString("yyyy-MM-ddTHH:mm:ss"),
+                end = a.DataHora.AddHours(1).ToString("yyyy-MM-ddTHH:mm:ss"),
+                id = a.Id,
+                backgroundColor = a.Status == StatusAgendamentoEnum.Agendado ? "#28a745" : "#dc3545",
+                borderColor = a.Status == StatusAgendamentoEnum.Agendado ? "#28a745" : "#dc3545",
+            }))),
+                eventClick: function (info) {
+                    window.location.href = '/Agendamento/Details/' + info.event.id;
+                },
+            });
+            calendar.render();
+        });
+    </script>
+}
+

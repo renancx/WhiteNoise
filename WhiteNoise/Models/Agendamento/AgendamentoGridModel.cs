@@ -20,7 +20,7 @@ namespace WhiteNoise.Models.Agendamento
 
         [HiddenInGrid]
         [Display(Name = "Observações")]
-        public string? Observacoes { get; set; }
+        public string? Observacoes { get; set; } 
 
         public Guid Id { get; set; }
     }

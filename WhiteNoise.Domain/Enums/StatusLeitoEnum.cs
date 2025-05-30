@@ -14,9 +14,6 @@ namespace WhiteNoise.Domain.Enums
         EmManutencao = 3,
 
         [Display(Name = "Reservado")]
-        Reservado = 4,
-
-        [Display(Name = "Em Higienização")]
-        EmHigienizacao = 5
+        Reservado = 4
     }
 }

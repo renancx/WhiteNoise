@@ -61,6 +61,13 @@ namespace WhiteNoise.Controllers
             return View(agendamentosGridModel);
         }
 
+        public async Task<IActionResult> Calendario()
+        {
+            var agendamentos = await _agendamentoRepository.ObterTodos();
+            var agendamentosGridModel = _mapper.Map<List<AgendamentoGridModel>>(agendamentos);
+            return View(agendamentosGridModel);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -94,7 +101,7 @@ namespace WhiteNoise.Controllers
             agendamento.Id = Guid.NewGuid();
             await _agendamentoRepository.Adicionar(agendamento);
             _notyf.Success("As informações foram salvas com sucesso.");
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Calendario));
         }
 
         [HttpGet]
@@ -135,7 +142,7 @@ namespace WhiteNoise.Controllers
             }
 
             _notyf.Success("As informações foram salvas com sucesso.");
-            return RedirectToAction(nameof(Index));            
+            return RedirectToAction(nameof(Calendario));            
         }
 
         [HttpGet]
@@ -148,9 +155,9 @@ namespace WhiteNoise.Controllers
                 return NotFound();
             }
 
-            var agendamentoFormModel = _mapper.Map<AgendamentoFormModel>(agendamento);
+            var agendamentoGridModel = _mapper.Map<AgendamentoGridModel>(agendamento);
 
-            return View(agendamentoFormModel);
+            return View(agendamentoGridModel);
 
         }
 
@@ -168,7 +175,8 @@ namespace WhiteNoise.Controllers
             }
 
             _notyf.Success("As informações foram deletadas com sucesso.");
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(Calendario));
         }
 
         #endregion

@@ -1,4 +1,6 @@
 ﻿@using WhiteNoise.Models.Leito
+@using WhiteNoise.Domain.Enums
+
 
 @model IEnumerable<LeitoGridModel>
 
@@ -13,6 +15,13 @@
            asp-controller="Leito" asp-action="Create">
             <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
         </a>
+    </div>
+
+    <div class="row col-12 d-flex justify-content-between">
+        <vc:leito-contador status="Livre"></vc:leito-contador>
+        <vc:leito-contador status="Ocupado"></vc:leito-contador>
+        <vc:leito-contador status="Reservado"></vc:leito-contador>
+        <vc:leito-contador status="EmManutencao"></vc:leito-contador>
     </div>
 
     <div class="row col-12">

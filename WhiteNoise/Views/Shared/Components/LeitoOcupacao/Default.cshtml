@@ -1,0 +1,20 @@
+﻿@model WhiteNoise.Models.Leito.LeitoOcupacaoViewModel
+
+<div class="card shadow rounded-5 col-6 p-0 mb-5">
+    <div class="card-header text-white bg-info bg-gradient text-center">
+        <h5 class="fw-bold mb-0">Informações de Ocupação</h5>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4 text-muted">Paciente</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.Paciente</dd>
+
+            <dt class="col-sm-4 text-muted">Data de Entrada</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.DataEntrada.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt class="col-sm-4 text-muted">Estado Clínico</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.EstadoClinico</dd>
+        </dl>
+    </div>
+</div>

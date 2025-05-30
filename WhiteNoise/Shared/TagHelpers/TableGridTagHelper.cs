@@ -39,8 +39,8 @@ namespace WhiteNoise.Shared.TagHelpers
                 {
                     var name = GetPropertyName(prop);
                     output.Content.AppendHtml(!name.Equals("Id")
-                        ? $"<th class=\"py-2 px-3\">{name}</th>"
-                        : "<th class=\"text-center py-2 px-3\">Ações</th>");
+                        ? $"<th class=\"\">{name}</th>"
+                        : "<th class=\"text-center\">Ações</th>");
                 }
             }
             output.Content.AppendHtml("</tr>");

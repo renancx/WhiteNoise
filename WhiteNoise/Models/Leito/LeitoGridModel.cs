@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using WhiteNoise.Domain.Enums;
+using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Models.Leito
 {
@@ -12,6 +13,9 @@ namespace WhiteNoise.Models.Leito
         public TipoLeitoEnum Tipo { get; set; }
 
         public StatusLeitoEnum Status { get; set; }
+
+        [HiddenInGrid]
+        public string? Paciente { get; set; }
 
         public string? Departamento { get; set; }
 

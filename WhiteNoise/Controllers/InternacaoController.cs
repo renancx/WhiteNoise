@@ -136,6 +136,7 @@ namespace WhiteNoise.Controllers
             try
             {
                 var internacao = _mapper.Map<Internacao>(internacaoFormModel);
+                await _leitoRepository.AtualizarStatus(internacao.LeitoId, StatusLeitoEnum.Ocupado);
                 await _internacaoRepository.Atualizar(internacao);
             }
             catch
