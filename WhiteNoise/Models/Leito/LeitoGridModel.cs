@@ -14,9 +14,6 @@ namespace WhiteNoise.Models.Leito
 
         public StatusLeitoEnum Status { get; set; }
 
-        [HiddenInGrid]
-        public string? Paciente { get; set; }
-
         public string? Departamento { get; set; }
 
         public Guid Id { get; set; }

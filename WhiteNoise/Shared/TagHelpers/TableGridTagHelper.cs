@@ -17,10 +17,18 @@ namespace WhiteNoise.Shared.TagHelpers
         [HtmlAttributeName("controller")]
         public string? Controller { get; set; } = null;
 
+        [HtmlAttributeName("allow-sorting")]
+        public bool AllowSorting { get; set; } = false;
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "table";
-            output.Attributes.Add("class", "table table-bordered table-sm table-striped compact-grid");
+            var classes = "table table-bordered table-sm table-striped compact-grid";
+            
+            if (AllowSorting)
+                classes += " table-sorter";
+
+            output.Attributes.SetAttribute("class", classes);
 
             var props = GetItemProperties();
 
