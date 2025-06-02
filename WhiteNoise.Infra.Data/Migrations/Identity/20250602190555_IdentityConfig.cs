@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WhiteNoise.Infra.Data.Migrations.Identity
 {
-    public partial class IdentityDB : Migration
+    public partial class IdentityConfig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

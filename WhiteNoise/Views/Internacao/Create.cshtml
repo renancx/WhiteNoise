@@ -1,59 +1,118 @@
-﻿@using WhiteNoise.Domain.Entities
-@using WhiteNoise.Domain.Enums
+﻿@using WhiteNoise.Domain.Enums
 @model WhiteNoise.Models.Internacao.InternacaoFormModel
 
 @{
     ViewData["Title"] = "Cadastrar Internação";
 }
 
-<div>
-    <h2>Novo Internação</h2>
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
     <form asp-action="Create" method="post" autocomplete="off">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="All" class="text-danger"></div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="DataEntrada" class="control-label"></label>
-                <input asp-for="DataEntrada" class="form-control" />
-                <span asp-validation-for="DataEntrada" class="text-danger"></span>
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Dados da Internação</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="PacienteId" class="control-label"></label>
+                    <select asp-for="PacienteId"
+                            class="form-control"
+                            asp-items="Model.Pacientes">
+                        <option value="">-- Selecione um paciente --</option>
+                    </select>
+                    <span asp-validation-for="PacienteId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="LeitoId" class="control-label"></label>
+                    <select asp-for="LeitoId"
+                            class="form-control"
+                            asp-items="Model.Leitos">
+                        <option value="">-- Selecione um leito --</option>
+                    </select>
+                    <span asp-validation-for="LeitoId" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="DataAlta" class="control-label"></label>
-                <input asp-for="DataAlta" class="form-control" />
-                <span asp-validation-for="DataAlta" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="DataEntrada" class="control-label"></label>
+                    <input asp-for="DataEntrada"
+                           class="form-control"
+                           type="date" />
+                    <span asp-validation-for="DataEntrada" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="DataAlta" class="control-label"></label>
+                    <input asp-for="DataAlta"
+                           class="form-control"
+                           type="date" />
+                    <span asp-validation-for="DataAlta" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="TipoSaida" class="control-label"></label>
+                    <select asp-for="TipoSaida"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<TipoSaidaEnum>()">
+                        <option value="">Selecione...</option>
+                    </select>
+                    <span asp-validation-for="TipoSaida" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="TipoSaida" class="control-label"></label>
-                <select asp-for="TipoSaida" class="form-control" asp-items="Html.GetEnumSelectList<TipoSaidaEnum>()">
-                    <option value="">Selecione...</option>
-                </select>
-                <span asp-validation-for="TipoSaida" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Motivo" class="control-label"></label>
+                    <textarea asp-for="Motivo" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Motivo" class="text-danger"></span>
+                </div>
             </div>
-        </div>
+        </fieldset>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="Motivo" class="control-label"></label>
-                <input asp-for="Motivo" class="form-control" />
-                <span asp-validation-for="Motivo" class="text-danger"></span>
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Dados do Prontuário</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="QueixaPrincipal" class="control-label"></label>
+                    <textarea asp-for="QueixaPrincipal"
+                              class="form-control"
+                              rows="3"></textarea>
+                    <span asp-validation-for="QueixaPrincipal" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="DataCriacao" class="control-label"></label>
+                    <input asp-for="DataCriacao"
+                           class="form-control"
+                           type="datetime-local"
+                           value="@Model.DataCriacao" />
+                    <span asp-validation-for="DataCriacao" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-        <div class="row col-12">
-            <list-selector for="PacienteId" items="Model.Pacientes" quick-create="Paciente" />
-        </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Observacao" class="control-label"></label>
+                    <textarea asp-for="Observacao"
+                              class="form-control"
+                              rows="4"></textarea>
+                    <span asp-validation-for="Observacao" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
 
-        <div class="row col-12">
-            <list-selector for="LeitoId" items="Model.Leitos" quick-create="Leito" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salvar Internação + Prontuário</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
         </div>
-
-        <button type="submit" class="btn btn-primary">Salvar</button>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

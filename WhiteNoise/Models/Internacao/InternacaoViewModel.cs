@@ -5,7 +5,7 @@ using WhiteNoise.Domain.Enums;
 
 namespace WhiteNoise.Models.Internacao
 {
-    public class InternacaoFormModel
+    public class InternacaoViewModel
     {
         [Display(Name = "Data de Entrada")]
         public DateTime DataEntrada { get; set; } = DateTime.Today;
@@ -21,17 +21,20 @@ namespace WhiteNoise.Models.Internacao
 
         public Guid Id { get; set; }
 
-        [Display(Name = "Paciente")]
-        [Required(ErrorMessage = "Informe um paciente.")]
-        public Guid? PacienteId { get; set; }
+        [Display(Name = "Prontuário")]
+        [Required(ErrorMessage = "Informe um prontuário.")]
+        public Guid? ProntuarioId { get; set; }
 
         [Display(Name = "Leito")]
         [Required(ErrorMessage = "Informe um leito.")]
         public Guid? LeitoId { get; set; }
 
-        public SelectList? Pacientes { get; set; }
+        [Display(Name = "Paciente")]
+        [Required(ErrorMessage = "Informe um paciente.")]
+        public Guid? PacienteId { get; set; }
 
         public SelectList? Leitos { get; set; }
 
+        public SelectList? Pacientes { get; set; }
     }
 }

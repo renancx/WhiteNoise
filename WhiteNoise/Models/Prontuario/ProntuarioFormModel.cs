@@ -11,11 +11,8 @@ namespace WhiteNoise.Models.Prontuario
         [Required(ErrorMessage = "Informe uma observação.")]
         public string Observacao { get; set; }
 
-        [Display(Name = "Paciente")]
-        [Required(ErrorMessage = "Informe um paciente.")]
-        public Guid? PacienteId { get; set; }
-
-        public SelectList? Pacientes { get; set; }
+        [Display(Name = "Queixa Principal")]
+        public string? QueixaPrincipal { get; set; }
 
         public Guid Id { get; set; }
     }

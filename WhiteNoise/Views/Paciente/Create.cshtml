@@ -2,73 +2,108 @@
 @using WhiteNoise.Domain.Enums
 @model WhiteNoise.Models.Paciente.PacienteFormModel
 
-@{ ViewData["Title"] = "Cadastrar Paciente"; }
+@{
+    ViewData["Title"] = "Cadastrar Paciente";
+}
 
-<div class="container my-5">
-    <h2>Novo Paciente</h2>
-    <form asp-action="Create" method="post">
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="Create" method="post" autocomplete="off">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Dados Pessoais</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Nome" class="control-label"></label>
+                    <input asp-for="Nome" class="form-control" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Cpf" class="control-label"></label>
+                    <input asp-for="Cpf" class="form-control" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="DataNascimento" class="control-label"></label>
+                    <input asp-for="DataNascimento" class="form-control" type="date" />
+                    <span asp-validation-for="DataNascimento" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="form-group col-2">
-                <label asp-for="Cpf" class="control-label"></label>
-                <input asp-for="Cpf" class="form-control" />
-                <span asp-validation-for="Cpf" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Sexo" class="control-label"></label>
+                    <select asp-for="Sexo"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<SexoEnum>()">
+                        <option value="">Selecione...</option>
+                    </select>
+                    <span asp-validation-for="Sexo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="TipoPaciente" class="control-label"></label>
+                    <select asp-for="TipoPaciente"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<TipoPacienteEnum>()">
+                        <option value="">Selecione...</option>
+                    </select>
+                    <span asp-validation-for="TipoPaciente" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Informações Clínicas</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="EstadoClinicoId" class="control-label"></label>
+                    <list-selector for="EstadoClinicoId" items="Model.EstadosClinicos" class="form-control" />
+                    <span asp-validation-for="EstadoClinicoId" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="row form-group col-12">
-                <list-selector for="EstadoClinicoId" items="Model.EstadosClinicos" />
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-check">
+                        <input asp-for="Ativo" class="form-check-input" />
+                        <label asp-for="Ativo" class="form-check-label"></label>
+                    </div>
+                </div>
             </div>
+        </fieldset>
+
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Observações</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Motivo" class="control-label"></label>
+                    <textarea asp-for="Motivo" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Motivo" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
         </div>
-
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-2">
-                <label asp-for="DataNascimento" class="control-label"></label>
-                <input asp-for="DataNascimento" class="form-control" type="date" />
-                <span asp-validation-for="DataNascimento" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-2">
-                <label asp-for="Sexo" class="control-label"></label>
-                <select asp-for="Sexo" class="form-control" asp-items="Html.GetEnumSelectList<SexoEnum>()"></select>
-                <span asp-validation-for="Sexo" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="TipoPaciente" class="control-label"></label>
-                <select asp-for="TipoPaciente" class="form-control" asp-items="Html.GetEnumSelectList<TipoPacienteEnum>()"></select>
-                <span asp-validation-for="TipoPaciente" class="text-danger"></span>
-            </div>
-
-            <div class="form-group form-check col-6">
-                <input asp-for="Ativo" class="form-check-input" />
-                <label asp-for="Ativo" class="form-check-label"></label>
-            </div>
-        </div>
-
-        <div class="row col-12">
-            <div class="form-group col-12">
-                <label asp-for="Motivo" class="control-label"></label>
-                <textarea asp-for="Motivo" class="form-control"></textarea>
-                <span asp-validation-for="Motivo" class="text-danger"></span>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Salvar</button>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

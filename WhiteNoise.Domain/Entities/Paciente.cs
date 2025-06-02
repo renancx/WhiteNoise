@@ -15,6 +15,8 @@ namespace WhiteNoise.Domain.Entities
 
         public bool? Ativo { get; set; } = true;
 
+        public bool EmInternacao { get; set; } = false;
+
         public string? Cpf { get; set; }
 
         public TipoPacienteEnum TipoPaciente { get; set; }
@@ -30,8 +32,5 @@ namespace WhiteNoise.Domain.Entities
         public virtual ICollection<Internacao> Internacoes { get; set; } = new List<Internacao>();
 
         public virtual ICollection<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
-
-        public virtual ICollection<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
-
     }
 }

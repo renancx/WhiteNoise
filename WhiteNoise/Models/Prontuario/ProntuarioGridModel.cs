@@ -11,7 +11,8 @@ namespace WhiteNoise.Models.Prontuario
         [Display(Name = "Observação")]
         public string Observacao { get; set; }
 
-        public string? Paciente { get; set; }
+        [Display(Name = "Queixa Principal")]
+        public string? QueixaPrincipal { get; set; }
 
         public Guid Id { get; set; }
     }

@@ -10,8 +10,8 @@ using WhiteNoise.Infra.Data.Contexts;
 namespace WhiteNoise.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250528182349_ColumnsUpdate")]
-    partial class ColumnsUpdate
+    [Migration("20250602190142_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,6 +92,9 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Ativa")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("DataAlta")
                         .HasColumnType("datetime2");
 
@@ -110,6 +113,9 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.Property<Guid?>("PacienteId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ProntuarioId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("TipoSaida")
                         .HasColumnType("int");
 
@@ -120,6 +126,10 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .HasFilter("[LeitoId] IS NOT NULL");
 
                     b.HasIndex("PacienteId");
+
+                    b.HasIndex("ProntuarioId")
+                        .IsUnique()
+                        .HasFilter("[ProntuarioId] IS NOT NULL");
 
                     b.ToTable("Internacao");
                 });
@@ -155,7 +165,7 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Ativo")
+                    b.Property<bool?>("Ativo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
@@ -163,9 +173,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.Property<string>("Cpf")
                         .HasColumnType("varchar(90)")
                         .HasMaxLength(11);
-
-                    b.Property<DateTime>("DataInternacao")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
@@ -256,12 +263,11 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .HasColumnType("varchar(90)")
                         .HasMaxLength(500);
 
-                    b.Property<Guid?>("PacienteId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("QueixaPrincipal")
+                        .HasColumnType("varchar(90)")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PacienteId");
 
                     b.ToTable("Prontuario");
                 });
@@ -286,6 +292,10 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasOne("WhiteNoise.Domain.Entities.Paciente", "Paciente")
                         .WithMany("Internacoes")
                         .HasForeignKey("PacienteId");
+
+                    b.HasOne("WhiteNoise.Domain.Entities.Prontuario", "Prontuario")
+                        .WithOne()
+                        .HasForeignKey("WhiteNoise.Domain.Entities.Internacao", "ProntuarioId");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Leito", b =>
@@ -307,13 +317,6 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasOne("WhiteNoise.Domain.Entities.Departamento", "Departamento")
                         .WithMany("Profissionais")
                         .HasForeignKey("DepartamentoId");
-                });
-
-            modelBuilder.Entity("WhiteNoise.Domain.Entities.Prontuario", b =>
-                {
-                    b.HasOne("WhiteNoise.Domain.Entities.Paciente", "Paciente")
-                        .WithMany("Prontuarios")
-                        .HasForeignKey("PacienteId");
                 });
 #pragma warning restore 612, 618
         }

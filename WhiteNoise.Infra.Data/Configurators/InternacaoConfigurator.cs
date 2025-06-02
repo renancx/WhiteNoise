@@ -22,6 +22,8 @@ namespace WhiteNoise.Infra.Data.Configurators
 
             builder.Property(i => i.TipoSaida);
 
+            builder.Property(i => i.Ativa);
+
             builder.HasOne(i => i.Paciente)
                    .WithMany(p => p.Internacoes)
                    .HasForeignKey(i => i.PacienteId)
@@ -30,6 +32,12 @@ namespace WhiteNoise.Infra.Data.Configurators
             builder.HasOne(i => i.Leito)
               .WithOne()
               .HasForeignKey<Internacao>(i => i.LeitoId)
+              .IsRequired(false)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(i => i.Prontuario)
+              .WithOne()
+              .HasForeignKey<Internacao>(i => i.ProntuarioId)
               .IsRequired(false)
               .OnDelete(DeleteBehavior.Restrict);
         }

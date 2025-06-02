@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Prontuario;
@@ -14,8 +13,7 @@ namespace WhiteNoise.Controllers
     public class ProntuarioController : BaseController
     {
         #region Private Fields
-        private readonly IProntuarioRepository _agendamentoRepository;
-        private readonly IPacienteRepository _pacienteRepository;
+        private readonly IProntuarioRepository _prontuarioRepository;
         private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
 
@@ -23,23 +21,12 @@ namespace WhiteNoise.Controllers
 
         #region Constructors
         public ProntuarioController(IMapper mapper, 
-            IProntuarioRepository agendamentoRepository,
-            INotyfService notyf,
-            IPacienteRepository pacienteRepository)
+            IProntuarioRepository prontuarioRepository,
+            INotyfService notyf)
         {
-            _agendamentoRepository = agendamentoRepository;
+            _prontuarioRepository = prontuarioRepository;
             _notyf = notyf;
             _mapper = mapper;
-            _pacienteRepository = pacienteRepository;
-        }
-
-        #endregion
-
-        #region Private Methods
-        private async Task PopularPacientes(ProntuarioFormModel model)
-        {
-            var estados = await _pacienteRepository.ObterTodos();
-            model.Pacientes = new SelectList(estados, "Id", "Nome", model.PacienteId);
         }
 
         #endregion
@@ -47,41 +34,38 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var agendamentos = await _agendamentoRepository.ObterTodos();
-            var agendamentosGridModel = _mapper.Map<List<ProntuarioGridModel>>(agendamentos);
-            return View(agendamentosGridModel);
+            var prontuario = await _prontuarioRepository.ObterTodos();
+            var prontuarioGridModel = _mapper.Map<List<ProntuarioGridModel>>(prontuario);
+            return View(prontuarioGridModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
-            var agendamentoGridModel = _mapper.Map<ProntuarioGridModel>(agendamento);
-            return View(agendamentoGridModel);
+            var prontuario = await _prontuarioRepository.ObterPorId(id);
+            var prontuarioGridModel = _mapper.Map<ProntuarioGridModel>(prontuario);
+            return View(prontuarioGridModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             var model = new ProntuarioFormModel();
-            await PopularPacientes(model);
-
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProntuarioFormModel agendamentoFormModel)
+        public async Task<IActionResult> Create(ProntuarioFormModel prontuarioFormModel)
         {
             if (!ModelState.IsValid)
             {
-                await PopularPacientes(agendamentoFormModel);
                 _notyf.Error("Preencha todas as informações obrigatórias.");
-                return View(agendamentoFormModel);
+                return View(prontuarioFormModel);
             }
-            var agendamento = _mapper.Map<Prontuario>(agendamentoFormModel);
+            var prontuario = _mapper.Map<Prontuario>(prontuarioFormModel);
 
-            agendamento.Id = Guid.NewGuid();
-            await _agendamentoRepository.Adicionar(agendamento);
+            prontuario.Id = Guid.NewGuid();
+            await _prontuarioRepository.Adicionar(prontuario);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
@@ -89,33 +73,31 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var prontuario = await _prontuarioRepository.ObterPorId(id);
 
-            if (agendamento == null)
+            if (prontuario == null)
                 return NotFound();
 
-            var agendamentoFormModel = _mapper.Map<ProntuarioFormModel>(agendamento);
-            await PopularPacientes(agendamentoFormModel);
-            return View(agendamentoFormModel);
+            var prontuarioFormModel = _mapper.Map<ProntuarioFormModel>(prontuario);
+            return View(prontuarioFormModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, ProntuarioFormModel agendamentoFormModel)
+        public async Task<IActionResult> Edit(Guid id, ProntuarioFormModel prontuarioFormModel)
         {
-            if (id != agendamentoFormModel.Id)
+            if (id != prontuarioFormModel.Id)
                 return NotFound();
 
             if (!ModelState.IsValid)
             {
-                await PopularPacientes(agendamentoFormModel);
                 _notyf.Error("Preencha todas as informações obrigatórias.");
-                return View(agendamentoFormModel);
+                return View(prontuarioFormModel);
             }
 
             try
             {
-                var agendamento = _mapper.Map<Prontuario>(agendamentoFormModel);
-                await _agendamentoRepository.Atualizar(agendamento);
+                var prontuario = _mapper.Map<Prontuario>(prontuarioFormModel);
+                await _prontuarioRepository.Atualizar(prontuario);
             }
             catch
             {
@@ -130,16 +112,16 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var prontuario = await _prontuarioRepository.ObterPorId(id);
 
-            if (agendamento == null)
+            if (prontuario == null)
             {
                 return NotFound();
             }
 
-            var agendamentoGridModel = _mapper.Map<ProntuarioGridModel>(agendamento);
+            var prontuarioGridModel = _mapper.Map<ProntuarioGridModel>(prontuario);
 
-            return View(agendamentoGridModel);
+            return View(prontuarioGridModel);
 
         }
 
@@ -148,7 +130,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _agendamentoRepository.Remover(id);
+                await _prontuarioRepository.Remover(id);
             }
             catch
             {
