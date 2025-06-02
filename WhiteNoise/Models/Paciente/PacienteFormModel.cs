@@ -16,10 +16,6 @@ namespace WhiteNoise.Models.Paciente
         [Display(Name = "Data de Nascimento")]
         public DateTime DataNascimento { get; set; }
 
-        [Required(ErrorMessage = "A Data de Internação é obrigatória.")]
-        [Display(Name = "Data de Internação")]
-        public DateTime? DataInternacao { get; set; }
-
         [Required(ErrorMessage = "O E-mail é obrigatório.")]
         [Display(Name = "E-mail")]
         public string? Email { get; set; }

@@ -36,7 +36,7 @@
             <span asp-validation-for="Observacoes" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
+        @* <div class="form-group">
             <label asp-for="PacienteId"></label>
             <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
             </select>
@@ -48,8 +48,15 @@
             <select asp-for="ProfissionalId" class="form-control" asp-items="Model.Profissionais">
             </select>
             <span asp-validation-for="ProfissionalId" class="text-danger"></span>
+        </div> *@
+
+        <div class="form-group">
+            <list-selector for="PacienteId" items="Model.Pacientes" />
         </div>
 
+        <div class="form-group">
+            <list-selector for="ProfissionalId" items="Model.Profissionais" quick-create="Profissional" />
+        </div>
 
         <div>
             <input type="submit" value="Confirmar" class="btn btn-success" />

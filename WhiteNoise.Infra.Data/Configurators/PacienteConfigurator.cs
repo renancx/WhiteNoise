@@ -30,8 +30,6 @@ namespace WhiteNoise.Infra.Data.Configurators
             builder.Property(p => p.DataNascimento)
                    .IsRequired();
 
-            builder.Property(p => p.DataInternacao);
-
             builder.Property(p => p.Email)
                    .HasMaxLength(100);
 

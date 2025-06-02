@@ -9,6 +9,7 @@ namespace WhiteNoise.Models.Leito
     public class LeitoFormModel
     {
         [Display(Name = "Descrição")]
+        [Required(ErrorMessage = "A descrição é obrigatória.")]
         public string? Descricao { get; set; }
 
         public TipoLeitoEnum Tipo { get; set; }
@@ -16,6 +17,7 @@ namespace WhiteNoise.Models.Leito
         public StatusLeitoEnum Status { get; set; }
 
         [HiddenInGrid]
+        [Required(ErrorMessage = "O departamento é obrigatório.")]
         public Guid? DepartamentoId { get; set; }
 
         public SelectList? Departamentos { get; set; }

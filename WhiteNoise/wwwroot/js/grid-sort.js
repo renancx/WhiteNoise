@@ -1,6 +1,4 @@
-﻿//arquivo grid-sort.js
-
-$(function () {
+﻿$(function () {
     $(".table-sorter").tablesorter({
         theme: 'bootstrap_4',
         headerTemplate: '{content} {icon}',

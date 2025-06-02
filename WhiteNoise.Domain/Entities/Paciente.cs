@@ -11,11 +11,9 @@ namespace WhiteNoise.Domain.Entities
 
         public DateTime DataNascimento { get; set; }
 
-        public DateTime? DataInternacao { get; set; }
-
         public string? Email { get; set; }
 
-        public bool Ativo { get; set; } = true;
+        public bool? Ativo { get; set; } = true;
 
         public string? Cpf { get; set; }
 

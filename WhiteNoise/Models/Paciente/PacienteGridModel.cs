@@ -30,9 +30,6 @@ namespace WhiteNoise.Models.Paciente
 
         [Display(Name = "Estado Clínico")]
         public string? EstadoClinico { get; set; }
-        
-        [Display(Name = "Data de Internação")]
-        public DateTime DataInternacao { get; set; }
 
         [Display(Name = "Tipo de Paciente")]
         public TipoPacienteEnum TipoPaciente { get; set; }

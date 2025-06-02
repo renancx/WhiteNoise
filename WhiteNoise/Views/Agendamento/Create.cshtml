@@ -36,23 +36,11 @@
         </div>
 
         <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="PacienteId"></label>
-                <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
-                    <option value="">Selecione...</option>
-                </select>
-                <span asp-validation-for="PacienteId" class="text-danger"></span>
-            </div>
+            <list-selector for="PacienteId" items="Model.Pacientes" quick-create="Paciente" />
         </div>
 
         <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="ProfissionalId"></label>
-                <select asp-for="ProfissionalId" class="form-control" asp-items="Model.Profissionais">
-                    <option value="">Selecione...</option>
-                </select>
-                <span asp-validation-for="ProfissionalId" class="text-danger"></span>
-            </div>
+            <list-selector for="ProfissionalId" items="Model.Profissionais" quick-create="Profissional" />
         </div>
 
         <div class="row col-12">
