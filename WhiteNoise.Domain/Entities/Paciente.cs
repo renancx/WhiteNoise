@@ -1,29 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using WhiteNoise.Domain.Entities.Base;
 using WhiteNoise.Domain.Enums;
 
 namespace WhiteNoise.Domain.Entities
 {
-    public class Paciente : EntityBase
+    public class Paciente : Pessoa
     {
-        public string? Nome { get; set; }
-
-        public DateTime DataNascimento { get; set; }
-
-        public string? Email { get; set; }
-
-        public bool? Ativo { get; set; } = true;
-
         public bool EmInternacao { get; set; } = false;
 
-        public string? Cpf { get; set; }
+        public TipoSanguineoEnum TipoSanguineo { get; set; }
 
         public TipoPacienteEnum TipoPaciente { get; set; }
-
-        public SexoEnum Sexo { get; set; }
-
-        public string? Motivo { get; set; }
 
         public Guid? EstadoClinicoId { get; set; }
 

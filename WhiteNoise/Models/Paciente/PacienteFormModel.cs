@@ -9,14 +9,14 @@ namespace WhiteNoise.Models.Paciente
 {
     public class PacienteFormModel
     {
-        [Required(ErrorMessage = "O Nome é obrigatório.")]
+        [Required(ErrorMessage = "O nome é obrigatório.")]
         public string? Nome { get; set; }
                 
-        [Required(ErrorMessage = "A Data de Nascimento é obrigatória.")]
+        [Required(ErrorMessage = "A data de nascimento é obrigatória.")]
         [Display(Name = "Data de Nascimento")]
-        public DateTime DataNascimento { get; set; }
+        public DateTime? DataNascimento { get; set; }
 
-        [Required(ErrorMessage = "O E-mail é obrigatório.")]
+        [Required(ErrorMessage = "O e-mail é obrigatório.")]
         [Display(Name = "E-mail")]
         public string? Email { get; set; }
 
@@ -27,11 +27,11 @@ namespace WhiteNoise.Models.Paciente
         public string? Cpf { get; set; }
 
         [Display(Name = "Tipo de Paciente")]
+        [Required(ErrorMessage = "O tipo de paciente é obrigatório.")]
         public TipoPacienteEnum TipoPaciente { get; set; }
 
+        [Required(ErrorMessage = "O sexo do paciente é obrigatório.")]
         public SexoEnum Sexo { get; set; }
-
-        public string? Motivo { get; set; }
 
         [Display(Name = "Estado Clínico")]
         public Guid? EstadoClinicoId { get; set; }

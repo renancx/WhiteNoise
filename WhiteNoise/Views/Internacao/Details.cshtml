@@ -1,29 +1,61 @@
 ﻿@model WhiteNoise.Models.Internacao.InternacaoGridModel
 
-<div>
-    <h2>Detalhes da Internacao</h2>
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">Data de Entrada</dt>
-            <dd class="col-sm-10">@Model.DataEntrada</dd>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Detalhes da Internação</h3>
+        </div>
 
-            <dt class="col-sm-2">Paciente</dt>
-            <dd class="col-sm-10">@Model.Paciente</dd>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-4 font-weight-bold">Paciente:</div>
+                <div class="col-sm-8">@Model.Paciente</div>
+            </div>
 
-            <dt class="col-sm-2">Leito</dt>
-            <dd class="col-sm-10">@Model.Leito</dd>
+            <div class="row mb-3">
+                <div class="col-sm-4 font-weight-bold">Data de Entrada:</div>
+                <div class="col-sm-8">@Model.DataEntrada.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
 
-            <dt class="col-sm-2">Observação</dt>
-            <dd class="col-sm-10">@Model.Leito</dd>
+            <div class="row mb-3">
+                <div class="col-sm-4 font-weight-bold">Leito:</div>
+                <div class="col-sm-8">@Model.Leito</div>
+            </div>
 
-            <dt class="col-sm-2">Paciente</dt>
-            <dd class="col-sm-10">@Model.Paciente</dd>
+            @* Se você quiser exibir o Motivo, basta adicioná-lo aqui. Exemplo: *@
+            @if (!string.IsNullOrEmpty(Model.Motivo))
+            {
+                <div class="row mb-3">
+                    <div class="col-sm-4 font-weight-bold">Motivo:</div>
+                    <div class="col-sm-8">@Model.Motivo</div>
+                </div>
+            }
 
-            <dt class="col-sm-2">Data de Alta</dt>
-            <dd class="col-sm-10">@Model.DataAlta</dd>
-        </dl>
+            @* Data de Alta / Tipo de Saída só aparecem se existirem *@
+            @if (Model.DataAlta.HasValue)
+            {
+                <div class="row mb-3">
+                    <div class="col-sm-4 font-weight-bold">Data de Alta:</div>
+                    <div class="col-sm-8">@Model.DataAlta.Value.ToString("dd/MM/yyyy HH:mm")</div>
+                </div>
+            }
 
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            @if (Model.TipoSaida.HasValue)
+            {
+                <div class="row mb-3">
+                    <div class="col-sm-4 font-weight-bold">Tipo de Saída:</div>
+                    <div class="col-sm-8">@Model.TipoSaida.Value.ToString()</div>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer text-right">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-edit mr-1"></i>Editar
+            </a>
+            <a asp-action="Index" class="btn btn-secondary ml-2">
+                <i class="fas fa-arrow-left mr-1"></i>Voltar
+            </a>
+        </div>
     </div>
 </div>

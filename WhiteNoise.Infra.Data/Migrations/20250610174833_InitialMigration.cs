@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WhiteNoise.Infra.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -67,7 +67,7 @@ namespace WhiteNoise.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profissional",
+                name: "Pessoa",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -77,41 +77,27 @@ namespace WhiteNoise.Infra.Data.Migrations
                     Ativo = table.Column<bool>(nullable: false, defaultValue: true),
                     Cpf = table.Column<string>(type: "varchar(90)", maxLength: 11, nullable: true),
                     Sexo = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    EmInternacao = table.Column<bool>(nullable: true, defaultValue: false),
+                    TipoSanguineo = table.Column<int>(nullable: true),
+                    TipoPaciente = table.Column<int>(nullable: true),
+                    EstadoClinicoId = table.Column<Guid>(nullable: true),
+                    RegistroProfissional = table.Column<string>(type: "varchar(90)", maxLength: 50, nullable: true),
                     DepartamentoId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profissional", x => x.Id);
+                    table.PrimaryKey("PK_Pessoa", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Profissional_Departamento_DepartamentoId",
-                        column: x => x.DepartamentoId,
-                        principalTable: "Departamento",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Paciente",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Nome = table.Column<string>(type: "varchar(90)", maxLength: 100, nullable: false),
-                    DataNascimento = table.Column<DateTime>(nullable: false),
-                    Email = table.Column<string>(type: "varchar(90)", maxLength: 100, nullable: true),
-                    Ativo = table.Column<bool>(nullable: true, defaultValue: true),
-                    Cpf = table.Column<string>(type: "varchar(90)", maxLength: 11, nullable: true),
-                    TipoPaciente = table.Column<int>(nullable: false),
-                    Sexo = table.Column<int>(nullable: false),
-                    Motivo = table.Column<string>(type: "varchar(90)", maxLength: 200, nullable: true),
-                    EstadoClinicoId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Paciente", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Paciente_EstadoClinico_EstadoClinicoId",
+                        name: "FK_Pessoa_EstadoClinico_EstadoClinicoId",
                         column: x => x.EstadoClinicoId,
                         principalTable: "EstadoClinico",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Pessoa_Departamento_DepartamentoId",
+                        column: x => x.DepartamentoId,
+                        principalTable: "Departamento",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -132,15 +118,15 @@ namespace WhiteNoise.Infra.Data.Migrations
                 {
                     table.PrimaryKey("PK_Agendamento", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Agendamento_Paciente_PacienteId",
+                        name: "FK_Agendamento_Pessoa_PacienteId",
                         column: x => x.PacienteId,
-                        principalTable: "Paciente",
+                        principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Agendamento_Profissional_ProfissionalId",
+                        name: "FK_Agendamento_Pessoa_ProfissionalId",
                         column: x => x.ProfissionalId,
-                        principalTable: "Profissional",
+                        principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -169,9 +155,9 @@ namespace WhiteNoise.Infra.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Internacao_Paciente_PacienteId",
+                        name: "FK_Internacao_Pessoa_PacienteId",
                         column: x => x.PacienteId,
-                        principalTable: "Paciente",
+                        principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -180,6 +166,17 @@ namespace WhiteNoise.Infra.Data.Migrations
                         principalTable: "Prontuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "EstadoClinico",
+                columns: new[] { "Id", "Descricao" },
+                values: new object[,]
+                {
+                    { new Guid("a4a4a4a4-0000-0000-0000-000000000001"), "Estável" },
+                    { new Guid("a4a4a4a4-0000-0000-0000-000000000002"), "Observação" },
+                    { new Guid("a4a4a4a4-0000-0000-0000-000000000003"), "Grave" },
+                    { new Guid("a4a4a4a4-0000-0000-0000-000000000004"), "Crítico" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -217,20 +214,20 @@ namespace WhiteNoise.Infra.Data.Migrations
                 column: "DepartamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Paciente_EstadoClinicoId",
-                table: "Paciente",
+                name: "IX_Pessoa_EstadoClinicoId",
+                table: "Pessoa",
                 column: "EstadoClinicoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profissional_Cpf",
-                table: "Profissional",
+                name: "IX_Pessoa_Cpf",
+                table: "Pessoa",
                 column: "Cpf",
                 unique: true,
                 filter: "[Cpf] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profissional_DepartamentoId",
-                table: "Profissional",
+                name: "IX_Pessoa_DepartamentoId",
+                table: "Pessoa",
                 column: "DepartamentoId");
         }
 
@@ -243,22 +240,19 @@ namespace WhiteNoise.Infra.Data.Migrations
                 name: "Internacao");
 
             migrationBuilder.DropTable(
-                name: "Profissional");
-
-            migrationBuilder.DropTable(
                 name: "Leito");
 
             migrationBuilder.DropTable(
-                name: "Paciente");
+                name: "Pessoa");
 
             migrationBuilder.DropTable(
                 name: "Prontuario");
 
             migrationBuilder.DropTable(
-                name: "Departamento");
+                name: "EstadoClinico");
 
             migrationBuilder.DropTable(
-                name: "EstadoClinico");
+                name: "Departamento");
         }
     }
 }

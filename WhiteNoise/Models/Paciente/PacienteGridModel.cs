@@ -23,9 +23,6 @@ namespace WhiteNoise.Models.Paciente
         public string? Cpf { get; set; }
 
         [HiddenInGrid]
-        public string? Motivo { get; set; }
-
-        [HiddenInGrid]
         public bool Ativo { get; set; }
 
         [Display(Name = "Estado Clínico")]

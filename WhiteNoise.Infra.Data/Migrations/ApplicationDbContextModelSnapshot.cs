@@ -82,6 +82,28 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EstadoClinico");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a4a4a4a4-0000-0000-0000-000000000001"),
+                            Descricao = "Estável"
+                        },
+                        new
+                        {
+                            Id = new Guid("a4a4a4a4-0000-0000-0000-000000000002"),
+                            Descricao = "Observação"
+                        },
+                        new
+                        {
+                            Id = new Guid("a4a4a4a4-0000-0000-0000-000000000003"),
+                            Descricao = "Grave"
+                        },
+                        new
+                        {
+                            Id = new Guid("a4a4a4a4-0000-0000-0000-000000000004"),
+                            Descricao = "Crítico"
+                        });
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Internacao", b =>
@@ -157,60 +179,14 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.ToTable("Leito");
                 });
 
-            modelBuilder.Entity("WhiteNoise.Domain.Entities.Paciente", b =>
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Pessoa", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Cpf")
-                        .HasColumnType("varchar(90)")
-                        .HasMaxLength(11);
-
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("varchar(90)")
-                        .HasMaxLength(100);
-
-                    b.Property<Guid?>("EstadoClinicoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Motivo")
-                        .HasColumnType("varchar(90)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(90)")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("Sexo")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TipoPaciente")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstadoClinicoId");
-
-                    b.ToTable("Paciente");
-                });
-
-            modelBuilder.Entity("WhiteNoise.Domain.Entities.Profissional", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
@@ -222,8 +198,9 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("DepartamentoId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("varchar(90)")
@@ -243,9 +220,9 @@ namespace WhiteNoise.Infra.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Cpf] IS NOT NULL");
 
-                    b.HasIndex("DepartamentoId");
+                    b.ToTable("Pessoa");
 
-                    b.ToTable("Profissional");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Pessoa");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Prontuario", b =>
@@ -268,6 +245,45 @@ namespace WhiteNoise.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Prontuario");
+                });
+
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Paciente", b =>
+                {
+                    b.HasBaseType("WhiteNoise.Domain.Entities.Pessoa");
+
+                    b.Property<bool>("EmInternacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid?>("EstadoClinicoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TipoPaciente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoSanguineo")
+                        .HasColumnType("int");
+
+                    b.HasIndex("EstadoClinicoId");
+
+                    b.HasDiscriminator().HasValue("Paciente");
+                });
+
+            modelBuilder.Entity("WhiteNoise.Domain.Entities.Profissional", b =>
+                {
+                    b.HasBaseType("WhiteNoise.Domain.Entities.Pessoa");
+
+                    b.Property<Guid?>("DepartamentoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RegistroProfissional")
+                        .HasColumnType("varchar(90)")
+                        .HasMaxLength(50);
+
+                    b.HasIndex("DepartamentoId");
+
+                    b.HasDiscriminator().HasValue("Profissional");
                 });
 
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Agendamento", b =>

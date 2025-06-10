@@ -37,7 +37,8 @@ namespace WhiteNoise.Models.Internacao
         [Display(Name = "Queixa Principal")]
         public string? QueixaPrincipal { get; set; }
 
-        public DateTime? DataCriacao { get; set; }
+        [Display(Name = "Data de Criação")]
+        public DateTime? DataCriacao { get; set; } = DateTime.Today;
 
         [Display(Name = "Observação")]
         [Required(ErrorMessage = "Informe uma observação.")]

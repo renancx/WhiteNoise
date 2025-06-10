@@ -8,28 +8,8 @@ namespace WhiteNoise.Infra.Data.Configurators
     {
         public void Configure(EntityTypeBuilder<Profissional> builder)
         {
-            builder.Property(p => p.Nome)
-                   .IsRequired()
-                   .HasMaxLength(100);
-
-            builder.Property(p => p.DataNascimento)
-                   .IsRequired();
-
-            builder.Property(p => p.Email)
-                   .HasMaxLength(100);
-
-            builder.Property(p => p.Ativo)
-                   .IsRequired()
-                   .HasDefaultValue(true);
-
-            builder.Property(p => p.Cpf)
-                   .HasMaxLength(11);
-
-            builder.Property(p => p.Sexo)
-                   .IsRequired();
-
-            builder.HasIndex(p => p.Cpf)
-                   .IsUnique();
+            builder.Property(p => p.RegistroProfissional)
+                   .HasMaxLength(50);
 
             builder.HasOne(p => p.Departamento)
                    .WithMany(a => a.Profissionais)

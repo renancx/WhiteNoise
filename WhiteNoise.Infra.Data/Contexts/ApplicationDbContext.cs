@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
+using WhiteNoise.Infra.Data.Seeds;
 
 namespace WhiteNoise.Infra.Data.Contexts
 {
@@ -37,12 +38,14 @@ namespace WhiteNoise.Infra.Data.Contexts
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
             }
 
+            new EstadoClinicoSeed().Seed(modelBuilder);
+
             base.OnModelCreating(modelBuilder);
         }
     }
 }
 
-//add-migration -c ApplicationDbContext -o C:\Users\renan.loewenstein\source\repos\WhiteNoise\WhiteNoise.Infra.Data\Migrations\ {NomeMigration} -v
+//add-migration -c ApplicationDbContext -o C:\Users\renan.loewenstein\source\repos\WhiteNoise\WhiteNoise.Infra.Data\Migrations\ InitialMigration -v
 
 //dotnet ef database update -p WhiteNoise.Infra.Data -s WhiteNoise -c ApplicationDbContext -v
 

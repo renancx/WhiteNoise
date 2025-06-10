@@ -18,6 +18,7 @@ namespace WhiteNoise.Models.Leito
 
         [HiddenInGrid]
         [Required(ErrorMessage = "O departamento é obrigatório.")]
+        [Display(Name = "Departamento")]
         public Guid? DepartamentoId { get; set; }
 
         public SelectList? Departamentos { get; set; }

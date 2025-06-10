@@ -85,18 +85,6 @@
             </div>
         </fieldset>
 
-        <fieldset class="border p-3 mb-4">
-            <legend class="w-auto">Observações</legend>
-
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label asp-for="Motivo" class="control-label"></label>
-                    <textarea asp-for="Motivo" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="Motivo" class="text-danger"></span>
-                </div>
-            </div>
-        </fieldset>
-
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a asp-action="Index" class="btn btn-secondary">Voltar</a>

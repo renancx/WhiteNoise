@@ -23,30 +23,14 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .HasForeignKey(a => a.PacienteId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(p => p.Nome)
-                   .IsRequired()
-                   .HasMaxLength(100);
-
-            builder.Property(p => p.DataNascimento)
-                   .IsRequired();
-
-            builder.Property(p => p.Email)
-                   .HasMaxLength(100);
-
-            builder.Property(p => p.Cpf)
-                   .HasMaxLength(11);
-
-            builder.Property(p => p.Motivo)
-                   .HasMaxLength(200);
-
-            builder.Property(p => p.Ativo)
-                   .HasDefaultValue(true);
-
             builder.Property(p => p.TipoPaciente)
                    .IsRequired();
 
-            builder.Property(p => p.Sexo)
+            builder.Property(p => p.TipoSanguineo)
                    .IsRequired();
+
+            builder.Property(p => p.EmInternacao)
+                   .HasDefaultValue(false);
         }
     }
 }

@@ -120,7 +120,7 @@ namespace WhiteNoise.Controllers
 
             if (pacientes != null && pacientes.Any())
             {
-                _notyf.Success("Não é possível deletar o registro.");
+                _notyf.Error("Não é possível deletar o registro.");
                 return RedirectToAction(nameof(Index));
             }
 
