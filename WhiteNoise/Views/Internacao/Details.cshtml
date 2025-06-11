@@ -45,15 +45,23 @@
                     <div class="col-sm-8">@Model.TipoSaida.Value.ToString()</div>
                 </div>
             }
-        </div>        
+        </div>
     </div>
 
-    <div class="d-flex justify-content-end w-25 mt-2">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-50 me-2">
-            <i class="bi bi-pencil me-1"></i> Editar
-        </a>
-        <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
-            <i class="bi bi-arrow-left me-1"></i> Voltar
-        </a>
+    <div class="d-flex justify-content-between w-100 mt-2">
+        <div class="d-flex justify-content-end w-25 mt-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-50 me-2">
+                    <i class="bi bi-pencil me-1"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+                    <i class="bi bi-arrow-left me-1"></i> Voltar
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-end w-50 mt-2">
+            <a asp-action="Finalizar" asp-route-id="@Model.Id" class="btn btn-primary ml-2 w-50">
+                <i class="bi bi-check-circle me-1"></i> Finalizar Internação
+            </a>
+        </div>
     </div>
 </div>

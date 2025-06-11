@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
+using WhiteNoise.Domain.Enums;
 using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Infra.Data.Contexts;
 
@@ -47,6 +48,15 @@ namespace WhiteNoise.Infra.Data.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return leito;
+        }
+
+        public async Task FinalizarPorId(Guid? internacaoId, TipoSaidaEnum tipoSaida, DateTime dataAlta)
+        {
+            var internacao = await ObterPorId(internacaoId);
+
+            internacao.TipoSaida = tipoSaida;
+            internacao.Ativa = false;
+            internacao.DataAlta = dataAlta;
         }
     }
 }

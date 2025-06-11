@@ -1,48 +1,56 @@
-﻿@using WhiteNoise.Models.Internacao
-@model InternacaoGridModel
+﻿@model WhiteNoise.Models.Internacao.InternacaoGridModel
 
 @{
-    ViewData["Title"] = "Deletar Internacao";
+    ViewData["Title"] = "Deletar Internação";
 }
-
-<div>
-    <h3>Deletar Internacao</h3>
+<div class="container">
+    <h2>Deletar Internação</h2>
 
     <div class="alert alert-danger" role="alert">
         <h4 class="alert-heading">Tem certeza desta ação?</h4>
         <p>Esta ação é irreversível e removerá permanentemente o registro selecionado.</p>
     </div>
 
-    <div>
-        <label asp-for="DataEntrada"></label>
-        <input asp-for="DataEntrada" disabled class="form-control" />
-    </div>
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto">Dados da Internação</legend>
 
-    <div>
-        <label asp-for="DataAlta"></label>
-        <input asp-for="DataAlta" disabled class="form-control" />
-    </div>
-
-    <div>
-        <label asp-for="Motivo"></label>
-        <input asp-for="Motivo" disabled class="form-control" />
-    </div>
-
-    <div>
-        <label asp-for="Paciente"></label>
-        <input asp-for="Paciente" disabled class="form-control" />
-    </div>
-
-    <div>
-        <label asp-for="Leito"></label>
-        <input asp-for="Leito" disabled class="form-control" />
-    </div>
+        <div class="form-row mb-2">
+            <div class="col-md-6">
+                <strong>Data de Entrada:</strong>
+                <input asp-for="DataEntrada" class="form-control" disabled />
+            </div>
+            <div class="col-md-6">
+                <strong>Data de Alta:</strong>
+                <input asp-for="DataAlta" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="form-row mb-2">
+            <div class="col-md-6">
+                <strong>Motivo:</strong>
+                <input asp-for="Motivo" class="form-control" disabled />
+            </div>
+            <div class="col-md-6">
+                <strong>Paciente:</strong>
+                <input asp-for="Paciente" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <strong>Leito:</strong>
+                <input asp-for="Leito" class="form-control" disabled />
+            </div>
+        </div>
+    </fieldset>
 
     <form asp-controller="Internacao" asp-action="DeleteConfirmed" method="post">
         <input type="hidden" asp-for="Id" />
-        <div>
-            <input type="submit" value="Deletar" class="btn btn-danger" />
-            <a class="btn btn-secondary" asp-controller="Internacao" asp-action="Index">Cancelar</a>
+        <div class="d-flex justify-content-end w-25">
+            <button type="submit" class="btn btn-danger w-50 me-2">
+                <i class="bi bi-trash me-1"></i> Deletar
+            </button>
+            <a asp-controller="Internacao" asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+                <i class="bi bi-arrow-left me-1"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

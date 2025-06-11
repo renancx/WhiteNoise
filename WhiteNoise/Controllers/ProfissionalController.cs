@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Interfaces.Repositories;
+using WhiteNoise.Infra.Data.Repositories;
+using WhiteNoise.Models.Leito;
 using WhiteNoise.Models.Profissional;
 namespace WhiteNoise.Controllers
 {
@@ -16,18 +19,26 @@ namespace WhiteNoise.Controllers
         #region Private Fields
         private readonly IMapper _mapper; 
         private readonly IProfissionalRepository _profissionalRepository;
+        private readonly IDepartamentoRepository _departamentoRepository;
         private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public ProfissionalController(IMapper mapper, IProfissionalRepository profissionalRepository, INotyfService notyf)
+        public ProfissionalController(IMapper mapper, IProfissionalRepository profissionalRepository, INotyfService notyf, IDepartamentoRepository departamentoRepository)
         {
             _profissionalRepository = profissionalRepository;
             _mapper = mapper;
             _notyf = notyf;
+            _departamentoRepository = departamentoRepository;
         }
         #endregion
+
+        private async Task PopularDepartamentos(ProfissionalViewModel model)
+        {
+            var departamentos = await _departamentoRepository.ObterTodos();
+            model.Departamentos = new SelectList(departamentos, "Id", "Descricao", model.DepartamentoId);
+        }
 
         #region Public Methods
         [HttpGet]
@@ -49,7 +60,10 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new ProfissionalViewModel();
+            await PopularDepartamentos(model);
+
+            return View(model);
         }        
 
         [HttpPost]
@@ -57,6 +71,7 @@ namespace WhiteNoise.Controllers
         {
             if (!ModelState.IsValid)
             {
+                await PopularDepartamentos(profissionalViewModel);
                 _notyf.Error("Ocorreu um erro ao salvar as informações.");
                 return View(profissionalViewModel);
             }
@@ -79,7 +94,7 @@ namespace WhiteNoise.Controllers
                 return NotFound();
 
             var profissionalViewModel = _mapper.Map<ProfissionalViewModel>(profissional);
-
+            await PopularDepartamentos(profissionalViewModel);
             return View(profissionalViewModel);
         }
         
@@ -89,31 +104,26 @@ namespace WhiteNoise.Controllers
             if (id != profissionalViewModel.Id)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var profissional = _mapper.Map<Profissional>(profissionalViewModel);
-                    await _profissionalRepository.Atualizar(profissional);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_profissionalRepository.ObterPorId(id).Result == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        _notyf.Error("Ocorreu um erro ao salvar as informações.");
-                        throw;
-                    }
-                }
-                _notyf.Success("As informações foram salvas com sucesso.");
-                return RedirectToAction(nameof(Index));
+                await PopularDepartamentos(profissionalViewModel);
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(profissionalViewModel);
             }
 
-            _notyf.Error("Preencha todas as informações obrigatórias.");
-            return View(profissionalViewModel);
+            try
+            {
+                var profissional = _mapper.Map<Profissional>(profissionalViewModel);
+                await _profissionalRepository.Atualizar(profissional);
+            }
+            catch
+            {                    
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                throw;                    
+            }
+
+            _notyf.Success("As informações foram salvas com sucesso.");
+            return RedirectToAction(nameof(Index));                        
         }
         
         [HttpGet]

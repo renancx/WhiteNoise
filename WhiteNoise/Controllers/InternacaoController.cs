@@ -192,6 +192,49 @@ namespace WhiteNoise.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Finalizar(Guid id)
+        {
+            var internacao = await _internacaoRepository.ObterPorId(id);
+            if (internacao is null)
+                return NotFound();
+
+            var vm = _mapper.Map<InternacaoFinalizarModel>(internacao);
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Finalizar(Guid id, InternacaoFinalizarModel internacaoFinalizarModel)
+        {
+            if (id != internacaoFinalizarModel.Id)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                _notyf.Error("Preencha todas as informações obrigatórias.");
+                return View(internacaoFinalizarModel);
+            }
+
+            try
+            {
+                var internacao = _mapper.Map<Internacao>(internacaoFinalizarModel);
+
+                await _internacaoRepository.FinalizarPorId(id, internacaoFinalizarModel.TipoSaida, internacaoFinalizarModel.DataAlta);
+                await _leitoRepository.AtualizarStatus(internacao.LeitoId , StatusLeitoEnum.Livre);
+                await _internacaoRepository.Atualizar(internacao);
+
+                _notyf.Success("As informações foram atualizadas com sucesso.");
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                _notyf.Error("Ocorreu um erro ao salvar as informações.");
+                throw;
+            }
+        }
+
         #endregion
     }
 }

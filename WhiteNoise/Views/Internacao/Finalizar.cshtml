@@ -1,28 +1,36 @@
-﻿@model WhiteNoise.Models.Internacao.InternacaoFormModel
+﻿@using WhiteNoise.Domain.Enums
+@model WhiteNoise.Models.Internacao.InternacaoFinalizarModel
 
 @{
-    ViewData["Title"] = "Editar Internação";
+    ViewData["Title"] = "Finalizar Internação";
 }
 <div class="container">
-    <h2>Editar Internação</h2>
+    <h2>Finalizar Internação</h2>
 
-    <form asp-action="Edit" asp-controller="Internacao" asp-route-id="@Model.Id" method="post" autocomplete="off">
+    <form asp-action="Finalizar" asp-controller="Internacao" asp-route-id="@Model.Id" method="post" autocomplete="off">
         <input type="hidden" name="_method" value="PUT" />
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
         <fieldset class="border p-3 mb-4">
-            <legend class="w-auto">Dados da Internação</legend>
+            <legend class="w-auto">Dados de Saída</legend>
+
+            <div class="form-row mb-3">
+                <div class="form-group col-md-6">
+                    <div class="col-sm-4 font-weight-bold p-0">Paciente:</div>
+                    <div class="col-sm-8 p-0">@Model.Paciente</div>
+                </div>
+            </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label asp-for="DataEntrada" class="font-weight-bold"></label>
-                    <input asp-for="DataEntrada" class="form-control" type="datetime-local" />
-                    <span asp-validation-for="DataEntrada" class="text-danger"></span>
+                    <label asp-for="DataAlta" class="font-weight-bold"></label>
+                    <input asp-for="DataAlta" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="DataAlta" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label asp-for="LeitoId" class="font-weight-bold"></label>
-                    <select asp-for="LeitoId" class="form-control" asp-items="Model.Leitos"></select>
-                    <span asp-validation-for="LeitoId" class="text-danger"></span>
+                    <label asp-for="TipoSaida" class="font-weight-bold"></label>
+                    <select asp-for="TipoSaida" class="form-control" asp-items="Html.GetEnumSelectList<TipoSaidaEnum>()"></select>
+                    <span asp-validation-for="TipoSaida" class="text-danger"></span>
                 </div>
             </div>
 

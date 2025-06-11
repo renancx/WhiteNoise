@@ -58,6 +58,12 @@
                     <span asp-validation-for="Ativo" class="text-danger ml-2"></span>
                 </div>
             </div>
+
+            <div class="form-row">
+                <div class="row form-group col-12">
+                    <list-selector for="DepartamentoId" items="Model.Departamentos" quick-create="Departamento" />
+                </div>
+            </div>
         </fieldset>
 
         <div class="d-flex justify-content-end w-25">

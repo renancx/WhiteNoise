@@ -15,45 +15,47 @@ namespace WhiteNoise.Shared.TagHelpers
         public IEnumerable<object> Items { get; set; }
 
         [HtmlAttributeName("controller")]
-        public string? Controller { get; set; } = null;
+        public string? Controller { get; set; }
 
         [HtmlAttributeName("allow-sorting")]
-        public bool AllowSorting { get; set; } = false;
+        public bool AllowSorting { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "table";
-            var classes = "table table-bordered table-sm compact-grid bg-light text-dark shadow-sm";
 
-
+            var css = "table table-bordered table-sm compact-grid bg-light text-dark shadow-sm";
             if (AllowSorting)
-                classes += " table-sorter";
-
-            output.Attributes.SetAttribute("class", classes);
+            {
+                css += " datatable";
+            }
+            output.Attributes.SetAttribute("class", css);
 
             var props = GetItemProperties();
-
             TableHeader(output, props);
             TableBody(output, props);
         }
 
         private void TableHeader(TagHelperOutput output, PropertyInfo[] props)
         {
-            output.Content.AppendHtml("<thead class=\"table-dark align-middle\">");
-            output.Content.AppendHtml("<tr>");
+            output.Content.AppendHtml("<thead class=\"table-dark align-middle\"><tr>");
             foreach (var prop in props)
             {
-                if (!prop.PropertyType.ToString().Contains("System.Collection") &&
-                !prop.IsDefined(typeof(HiddenInGridAttribute)))
+                if (!prop.PropertyType.FullName!.Contains("Collection") &&
+                    !prop.IsDefined(typeof(HiddenInGridAttribute)))
                 {
                     var name = GetPropertyName(prop);
-                    output.Content.AppendHtml(!name.Equals("Id")
-                        ? $"<th class=\"\">{name}</th>"
-                        : "<th class=\"text-center\">Ações</th>");
+                    if (name.Equals("Id", StringComparison.OrdinalIgnoreCase))
+                    {
+                        output.Content.AppendHtml("<th class=\"text-center\">Ações</th>");
+                    }
+                    else
+                    {
+                        output.Content.AppendHtml($"<th>{name}</th>");
+                    }
                 }
             }
-            output.Content.AppendHtml("</tr>");
-            output.Content.AppendHtml("</thead>");
+            output.Content.AppendHtml("</tr></thead>");
         }
 
         private void TableBody(TagHelperOutput output, PropertyInfo[] props)
@@ -64,18 +66,19 @@ namespace WhiteNoise.Shared.TagHelpers
                 output.Content.AppendHtml("<tr class=\"align-baseline\">");
                 foreach (var prop in props)
                 {
-                    if (!prop.PropertyType.ToString().Contains("Collection") &&
+                    if (!prop.PropertyType.FullName!.Contains("Collection") &&
                         !prop.IsDefined(typeof(HiddenInGridAttribute)))
                     {
                         var value = GetPropertyValue(prop, item);
-                        if (prop.Name.Equals("Id"))
+                        if (prop.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
                         {
-                            var controller = Controller ?? prop.ReflectedType.Name;
-                            output.Content.AppendHtml("<td class=\"text-center py-1 px-2\">");
-                            output.Content.AppendHtml($"<div class=\"btn-group btn-group-sm\" role=\"group\">");
-                            output.Content.AppendHtml($"<a href='/{controller}/Details/{value}' class='btn btn-outline-secondary btn-light'><i class=\"bi bi-search me-1\"></i></a>");
-                            output.Content.AppendHtml($"<a href='/{controller}/Delete/{value}' class='ml-1 btn btn-danger'><i class=\"bi bi-trash me-1\"></i></a>");
-                            output.Content.AppendHtml("</div></td>");
+                            var controller = Controller ?? prop.ReflectedType!.Name;
+                            output.Content.AppendHtml(
+                                "<td class=\"text-center py-1 px-2\"><div class=\"btn-group btn-group-sm\" role=\"group\">"
+                                + $"<a href=\"/{controller}/Details/{value}\" class=\"btn btn-outline-secondary btn-light\"><i class=\"bi bi-search me-1\"></i></a>"
+                                + $"<a href=\"/{controller}/Delete/{value}\" class=\"ml-1 btn btn-danger\"><i class=\"bi bi-trash me-1\"></i></a>"
+                                + "</div></td>"
+                            );
                         }
                         else
                         {
@@ -90,24 +93,19 @@ namespace WhiteNoise.Shared.TagHelpers
 
         private string GetPropertyName(PropertyInfo property)
         {
-            var attribute = property.GetCustomAttribute<DisplayAttribute>();
-            if (attribute != null)
-                return attribute.Name;
-
-            return property.Name;
+            var disp = property.GetCustomAttribute<DisplayAttribute>();
+            return disp?.Name ?? property.Name;
         }
 
-        private object GetPropertyValue(PropertyInfo property, object instance)
-        {
-            return property.GetValue(instance);
-        }
+        private object? GetPropertyValue(PropertyInfo property, object instance)
+            => property.GetValue(instance);
 
         private PropertyInfo[] GetItemProperties()
         {
             var listType = Items.GetType();
             if (listType.IsGenericType)
             {
-                Type itemType = listType.GetGenericArguments().First();
+                var itemType = listType.GetGenericArguments().First();
                 return itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             }
             return Array.Empty<PropertyInfo>();

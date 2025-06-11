@@ -20,12 +20,18 @@ namespace WhiteNoise.Mappers
 
             //Form
             CreateMap<InternacaoFormModel, Internacao>()
-                .IncludeMembers(src => src)                // inclui o próprio form model como fonte
-                .ForMember(d => d.Prontuario, opt => opt.Ignore()); // o AutoMapper já vai “saber” puxar o Prontuario via IncludeMembers
+                .IncludeMembers(src => src)
+                .ForMember(d => d.Prontuario, opt => opt.Ignore());
 
             CreateMap<InternacaoFormModel, Prontuario>();
 
             CreateMap<Internacao, InternacaoFormModel>();
+
+            //Finalizar
+            CreateMap<InternacaoFinalizarModel, Internacao>();
+
+            CreateMap<Internacao, InternacaoFinalizarModel>()
+                .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome));
 
         }
     }

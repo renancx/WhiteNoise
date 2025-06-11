@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteNoise.Domain.Enums;
 using WhiteNoise.Shared.Attributes;
 
@@ -26,12 +27,11 @@ namespace WhiteNoise.Models.Profissional
 
         public SexoEnum Sexo { get; set; }
 
-        [HiddenInGrid]
-        public Guid? DepartamentoId { get; set; }
+        public Guid Id { get; set; }
 
         [Display(Name = "Departamento")]
-        public string? Departamento { get; set; }
+        public Guid? DepartamentoId { get; set; }
 
-        public Guid Id { get; set; }
+        public SelectList? Departamentos { get; set; }
     }
 }
