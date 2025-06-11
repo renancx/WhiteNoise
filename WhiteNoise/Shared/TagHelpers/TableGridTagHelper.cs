@@ -23,8 +23,9 @@ namespace WhiteNoise.Shared.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "table";
-            var classes = "table table-bordered table-sm table-striped compact-grid";
-            
+            var classes = "table table-bordered table-sm compact-grid bg-light text-dark shadow-sm";
+
+
             if (AllowSorting)
                 classes += " table-sorter";
 
@@ -72,8 +73,8 @@ namespace WhiteNoise.Shared.TagHelpers
                             var controller = Controller ?? prop.ReflectedType.Name;
                             output.Content.AppendHtml("<td class=\"text-center py-1 px-2\">");
                             output.Content.AppendHtml($"<div class=\"btn-group btn-group-sm\" role=\"group\">");
-                            output.Content.AppendHtml($"<a href='/{controller}/Details/{value}' class='btn btn-primary'>Detalhes</a>");
-                            output.Content.AppendHtml($"<a href='/{controller}/Delete/{value}' class='btn btn-danger'>Excluir</a>");
+                            output.Content.AppendHtml($"<a href='/{controller}/Details/{value}' class='btn btn-outline-secondary btn-light'><i class=\"bi bi-search me-1\"></i></a>");
+                            output.Content.AppendHtml($"<a href='/{controller}/Delete/{value}' class='ml-1 btn btn-danger'><i class=\"bi bi-trash me-1\"></i></a>");
                             output.Content.AppendHtml("</div></td>");
                         }
                         else

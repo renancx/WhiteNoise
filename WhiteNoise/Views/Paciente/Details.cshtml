@@ -1,27 +1,81 @@
-﻿@model WhiteNoise.Models.Paciente.PacienteGridModel
+﻿@using WhiteNoise.Domain.Extensions
+@model WhiteNoise.Models.Paciente.PacienteGridModel
 
-<div>
-    <h2>Detalhes do Paciente</h2>
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">Nome</dt>
-            <dd class="col-sm-10">@Model.Nome</dd>
-            <dt class="col-sm-2">Estado Clínico</dt>
-            <dd class="col-sm-10">@Model.EstadoClinico</dd>
-            <dt class="col-sm-2">Data Nascimento</dt>
-            <dd class="col-sm-10">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
-            <dt class="col-sm-2">E-mail</dt>
-            <dd class="col-sm-10">@Model.Email</dd>
-            <dt class="col-sm-2">CPF</dt>
-            <dd class="col-sm-10">@Model.Cpf</dd>
-            <dt class="col-sm-2">Sexo</dt>
-            <dd class="col-sm-10">@Model.Sexo</dd>
-            <dt class="col-sm-2">Tipo Paciente</dt>
-            <dd class="col-sm-10">@Model.TipoPaciente</dd>
-            <dt class="col-sm-2">Ativo</dt>
-            <dd class="col-sm-10">@(Model.Ativo ? "Sim" : "Não")</dd>
-        </dl>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+@{
+    ViewData["Title"] = "Detalhes do Paciente";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto">Dados Pessoais</legend>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="font-weight-bold">Nome</label>
+                <p class="form-control-plaintext">@Model.Nome</p>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label class="font-weight-bold">CPF</label>
+                <p class="form-control-plaintext">@Model.Cpf</p>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label class="font-weight-bold">Data de Nascimento</label>
+                <p class="form-control-plaintext">@Model.DataNascimento.ToString("dd/MM/yyyy")</p>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="font-weight-bold">E-mail</label>
+                <p class="form-control-plaintext">@Model.Email</p>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label class="font-weight-bold">Sexo</label>
+                <p class="form-control-plaintext">@Model.Sexo</p>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label class="font-weight-bold">Tipo de Paciente</label>
+                <p class="form-control-plaintext">@Model.TipoPaciente</p>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto">Informações Clínicas</legend>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label class="font-weight-bold">Estado Clínico</label>
+                <p class="form-control-plaintext">@Model.EstadoClinico</p>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label class="font-weight-bold">Tipo Sanguíneo</label>
+                <p class="form-control-plaintext">@Model.TipoSanguineo.GetDisplayName()</p>
+            </div>
+
+            <div class="form-group col-md-4 mt-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" disabled @if (Model.Ativo) { <text>checked</text> } />
+                    <label class="form-check-label font-weight-bold">Ativo</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="d-flex justify-content-end w-25">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-50 me-2">
+            <i class="bi bi-pencil me-1"></i> Editar
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+            <i class="bi bi-arrow-left me-1"></i> Voltar
+        </a>
     </div>
+
 </div>

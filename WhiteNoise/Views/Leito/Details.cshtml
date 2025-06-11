@@ -2,29 +2,54 @@
 @using WhiteNoise.Domain.Extensions
 @model WhiteNoise.Models.Leito.LeitoGridModel
 
-<div>
+@{
+    ViewData["Title"] = "Detalhes do Leito";
+}
+<div class="container">
     <h2>Detalhes do Leito</h2>
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">Descricao</dt>
-            <dd class="col-sm-10">@Model.Descricao</dd>
 
-            <dt class="col-sm-2">Tipo</dt>
-            <dd class="col-sm-10">@Model.Tipo.GetEnumDescription()</dd>
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto">Dados do Leito</legend>
 
-            <dt class="col-sm-2">Status</dt>
-            <dd class="col-sm-10">@Model.Status.GetEnumDescription()</dd>
+        <div class="form-row mb-2">
+            <div class="col-md-6">
+                <strong>Descrição:</strong>
+                <div>@Model.Descricao</div>
+            </div>
 
-            <dt class="col-sm-2">Departamento</dt>
-            <dd class="col-sm-10">@Model.Departamento</dd>
-        </dl>
+            <div class="col-md-3">
+                <strong>Tipo:</strong>
+                <div>@Model.Tipo.GetEnumDescription()</div>
+            </div>
 
-        @if(Model.Status == StatusLeitoEnum.Ocupado)
-        {
+            <div class="col-md-3">
+                <strong>Status:</strong>
+                <div>@Model.Status.GetEnumDescription()</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-6">
+                <strong>Departamento:</strong>
+                <div>@Model.Departamento</div>
+            </div>
+        </div>
+    </fieldset>
+
+    @if (Model.Status == StatusLeitoEnum.Ocupado)
+    {
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Ocupação</legend>
             <vc:leito-ocupacao leito-id="@Model.Id"></vc:leito-ocupacao>
-        }
+        </fieldset>
+    }
 
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <div class="d-flex justify-content-end w-25">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-50 me-2">
+            <i class="bi bi-pencil-square me-1"></i> Editar
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+            <i class="bi bi-arrow-left me-1"></i> Voltar
+        </a>
     </div>
 </div>

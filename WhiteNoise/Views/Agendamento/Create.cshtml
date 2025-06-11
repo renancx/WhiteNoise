@@ -5,53 +5,64 @@
 @{
     ViewData["Title"] = "Cadastrar Agendamento";
 }
-
-<div>
+<div class="container">
     <h2>Novo Agendamento</h2>
     <form asp-action="Create" method="post" autocomplete="off">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="DataHora" class="control-label"></label>
-                <input asp-for="DataHora" class="form-control" />
-                <span asp-validation-for="DataHora" class="text-danger"></span>
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Dados do Agendamento</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="DataHora" class="font-weight-bold"></label>
+                    <input asp-for="DataHora" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="DataHora" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Tipo" class="font-weight-bold"></label>
+                    <select asp-for="Tipo" class="form-control" asp-items="Html.GetEnumSelectList<TipoAgendamentoEnum>()"></select>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Status" class="font-weight-bold"></label>
+                    <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<StatusAgendamentoEnum>()"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="Tipo" class="control-label"></label>
-                <select asp-for="Tipo" class="form-control" asp-items="Html.GetEnumSelectList<TipoAgendamentoEnum>()"></select>
-                <span asp-validation-for="Tipo" class="text-danger"></span>
+            <div class="row col-12 p-0">
+                <div class="form-group col-md-12 p-0">
+                    <list-selector for="PacienteId" items="Model.Pacientes" quick-create="Paciente" />
+                    <span asp-validation-for="PacienteId" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<StatusAgendamentoEnum>()"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+            <div class="row col-12 p-0">
+                <div class="form-group col-md-12 p-0">
+                    <list-selector for="ProfissionalId" items="Model.Profissionais" quick-create="Profissional" />
+                    <span asp-validation-for="ProfissionalId" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-        <div class="row col-12">
-            <list-selector for="PacienteId" items="Model.Pacientes" quick-create="Paciente" />
-        </div>
+            <div class="form-row mt-3">
+                <div class="form-group col-md-12">
+                    <label asp-for="Observacoes" class="font-weight-bold"></label>
+                    <textarea asp-for="Observacoes" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Observacoes" class="text-danger"></span>
+                </div>
+            </div>  
+        </fieldset>
 
-        <div class="row col-12">
-            <list-selector for="ProfissionalId" items="Model.Profissionais" quick-create="Profissional" />
+        <div class="d-flex justify-content-end w-25">
+            <button type="submit" class="btn btn-primary w-50 me-2">
+                <i class="bi bi-check-circle me-1"></i> Salvar
+            </button>
+            <a asp-action="Calendario" class="btn btn-outline-secondary ml-2 w-50">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
+            </a>
         </div>
-
-        <div class="row col-12">
-            <div class="form-group col-6">
-                <label asp-for="Observacoes" class="control-label"></label>
-                <input asp-for="Observacoes" class="form-control" />
-                <span asp-validation-for="Observacoes" class="text-danger"></span>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Salvar</button>
-        <a asp-action="Calendario" class="btn btn-secondary">Voltar</a>
     </form>
 </div>

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace WhiteNoise.Shared.TagHelpers
@@ -32,6 +31,9 @@ namespace WhiteNoise.Shared.TagHelpers
         [HtmlAttributeName("quick-create")]
         public string? QuickCreate { get; set; }
 
+        [HtmlAttributeName("bold-title")]
+        public bool BoldTitle { get; set; }
+
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
@@ -40,7 +42,7 @@ namespace WhiteNoise.Shared.TagHelpers
         {
             output.TagName = "div";
             output.TagMode = TagMode.StartTagAndEndTag;
-            output.Attributes.SetAttribute("class", "form-group col-6");
+            output.Attributes.SetAttribute("class", "form-group col-12 pr-0");
 
             var modelExplorer = ViewContext.ViewData.ModelExplorer.GetExplorerForProperty(For);
             var labelTag = _htmlGenerator.GenerateLabel(
@@ -50,6 +52,11 @@ namespace WhiteNoise.Shared.TagHelpers
                 labelText: null,
                 htmlAttributes: new { @class = "" }
             );
+
+            if (BoldTitle && labelTag != null)
+            {
+                labelTag.AddCssClass("font-weight-bold");
+            }
 
             var listaDeSelectListItems = Items.OfType<SelectListItem>().ToList();
             var selectTag = _htmlGenerator.GenerateSelect(
@@ -81,7 +88,6 @@ namespace WhiteNoise.Shared.TagHelpers
             var selectWrapper = new TagBuilder("div");
             selectWrapper.AddCssClass("d-flex");
             selectWrapper.InnerHtml.AppendHtml(selectTag);
-
             if (anchorTag != null)
             {
                 selectWrapper.InnerHtml.AppendHtml(anchorTag);

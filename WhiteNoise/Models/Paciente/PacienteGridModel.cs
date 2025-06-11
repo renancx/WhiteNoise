@@ -31,6 +31,10 @@ namespace WhiteNoise.Models.Paciente
         [Display(Name = "Tipo de Paciente")]
         public TipoPacienteEnum TipoPaciente { get; set; }
 
+        [Display(Name = "Tipo Sanguíneo")]
+        [HiddenInGrid]
+        public TipoSanguineoEnum TipoSanguineo { get; set; }
+
         public SexoEnum Sexo { get; set; }
 
         public Guid Id { get; set; }

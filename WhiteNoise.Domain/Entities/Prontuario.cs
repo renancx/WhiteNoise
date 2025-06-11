@@ -9,6 +9,6 @@ namespace WhiteNoise.Domain.Entities
 
         public DateTime DataCriacao { get; set; }
 
-        public string Observacao { get; set; }
+        public string? Observacao { get; set; }
     }
 }

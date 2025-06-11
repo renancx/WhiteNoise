@@ -101,7 +101,7 @@ namespace WhiteNoise.Controllers
 
                 internacao.Prontuario = prontuario;
 
-                await _leitoRepository.AtualizarStatus(internacao.LeitoId, StatusLeitoEnum.Ocupado);
+                await _leitoRepository.AtualizarStatus(internacaoFormModel.LeitoId, StatusLeitoEnum.Ocupado);
                 await _internacaoRepository.Adicionar(internacao);
 
                 _notyf.Success("As informações foram salvas com sucesso.");

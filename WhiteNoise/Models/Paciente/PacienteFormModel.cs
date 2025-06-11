@@ -30,6 +30,10 @@ namespace WhiteNoise.Models.Paciente
         [Required(ErrorMessage = "O tipo de paciente é obrigatório.")]
         public TipoPacienteEnum TipoPaciente { get; set; }
 
+        [Display(Name = "Tipo Sanguíneo")]
+        [Required(ErrorMessage = "O tipo sanguíneo é obrigatório.")]
+        public TipoSanguineoEnum TipoSanguineo { get; set; }
+
         [Required(ErrorMessage = "O sexo do paciente é obrigatório.")]
         public SexoEnum Sexo { get; set; }
 

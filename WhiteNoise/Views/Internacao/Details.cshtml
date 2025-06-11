@@ -22,7 +22,6 @@
                 <div class="col-sm-8">@Model.Leito</div>
             </div>
 
-            @* Se você quiser exibir o Motivo, basta adicioná-lo aqui. Exemplo: *@
             @if (!string.IsNullOrEmpty(Model.Motivo))
             {
                 <div class="row mb-3">
@@ -31,7 +30,6 @@
                 </div>
             }
 
-            @* Data de Alta / Tipo de Saída só aparecem se existirem *@
             @if (Model.DataAlta.HasValue)
             {
                 <div class="row mb-3">
@@ -47,15 +45,15 @@
                     <div class="col-sm-8">@Model.TipoSaida.Value.ToString()</div>
                 </div>
             }
-        </div>
+        </div>        
+    </div>
 
-        <div class="card-footer text-right">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
-                <i class="fas fa-edit mr-1"></i>Editar
-            </a>
-            <a asp-action="Index" class="btn btn-secondary ml-2">
-                <i class="fas fa-arrow-left mr-1"></i>Voltar
-            </a>
-        </div>
+    <div class="d-flex justify-content-end w-25 mt-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-50 me-2">
+            <i class="bi bi-pencil me-1"></i> Editar
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+            <i class="bi bi-arrow-left me-1"></i> Voltar
+        </a>
     </div>
 </div>

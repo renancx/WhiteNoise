@@ -2,51 +2,91 @@
 @using WhiteNoise.Domain.Enums
 @model WhiteNoise.Models.Paciente.PacienteFormModel
 
-<div>
+@{
+    ViewData["Title"] = "Editar Paciente";
+}
+<div class="container">
     <h2>Editar Paciente</h2>
     <form asp-action="Edit" method="post" autocomplete="off">
         <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="form-group">
-            <label asp-for="Nome" class="control-label"></label>
-            <input asp-for="Nome" class="form-control" />
-            <span asp-validation-for="Nome" class="text-danger"></span>
-        </div>       
-        <div class="form-group row">
-            <list-selector for="EstadoClinicoId" items="Model.EstadosClinicos" />
-        </div>
-        <div class="form-group">
-            <label asp-for="DataNascimento" class="control-label"></label>
-            <input asp-for="DataNascimento" class="form-control" />
-            <span asp-validation-for="DataNascimento" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Cpf" class="control-label"></label>
-            <input asp-for="Cpf" class="form-control" />
-            <span asp-validation-for="Cpf" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Sexo" class="control-label"></label>
-            <select asp-for="Sexo" class="form-control" asp-items="Html.GetEnumSelectList<SexoEnum>()"></select>
-            <span asp-validation-for="Sexo" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="TipoPaciente" class="control-label"></label>
-            <select asp-for="TipoPaciente" class="form-control" asp-items="Html.GetEnumSelectList<TipoPacienteEnum>()"></select>
-            <span asp-validation-for="TipoPaciente" class="text-danger"></span>
-        </div>
-        <div class="form-group form-check">
-            <input asp-for="Ativo" class="form-check-input" />
-            <label asp-for="Ativo" class="form-check-label"></label>
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Dados Pessoais</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Nome" class="font-weight-bold"></label>
+                    <input asp-for="Nome" class="form-control" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Cpf" class="font-weight-bold"></label>
+                    <input asp-for="Cpf" class="form-control" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="DataNascimento" class="font-weight-bold"></label>
+                    <input asp-for="DataNascimento" class="form-control" type="date" />
+                    <span asp-validation-for="DataNascimento" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Email" class="font-weight-bold"></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Sexo" class="font-weight-bold"></label>
+                    <select asp-for="Sexo" class="form-control" asp-items="Html.GetEnumSelectList<SexoEnum>()"></select>
+                    <span asp-validation-for="Sexo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="TipoPaciente" class="font-weight-bold"></label>
+                    <select asp-for="TipoPaciente" class="form-control" asp-items="Html.GetEnumSelectList<TipoPacienteEnum>()"></select>
+                    <span asp-validation-for="TipoPaciente" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Informações Clínicas</legend>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <list-selector for="EstadoClinicoId" bold-title="true" items="Model.EstadosClinicos" />
+                    <span asp-validation-for="EstadoClinicoId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="TipoSanguineo" class="font-weight-bold"></label>
+                    <select asp-for="TipoSanguineo" class="form-control col-md-5" asp-items="Html.GetEnumSelectList<TipoSanguineoEnum>()"></select>
+                    <span asp-validation-for="TipoSanguineo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-4 mt-4">
+                    <div class="form-check">
+                        <input asp-for="Ativo" class="form-check-input" />
+                        <label asp-for="Ativo" class="form-check-label font-weight-bold"></label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="d-flex justify-content-end w-25">
+            <button type="submit" class="btn btn-primary w-50 me-2">
+                <i class="bi bi-check-circle me-1"></i> Salvar
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
+            </a>
         </div>
 
-        <button type="submit" class="btn btn-primary">Salvar</button>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
     </form>
 </div>

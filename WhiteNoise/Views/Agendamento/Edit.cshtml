@@ -1,66 +1,67 @@
-﻿@using WhiteNoise.Domain.Enums
-@using WhiteNoise.Models.Agendamento
-@model AgendamentoFormModel
+﻿@using WhiteNoise.Domain.Entities
+@using WhiteNoise.Domain.Enums
+@model WhiteNoise.Models.Agendamento.AgendamentoFormModel
 
 @{
     ViewData["Title"] = "Editar Agendamento";
 }
-
-<div>
-    <h3>Editar Estado Clínico</h3>
+<div class="container">
+    <h2>Editar Estado do Agendamento</h2>
 
     <form asp-action="Edit" asp-controller="Agendamento" asp-route-id="@Model.Id" method="post" autocomplete="off">
         <input type="hidden" name="_method" value="PUT" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-        <div class="form-group">
-            <label asp-for="DataHora" class="control-label"></label>
-            <input asp-for="DataHora" class="form-control" />
-            <span asp-validation-for="DataHora" class="text-danger"></span>
-        </div>
+        <fieldset class="border p-3 mb-4">
+            <legend class="w-auto">Dados do Agendamento</legend>
 
-        <div class="form-group">
-            <label asp-for="Tipo" class="control-label"></label>
-            <select asp-for="Tipo" class="form-control" asp-items="Html.GetEnumSelectList<TipoAgendamentoEnum>()"></select>
-            <span asp-validation-for="Tipo" class="text-danger"></span>
-        </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="DataHora" class="font-weight-bold"></label>
+                    <input asp-for="DataHora" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="DataHora" class="text-danger"></span>
+                </div>
 
-        <div class="form-group">
-            <label asp-for="Status" class="control-label"></label>
-            <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<StatusAgendamentoEnum>()"></select>
-            <span asp-validation-for="Status" class="text-danger"></span>
-        </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Tipo" class="font-weight-bold"></label>
+                    <select asp-for="Tipo" class="form-control" asp-items="Html.GetEnumSelectList<TipoAgendamentoEnum>()"></select>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
 
-        <div class="form-group">
-            <label asp-for="Observacoes" class="control-label"></label>
-            <input asp-for="Observacoes" class="form-control" />
-            <span asp-validation-for="Observacoes" class="text-danger"></span>
-        </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Status" class="font-weight-bold"></label>
+                    <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<StatusAgendamentoEnum>()"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
 
-        @* <div class="form-group">
-            <label asp-for="PacienteId"></label>
-            <select asp-for="PacienteId" class="form-control" asp-items="Model.Pacientes">
-            </select>
-            <span asp-validation-for="PacienteId" class="text-danger"></span>
-        </div>
+            <div class="row mt-3">
+                <div class="form-group col-md-12 pl-0">
+                    <list-selector for="PacienteId" items="Model.Pacientes" quick-create="Paciente" bold-title />
+                    <span asp-validation-for="PacienteId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-12 pl-0">
+                    <list-selector for="ProfissionalId" items="Model.Profissionais" quick-create="Profissional" bold-title />
+                    <span asp-validation-for="ProfissionalId" class="text-danger"></span>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label asp-for="ProfissionalId"></label>
-            <select asp-for="ProfissionalId" class="form-control" asp-items="Model.Profissionais">
-            </select>
-            <span asp-validation-for="ProfissionalId" class="text-danger"></span>
-        </div> *@
+            <div class="form-row mt-3">
+                <div class="form-group col-md-12">
+                    <label asp-for="Observacoes" class="font-weight-bold"></label>
+                    <textarea asp-for="Observacoes" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Observacoes" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
 
-        <div class="form-group">
-            <list-selector for="PacienteId" items="Model.Pacientes" />
-        </div>
-
-        <div class="form-group">
-            <list-selector for="ProfissionalId" items="Model.Profissionais" quick-create="Profissional" />
-        </div>
-
-        <div>
-            <input type="submit" value="Confirmar" class="btn btn-success" />
-            <a class="btn btn-secondary" asp-controller="Agendamento" asp-action="Calendario">Cancelar</a>
+        <div class="d-flex justify-content-end w-25">
+            <button type="submit" class="btn btn-primary w-50 me-2">
+                <i class="bi bi-check-circle me-1"></i> Salvar
+            </button>
+            <a asp-controller="Agendamento" asp-action="Calendario" class="btn btn-outline-secondary ml-2 w-50">
+                <i class="bi bi-arrow-left me-1"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

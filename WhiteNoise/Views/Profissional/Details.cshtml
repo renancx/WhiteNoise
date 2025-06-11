@@ -1,28 +1,55 @@
 ﻿@model WhiteNoise.Models.Profissional.ProfissionalViewModel
 
-<div>
+@{
+    ViewData["Title"] = "Detalhes do Profissional";
+}
+<div class="container">
     <h2>Detalhes do Profissional</h2>
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">Nome</dt>
-            <dd class="col-sm-10">@Model.Nome</dd>
 
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto">Dados Pessoais</legend>
 
-            <dt class="col-sm-2">Data Nascimento</dt>
-            <dd class="col-sm-10">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
+        <div class="form-row mb-2">
+            <div class="col-md-6">
+                <strong>Nome:</strong>
+                <div>@Model.Nome</div>
+            </div>
 
-            <dt class="col-sm-2">E-mail</dt>
-            <dd class="col-sm-10">@Model.Email</dd>
-            <dt class="col-sm-2">CPF</dt>
-            <dd class="col-sm-10">@Model.Cpf</dd>
-            <dt class="col-sm-2">Sexo</dt>
-            <dd class="col-sm-10">@Model.Sexo</dd>
+            <div class="col-md-3">
+                <strong>CPF:</strong>
+                <div>@Model.Cpf</div>
+            </div>
 
-            <dt class="col-sm-2">Ativo</dt>
-            <dd class="col-sm-10">@(Model.Ativo ? "Sim" : "Não")</dd>
+            <div class="col-md-3">
+                <strong>Data de Nascimento:</strong>
+                <div>@Model.DataNascimento.ToString("dd/MM/yyyy")</div>
+            </div>
+        </div>
 
-        </dl>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        <div class="form-row mb-2">
+            <div class="col-md-6">
+                <strong>Email:</strong>
+                <div>@Model.Email</div>
+            </div>
+
+            <div class="col-md-3">
+                <strong>Sexo:</strong>
+                <div>@Model.Sexo</div>
+            </div>
+
+            <div class="col-md-3">
+                <strong>Ativo:</strong>
+                <div>@(Model.Ativo ? "Sim" : "Não")</div>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="d-flex justify-content-end w-25">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-50 me-2">
+            <i class="bi bi-pencil-square me-1"></i> Editar
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">
+            <i class="bi bi-arrow-left me-1"></i> Voltar
+        </a>
     </div>
 </div>

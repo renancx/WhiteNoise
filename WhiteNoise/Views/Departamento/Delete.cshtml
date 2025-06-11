@@ -8,6 +8,11 @@
 <div>
     <h3>Deletar Departamento</h3>
 
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Tem certeza desta ação?</h4>
+        <p>Esta ação é irreversível e removerá permanentemente o registro selecionado.</p>
+    </div>
+
     <div>
         <label asp-for="Descricao"></label>
         <input asp-for="Descricao" disabled class="form-control" />
