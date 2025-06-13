@@ -10,7 +10,7 @@ using WhiteNoise.Infra.Data.Contexts;
 namespace WhiteNoise.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610174833_InitialMigration")]
+    [Migration("20250612123731_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,9 +143,7 @@ namespace WhiteNoise.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeitoId")
-                        .IsUnique()
-                        .HasFilter("[LeitoId] IS NOT NULL");
+                    b.HasIndex("LeitoId");
 
                     b.HasIndex("PacienteId");
 
@@ -302,8 +300,8 @@ namespace WhiteNoise.Infra.Data.Migrations
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Internacao", b =>
                 {
                     b.HasOne("WhiteNoise.Domain.Entities.Leito", "Leito")
-                        .WithOne()
-                        .HasForeignKey("WhiteNoise.Domain.Entities.Internacao", "LeitoId");
+                        .WithMany("Internacoes")
+                        .HasForeignKey("LeitoId");
 
                     b.HasOne("WhiteNoise.Domain.Entities.Paciente", "Paciente")
                         .WithMany("Internacoes")

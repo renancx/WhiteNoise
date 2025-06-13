@@ -16,6 +16,11 @@ namespace WhiteNoise.Infra.Data.Repositories
             _context = context;
         }
 
+        public virtual async Task Salvar()
+        {
+            await _context.SaveChangesAsync();
+        }
+
         public virtual async Task<List<T>> ObterTodos()
         {
             return await _context.Set<T>().AsNoTracking().ToListAsync();
@@ -25,6 +30,7 @@ namespace WhiteNoise.Infra.Data.Repositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
+
 
         public virtual async Task Adicionar(T entity)
         {

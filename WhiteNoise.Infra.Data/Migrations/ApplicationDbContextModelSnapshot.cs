@@ -141,9 +141,7 @@ namespace WhiteNoise.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeitoId")
-                        .IsUnique()
-                        .HasFilter("[LeitoId] IS NOT NULL");
+                    b.HasIndex("LeitoId");
 
                     b.HasIndex("PacienteId");
 
@@ -300,8 +298,8 @@ namespace WhiteNoise.Infra.Data.Migrations
             modelBuilder.Entity("WhiteNoise.Domain.Entities.Internacao", b =>
                 {
                     b.HasOne("WhiteNoise.Domain.Entities.Leito", "Leito")
-                        .WithOne()
-                        .HasForeignKey("WhiteNoise.Domain.Entities.Internacao", "LeitoId");
+                        .WithMany("Internacoes")
+                        .HasForeignKey("LeitoId");
 
                     b.HasOne("WhiteNoise.Domain.Entities.Paciente", "Paciente")
                         .WithMany("Internacoes")

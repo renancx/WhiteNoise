@@ -8,6 +8,7 @@
     <h2>Finalizar Internação</h2>
 
     <form asp-action="Finalizar" asp-controller="Internacao" asp-route-id="@Model.Id" method="post" autocomplete="off">
+        <input type="hidden" asp-for="LeitoId" />
         <input type="hidden" name="_method" value="PUT" />
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -18,6 +19,11 @@
                 <div class="form-group col-md-6">
                     <div class="col-sm-4 font-weight-bold p-0">Paciente:</div>
                     <div class="col-sm-8 p-0">@Model.Paciente</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 font-weight-bold">Leito:</div>
+                    <div class="col-sm-8">@Model.Leito</div>
                 </div>
             </div>
 
@@ -44,7 +50,7 @@
         </fieldset>
 
         <div class="d-flex justify-content-end w-25">
-            <button type="submit" class="btn btn-primary w-50 me-2">
+            <button type="submit" class="btn btn-info w-50 me-2">
                 <i class="bi bi-check-circle me-1"></i> Confirmar
             </button>
             <a asp-controller="Internacao" asp-action="Index" class="btn btn-outline-secondary ml-2 w-50">

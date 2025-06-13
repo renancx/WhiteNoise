@@ -56,8 +56,15 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Index()
         {
             var internacoes = await _internacaoRepository.ObterTodasAtivas();
-            var gridModels = _mapper.Map<List<InternacaoGridModel>>(internacoes);
-            return View(gridModels);
+            var gridModel = _mapper.Map<List<InternacaoGridModel>>(internacoes);
+            return View(gridModel);
+        }
+
+        public async Task<IActionResult> Historico()
+        {
+            var internacoes = await _internacaoRepository.ObterHistorico();
+            var gridModel = _mapper.Map<List<InternacaoHistoricoGridModel>>(internacoes);
+            return View(gridModel);
         }
 
         [HttpGet]
@@ -121,10 +128,10 @@ namespace WhiteNoise.Controllers
             if (internacao is null)
                 return NotFound();
 
-            var vm = _mapper.Map<InternacaoFormModel>(internacao);
+            var internacaoFormModel = _mapper.Map<InternacaoFormModel>(internacao);
 
-            await PopularSelectListsInternacao(vm);
-            return View(vm);
+            await PopularSelectListsInternacao(internacaoFormModel);
+            return View(internacaoFormModel);
         }
 
         [HttpPost]
@@ -157,7 +164,7 @@ namespace WhiteNoise.Controllers
             catch (Exception)
             {
                 _notyf.Error("Ocorreu um erro ao salvar as informações.");
-                throw;
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -199,9 +206,11 @@ namespace WhiteNoise.Controllers
             if (internacao is null)
                 return NotFound();
 
-            var vm = _mapper.Map<InternacaoFinalizarModel>(internacao);
+            var internacaoFinalizarModel = _mapper.Map<InternacaoFinalizarModel>(internacao);
 
-            return View(vm);
+            internacaoFinalizarModel.DataAlta = DateTime.Now;
+
+            return View(internacaoFinalizarModel);
         }
 
         [HttpPost]
@@ -218,12 +227,9 @@ namespace WhiteNoise.Controllers
             }
 
             try
-            {
-                var internacao = _mapper.Map<Internacao>(internacaoFinalizarModel);
-
+            {                
                 await _internacaoRepository.FinalizarPorId(id, internacaoFinalizarModel.TipoSaida, internacaoFinalizarModel.DataAlta);
-                await _leitoRepository.AtualizarStatus(internacao.LeitoId , StatusLeitoEnum.Livre);
-                await _internacaoRepository.Atualizar(internacao);
+                await _leitoRepository.AtualizarStatus(internacaoFinalizarModel.LeitoId , StatusLeitoEnum.Livre);
 
                 _notyf.Success("As informações foram atualizadas com sucesso.");
                 return RedirectToAction(nameof(Index));
@@ -231,7 +237,7 @@ namespace WhiteNoise.Controllers
             catch (Exception)
             {
                 _notyf.Error("Ocorreu um erro ao salvar as informações.");
-                throw;
+                return RedirectToAction(nameof(Index));
             }
         }
 

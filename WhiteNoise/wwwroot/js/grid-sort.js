@@ -6,9 +6,10 @@
                 "<div class='ml-2'>registros por página</div>" +
                 "</div>",
             info: "Mostrando _START_ até _END_ (_TOTAL_ itens)",
-            infoEmpty: "Mostrando 0 até 0 de 0 itens",
+            infoEmpty: "Mostrando _END_ até _END_ (_TOTAL_ itens)",
             infoFiltered: "",
             zeroRecords: "Nenhum registro encontrado",
+            emptyTable: "Nenhum dado disponível na tabela",
             search: "",
             searchPlaceholder: "Buscar...",
             paginate: {

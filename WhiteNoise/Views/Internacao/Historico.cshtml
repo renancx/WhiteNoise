@@ -1,19 +1,19 @@
-﻿@using WhiteNoise.Models.Departamento
+﻿@using WhiteNoise.Models.Internacao
 
-@model IEnumerable<DepartamentoGridModel>
+@model IEnumerable<InternacaoHistoricoGridModel>
 
 @{
-    ViewData["Title"] = "Listagem de Departamentos";
+    ViewData["Title"] = "Historico de Internações";
 }
 
 <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">@ViewData["Title"]</h2>
         <a class="btn btn-lg btn-info rounded-pill shadow-sm"
-           asp-controller="Departamento" asp-action="Create">
+           asp-controller="Internacao" asp-action="Create">
             <i class="bi bi-plus-lg me-2"></i>Adicionar Novo
         </a>
     </div>
 
-    <table-grid controller="Departamento" allow-sorting="true" items="@Model"></table-grid>
+    <table-grid controller="Internacao" allow-sorting="true" items="@Model"></table-grid>
 </div>

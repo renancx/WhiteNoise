@@ -23,7 +23,7 @@ namespace WhiteNoise.Shared.ViewComponents.EstadoClinico
 
             var model = new EstadoClinicoContadorModel
             {
-                Titulo = $"Estado {estado}",
+                Titulo = $"{estado}",
                 Percentual = percentual,
                 Parcial = (int)totalEstadoClinico,
                 Progresso = progresso

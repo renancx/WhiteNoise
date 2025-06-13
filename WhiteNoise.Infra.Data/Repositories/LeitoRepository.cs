@@ -51,6 +51,8 @@ namespace WhiteNoise.Infra.Data.Repositories
             var leito = await ObterPorId(leitoId);
 
             leito.Status = status;
+
+            await Atualizar(leito);
         }
 
         public async Task<IEnumerable<Leito>> ObterPorStatusOuId(Guid? id, StatusLeitoEnum status)

@@ -16,38 +16,38 @@ namespace WhiteNoise.Infra.Data.Repositories
         {
         }
 
-        public override async Task<List<Internacao>> ObterTodos()
+        public async Task<List<Internacao>> ObterHistorico()
         {
-            var leitos = await _context.Internacao
+            var internacoes = await _context.Internacao
                 .Include(x => x.Paciente)
                 .Include(x => x.Leito)
                 .AsNoTracking()
                 .ToListAsync();
 
-            return leitos;
+            return internacoes;
         }
 
         public async Task<List<Internacao>> ObterTodasAtivas()
         {
-            var leitos = await _context.Internacao
+            var internacoes = await _context.Internacao
                 .Include(x => x.Paciente)
                 .Include(x => x.Leito)
                 .Where(x => x.Ativa == true)
                 .AsNoTracking()
                 .ToListAsync();
 
-            return leitos;
+            return internacoes;
         }
 
         public override async Task<Internacao> ObterPorId(Guid? id)
         {
-            var leito = await _context.Internacao
+            var internacao = await _context.Internacao
                 .Include(x => x.Paciente)
                 .Include(x => x.Leito)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            return leito;
+            return internacao;
         }
 
         public async Task FinalizarPorId(Guid? internacaoId, TipoSaidaEnum tipoSaida, DateTime dataAlta)
@@ -57,6 +57,8 @@ namespace WhiteNoise.Infra.Data.Repositories
             internacao.TipoSaida = tipoSaida;
             internacao.Ativa = false;
             internacao.DataAlta = dataAlta;
+
+            await Atualizar(internacao);
         }
     }
 }

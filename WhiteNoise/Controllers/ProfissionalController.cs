@@ -119,7 +119,7 @@ namespace WhiteNoise.Controllers
             catch
             {                    
                 _notyf.Error("Ocorreu um erro ao salvar as informações.");
-                throw;                    
+                return RedirectToAction(nameof(Index));
             }
 
             _notyf.Success("As informações foram salvas com sucesso.");

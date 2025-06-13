@@ -82,7 +82,17 @@ namespace WhiteNoise.Shared.TagHelpers
                         }
                         else
                         {
-                            output.Content.AppendHtml($"<td class=\"py-1 px-2\">{value}</td>");
+                            string cellContent = value?.ToString() ?? string.Empty;
+                            string cellClass = "py-1 px-2";
+
+                            var boolStyle = prop.GetCustomAttribute<StyledBooleanAttribute>();
+                            if (boolStyle != null && value is bool boolValue)
+                            {
+                                cellClass += " " + (boolValue ? boolStyle.TrueClass : boolStyle.FalseClass);
+                                cellContent = boolValue ? boolStyle.TrueText : boolStyle.FalseText;
+                            }
+
+                            output.Content.AppendHtml($"<td class=\"{cellClass}\">{cellContent}</td>");
                         }
                     }
                 }

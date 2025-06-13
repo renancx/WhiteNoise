@@ -38,8 +38,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="leitosDropdown">
                         <a class="dropdown-item" asp-controller="Internacao" asp-action="Create"><i class="bi bi-plus-circle me-2"></i> Nova Internação</a>
-                        <a class="dropdown-item" asp-controller="Internacao" asp-action="Index"><i class="bi bi-clipboard-data me-2"></i> Lista de Internações</a>
-                        <a class="dropdown-item" asp-controller="Leito" asp-action="Index"><i class="bi bi-door-open me-2"></i> Leitos</a>
+                        <a class="dropdown-item" asp-controller="Internacao" asp-action="Index"><i class="bi bi-clipboard-data me-2"></i> Internações Ativas</a>
+                        <a class="dropdown-item" asp-controller="Internacao" asp-action="Historico"><i class="bi bi-journal-text me-2"></i> Histórico de Internações</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -48,6 +48,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="administracaoDropdown">
                         <a class="dropdown-item" asp-controller="Profissional" asp-action="Index"><i class="bi bi-person-badge me-2"></i> Profissionais</a>
+                        <a class="dropdown-item" asp-controller="Leito" asp-action="Index"><i class="bi bi-door-open me-2"></i> Leitos</a>
                         <a class="dropdown-item" asp-controller="Departamento" asp-action="Index"><i class="bi bi-building me-2"></i> Departamentos</a>
                     </div>
                 </li>

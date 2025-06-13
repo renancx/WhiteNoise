@@ -8,6 +8,11 @@ namespace WhiteNoise.Mappers
     {
         public InternacaoMapper()
         {
+            //HistoricoGrid
+            CreateMap<Internacao, InternacaoHistoricoGridModel>()
+                .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome))
+                .ForMember(x => x.Leito, opt => opt.MapFrom(src => src.Leito.Descricao));
+
             //ViewModel
             CreateMap<InternacaoViewModel, Internacao>();
 
@@ -31,7 +36,9 @@ namespace WhiteNoise.Mappers
             CreateMap<InternacaoFinalizarModel, Internacao>();
 
             CreateMap<Internacao, InternacaoFinalizarModel>()
-                .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome));
+                .ForMember(x => x.Paciente, opt => opt.MapFrom(src => src.Paciente.Nome))
+                .ForMember(x => x.Leito, opt => opt.MapFrom(src => src.Leito.Descricao))
+                .ForMember(x => x.LeitoId, opt => opt.MapFrom(src => src.LeitoId));
 
         }
     }

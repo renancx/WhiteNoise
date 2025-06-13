@@ -30,16 +30,16 @@ namespace WhiteNoise.Infra.Data.Configurators
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(i => i.Leito)
-              .WithOne()
-              .HasForeignKey<Internacao>(i => i.LeitoId)
-              .IsRequired(false)
-              .OnDelete(DeleteBehavior.Restrict);
+                   .WithMany(l => l.Internacoes)
+                   .HasForeignKey(i => i.LeitoId)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(i => i.Prontuario)
-              .WithOne()
-              .HasForeignKey<Internacao>(i => i.ProntuarioId)
-              .IsRequired(false)
-              .OnDelete(DeleteBehavior.Restrict);
+                   .WithOne()
+                   .HasForeignKey<Internacao>(i => i.ProntuarioId)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -11,5 +11,7 @@ namespace WhiteNoise.Models.Leito
         public DateTime DataEntrada { get; set; }
 
         public string? EstadoClinico { get; set; }
+
+        public string? Motivo { get; set; }
     }
 }

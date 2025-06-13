@@ -22,7 +22,8 @@ namespace WhiteNoise.Shared.ViewComponents.Leito
             {
                 Paciente = internacao.Paciente.Nome,
                 DataEntrada = internacao.DataEntrada,
-                EstadoClinico = internacao.Paciente.EstadoClinico?.Descricao
+                EstadoClinico = internacao.Paciente.EstadoClinico?.Descricao,
+                Motivo = internacao.Motivo
             };
 
             return View(model);

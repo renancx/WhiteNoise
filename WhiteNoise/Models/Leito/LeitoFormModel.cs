@@ -14,7 +14,7 @@ namespace WhiteNoise.Models.Leito
 
         public TipoLeitoEnum Tipo { get; set; }
 
-        public StatusLeitoEnum Status { get; set; }
+        public StatusLeitoEnum Status { get; set; } = StatusLeitoEnum.Livre;
 
         [HiddenInGrid]
         [Required(ErrorMessage = "O departamento é obrigatório.")]

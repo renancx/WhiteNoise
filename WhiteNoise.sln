@@ -1,19 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.35731.53
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteNoise", "WhiteNoise\WhiteNoise.csproj", "{DAFC575C-0C09-4307-BB05-321F8A122DE8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{7F3F31DE-355D-42FF-8429-8E603D7E7DD5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Domain", "2 - Domain", "{CE7CAA5A-7825-43E6-A26B-4BB0B8098A81}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{CE7CAA5A-7825-43E6-A26B-4BB0B8098A81}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Infra", "3 - Infra", "{EA4B426B-FB1A-4E5A-ABF8-94419E1984D2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{EA4B426B-FB1A-4E5A-ABF8-94419E1984D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteNoise.Infra.Data", "WhiteNoise.Infra.Data\WhiteNoise.Infra.Data.csproj", "{3D9D0010-7C76-40AF-A45E-63F26E3E0807}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteNoise.Domain", "WhiteNoise.Domain\WhiteNoise.Domain.csproj", "{359D1351-87D1-4F41-ACEF-1A6694FF858F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteNoise.Application", "WhiteNoise.Application\WhiteNoise.Application.csproj", "{D9BF6BBE-9C83-4235-ACF6-15084B07A38F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,10 @@ Global
 		{359D1351-87D1-4F41-ACEF-1A6694FF858F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{359D1351-87D1-4F41-ACEF-1A6694FF858F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{359D1351-87D1-4F41-ACEF-1A6694FF858F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9BF6BBE-9C83-4235-ACF6-15084B07A38F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BF6BBE-9C83-4235-ACF6-15084B07A38F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BF6BBE-9C83-4235-ACF6-15084B07A38F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BF6BBE-9C83-4235-ACF6-15084B07A38F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +49,7 @@ Global
 		{DAFC575C-0C09-4307-BB05-321F8A122DE8} = {7F3F31DE-355D-42FF-8429-8E603D7E7DD5}
 		{3D9D0010-7C76-40AF-A45E-63F26E3E0807} = {EA4B426B-FB1A-4E5A-ABF8-94419E1984D2}
 		{359D1351-87D1-4F41-ACEF-1A6694FF858F} = {CE7CAA5A-7825-43E6-A26B-4BB0B8098A81}
+		{D9BF6BBE-9C83-4235-ACF6-15084B07A38F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {087DC654-CDEC-4B59-A615-2A1F56C900F6}

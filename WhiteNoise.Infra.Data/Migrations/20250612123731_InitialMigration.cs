@@ -192,9 +192,7 @@ namespace WhiteNoise.Infra.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Internacao_LeitoId",
                 table: "Internacao",
-                column: "LeitoId",
-                unique: true,
-                filter: "[LeitoId] IS NOT NULL");
+                column: "LeitoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Internacao_PacienteId",

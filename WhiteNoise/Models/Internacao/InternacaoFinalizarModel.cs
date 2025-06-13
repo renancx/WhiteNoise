@@ -12,6 +12,8 @@ namespace WhiteNoise.Models.Internacao
         public DateTime DataEntrada { get; set; }
 
         [Display(Name = "Leito")]
+        public string? Leito { get; set; }
+
         public Guid? LeitoId { get; set; }
 
         public string? Motivo { get; set; }
