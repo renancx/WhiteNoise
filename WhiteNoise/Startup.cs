@@ -3,10 +3,12 @@ using AspNetCoreHero.ToastNotification;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WhiteNoise.Application.Services;
 using WhiteNoise.Infra.Data.Contexts;
 using WhiteNoise.Infra.Data.Identity;
 using WhiteNoise.Infra.Data.Repositories;
@@ -50,6 +52,13 @@ namespace WhiteNoise
             services.Scan(scan => scan
                 .FromAssemblyOf<PacienteRepository>()
                 .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Repository")))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            );
+
+            services.Scan(scan => scan
+                .FromAssemblyOf<PacienteService>()
+                .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Service")))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
             );

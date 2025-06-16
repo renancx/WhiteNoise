@@ -5,11 +5,8 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Domain.Interfaces.Repositories;
-using WhiteNoise.Infra.Data.Repositories;
-using WhiteNoise.Models.Leito;
 using WhiteNoise.Models.Profissional;
 namespace WhiteNoise.Controllers
 {
@@ -18,25 +15,25 @@ namespace WhiteNoise.Controllers
     {
         #region Private Fields
         private readonly IMapper _mapper; 
-        private readonly IProfissionalRepository _profissionalRepository;
-        private readonly IDepartamentoRepository _departamentoRepository;
+        private readonly IProfissionalService _profissionalService;
+        private readonly IDepartamentoService _departamentoService;
         private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public ProfissionalController(IMapper mapper, IProfissionalRepository profissionalRepository, INotyfService notyf, IDepartamentoRepository departamentoRepository)
+        public ProfissionalController(IMapper mapper, IProfissionalService profissionalService, INotyfService notyf, IDepartamentoService departamentoService)
         {
-            _profissionalRepository = profissionalRepository;
+            _profissionalService = profissionalService;
             _mapper = mapper;
             _notyf = notyf;
-            _departamentoRepository = departamentoRepository;
+            _departamentoService = departamentoService;
         }
         #endregion
 
         private async Task PopularDepartamentos(ProfissionalViewModel model)
         {
-            var departamentos = await _departamentoRepository.ObterTodos();
+            var departamentos = await _departamentoService.ObterTodos();
             model.Departamentos = new SelectList(departamentos, "Id", "Descricao", model.DepartamentoId);
         }
 
@@ -44,7 +41,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var profissionais = await _profissionalRepository.ObterTodos();
+            var profissionais = await _profissionalService.ObterTodos();
             var profissionaisGridModel = _mapper.Map<List<ProfissionalGridModel>>(profissionais);
             return View(profissionaisGridModel);
         }
@@ -52,7 +49,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid? id)
         {
-            var profissional = await _profissionalRepository.ObterPorId(id);
+            var profissional = await _profissionalService.ObterPorId(id);
             var profissionalViewModel = _mapper.Map<ProfissionalViewModel>(profissional);
             return View(profissionalViewModel);
         }
@@ -79,7 +76,7 @@ namespace WhiteNoise.Controllers
             var profissional = _mapper.Map<Profissional>(profissionalViewModel);
             profissional.Id = Guid.NewGuid();
 
-            await _profissionalRepository.Adicionar(profissional);
+            await _profissionalService.Adicionar(profissional);
 
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));            
@@ -88,7 +85,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var profissional = await _profissionalRepository.ObterPorId(id);
+            var profissional = await _profissionalService.ObterPorId(id);
 
             if (profissional == null)
                 return NotFound();
@@ -114,7 +111,7 @@ namespace WhiteNoise.Controllers
             try
             {
                 var profissional = _mapper.Map<Profissional>(profissionalViewModel);
-                await _profissionalRepository.Atualizar(profissional);
+                await _profissionalService.Atualizar(profissional);
             }
             catch
             {                    
@@ -129,7 +126,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var profissional = await _profissionalRepository.ObterPorId(id);
+            var profissional = await _profissionalService.ObterPorId(id);
 
             if (profissional == null)
             {
@@ -146,7 +143,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _profissionalRepository.Remover(id);
+                await _profissionalService.Remover(id);
             }
             catch (Exception ex)
             {

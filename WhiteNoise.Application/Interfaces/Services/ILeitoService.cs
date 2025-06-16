@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
 
-namespace WhiteNoise.Domain.Interfaces.Repositories
+namespace WhiteNoise.Application.Interfaces.Services
 {
-    public interface ILeitoRepository : IBaseRepository<Leito>
+    public interface ILeitoService : IBaseService<Leito>
     {
         Task<List<Leito>> ObterTodosPorStatus(StatusLeitoEnum status);
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
 
-namespace WhiteNoise.Domain.Interfaces.Repositories
+namespace WhiteNoise.Application.Interfaces.Repositories
 {
     public interface IInternacaoRepository : IBaseRepository<Internacao>
     {

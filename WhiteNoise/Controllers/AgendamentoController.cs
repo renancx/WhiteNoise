@@ -5,10 +5,8 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Domain.Interfaces.Repositories;
-using WhiteNoise.Infra.Data.Repositories;
 using WhiteNoise.Models.Agendamento;
 
 namespace WhiteNoise.Controllers
@@ -16,9 +14,9 @@ namespace WhiteNoise.Controllers
     public class AgendamentoController : BaseController
     {
         #region Private Fields
-        private readonly IAgendamentoRepository _agendamentoRepository;
-        private readonly IProfissionalRepository _profissionalRepository;
-        private readonly IPacienteRepository _pacienteRepository;
+        private readonly IAgendamentoService _agendamentoService;
+        private readonly IProfissionalService _profissionalService;
+        private readonly IPacienteService _pacienteService;
         private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
 
@@ -26,14 +24,14 @@ namespace WhiteNoise.Controllers
 
         #region Constructors
         public AgendamentoController(IMapper mapper, 
-            IAgendamentoRepository agendamentoRepository, 
-            IPacienteRepository pacienteRepository, 
-            IProfissionalRepository profissionalRepository,
+            IAgendamentoService agendamentoService, 
+            IPacienteService pacienteService, 
+            IProfissionalService profissionalService,
             INotyfService notyf)
         {
-            _agendamentoRepository = agendamentoRepository;
-            _profissionalRepository = profissionalRepository;
-            _pacienteRepository = pacienteRepository;
+            _agendamentoService = agendamentoService;
+            _profissionalService = profissionalService;
+            _pacienteService = pacienteService;
             _notyf = notyf;
             _mapper = mapper;
         }
@@ -44,8 +42,8 @@ namespace WhiteNoise.Controllers
 
         private async Task PopularSelectListsAgendamento(AgendamentoFormModel model)
         {
-            var pacientes = await _pacienteRepository.ObterTodos();
-            var profissionais = await _profissionalRepository.ObterTodos();
+            var pacientes = await _pacienteService.ObterTodos();
+            var profissionais = await _profissionalService.ObterTodos();
 
             model.Pacientes = new SelectList(pacientes, "Id", "Nome", model.PacienteId);
             model.Profissionais = new SelectList(profissionais, "Id", "Nome", model.ProfissionalId);
@@ -56,14 +54,17 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var agendamentos = await _agendamentoRepository.ObterTodos();
+            var agendamentos = await _agendamentoService.ObterTodos();
+
+
+
             var agendamentosGridModel = _mapper.Map<List<AgendamentoGridModel>>(agendamentos);
             return View(agendamentosGridModel);
         }
 
         public async Task<IActionResult> Calendario()
         {
-            var agendamentos = await _agendamentoRepository.ObterTodos();
+            var agendamentos = await _agendamentoService.ObterTodos();
             var agendamentosGridModel = _mapper.Map<List<AgendamentoGridModel>>(agendamentos);
             return View(agendamentosGridModel);
         }
@@ -71,7 +72,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var agendamento = await _agendamentoService.ObterPorId(id);
             var agendamentoGridModel = _mapper.Map<AgendamentoGridModel>(agendamento);
             return View(agendamentoGridModel);
         }
@@ -99,7 +100,7 @@ namespace WhiteNoise.Controllers
             var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
 
             agendamento.Id = Guid.NewGuid();
-            await _agendamentoRepository.Adicionar(agendamento);
+            await _agendamentoService.Adicionar(agendamento);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Calendario));
         }
@@ -107,7 +108,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var agendamento = await _agendamentoService.ObterPorId(id);
 
             if (agendamento == null)
                 return NotFound();
@@ -133,7 +134,7 @@ namespace WhiteNoise.Controllers
             try
             {
                 var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
-                await _agendamentoRepository.Atualizar(agendamento);
+                await _agendamentoService.Atualizar(agendamento);
             }
             catch
             {
@@ -148,7 +149,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var agendamento = await _agendamentoRepository.ObterPorId(id);
+            var agendamento = await _agendamentoService.ObterPorId(id);
 
             if (agendamento == null)
             {
@@ -166,7 +167,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _agendamentoRepository.Remover(id);
+                await _agendamentoService.Remover(id);
             }
             catch (Exception ex)
             {

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Prontuario;
 
 namespace WhiteNoise.Controllers
@@ -13,7 +13,7 @@ namespace WhiteNoise.Controllers
     public class ProntuarioController : BaseController
     {
         #region Private Fields
-        private readonly IProntuarioRepository _prontuarioRepository;
+        private readonly IProntuarioService _prontuarioService;
         private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
 
@@ -21,10 +21,10 @@ namespace WhiteNoise.Controllers
 
         #region Constructors
         public ProntuarioController(IMapper mapper, 
-            IProntuarioRepository prontuarioRepository,
+            IProntuarioService prontuarioService,
             INotyfService notyf)
         {
-            _prontuarioRepository = prontuarioRepository;
+            _prontuarioService = prontuarioService;
             _notyf = notyf;
             _mapper = mapper;
         }
@@ -34,7 +34,7 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var prontuario = await _prontuarioRepository.ObterTodos();
+            var prontuario = await _prontuarioService.ObterTodos();
             var prontuarioGridModel = _mapper.Map<List<ProntuarioGridModel>>(prontuario);
             return View(prontuarioGridModel);
         }
@@ -42,7 +42,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var prontuario = await _prontuarioRepository.ObterPorId(id);
+            var prontuario = await _prontuarioService.ObterPorId(id);
             var prontuarioGridModel = _mapper.Map<ProntuarioGridModel>(prontuario);
             return View(prontuarioGridModel);
         }
@@ -65,7 +65,7 @@ namespace WhiteNoise.Controllers
             var prontuario = _mapper.Map<Prontuario>(prontuarioFormModel);
 
             prontuario.Id = Guid.NewGuid();
-            await _prontuarioRepository.Adicionar(prontuario);
+            await _prontuarioService.Adicionar(prontuario);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
@@ -73,7 +73,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var prontuario = await _prontuarioRepository.ObterPorId(id);
+            var prontuario = await _prontuarioService.ObterPorId(id);
 
             if (prontuario == null)
                 return NotFound();
@@ -97,7 +97,7 @@ namespace WhiteNoise.Controllers
             try
             {
                 var prontuario = _mapper.Map<Prontuario>(prontuarioFormModel);
-                await _prontuarioRepository.Atualizar(prontuario);
+                await _prontuarioService.Atualizar(prontuario);
             }
             catch
             {
@@ -112,7 +112,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var prontuario = await _prontuarioRepository.ObterPorId(id);
+            var prontuario = await _prontuarioService.ObterPorId(id);
 
             if (prontuario == null)
             {
@@ -130,7 +130,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _prontuarioRepository.Remover(id);
+                await _prontuarioService.Remover(id);
             }
             catch
             {

@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WhiteNoise.Application\WhiteNoise.Application.csproj" />
     <ProjectReference Include="..\WhiteNoise.Domain\WhiteNoise.Domain.csproj" />
     <ProjectReference Include="..\WhiteNoise.Infra.Data\WhiteNoise.Infra.Data.csproj" />
   </ItemGroup>

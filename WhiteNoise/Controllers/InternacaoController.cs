@@ -5,9 +5,9 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
-using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Internacao;
 
 namespace WhiteNoise.Controllers
@@ -15,9 +15,9 @@ namespace WhiteNoise.Controllers
     public class InternacaoController : BaseController
     {
         #region Private Fields
-        private readonly IInternacaoRepository _internacaoRepository;
-        private readonly IPacienteRepository _pacienteRepository;
-        private readonly ILeitoRepository _leitoRepository;
+        private readonly IInternacaoService _internacaoService;
+        private readonly IPacienteService _pacienteService;
+        private readonly ILeitoService _leitoService;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyf;
         #endregion
@@ -25,14 +25,14 @@ namespace WhiteNoise.Controllers
         #region Constructors
         public InternacaoController(
             IMapper mapper,
-            IInternacaoRepository internacaoRepository,
-            IPacienteRepository pacienteRepository,
-            ILeitoRepository leitoRepository,
+            IInternacaoService internacaoService,
+            IPacienteService pacienteService,
+            ILeitoService leitoService,
             INotyfService notyf)
         {
-            _internacaoRepository = internacaoRepository;
-            _pacienteRepository = pacienteRepository;
-            _leitoRepository = leitoRepository;
+            _internacaoService = internacaoService;
+            _pacienteService = pacienteService;
+            _leitoService = leitoService;
             _mapper = mapper;
             _notyf = notyf;
         }
@@ -42,10 +42,10 @@ namespace WhiteNoise.Controllers
 
         private async Task PopularSelectListsInternacao(InternacaoFormModel model)
         {
-            var pacientes = await _pacienteRepository.ObterTodos();
+            var pacientes = await _pacienteService.ObterTodos();
             model.Pacientes = new SelectList(pacientes, "Id", "Nome", model.PacienteId);
 
-            var leitos = await _leitoRepository.ObterPorStatusOuId(model.LeitoId, StatusLeitoEnum.Livre);
+            var leitos = await _leitoService.ObterPorStatusOuId(model.LeitoId, StatusLeitoEnum.Livre);
             model.Leitos = new SelectList(leitos, "Id", "Descricao", model.LeitoId);
         }
 
@@ -55,14 +55,14 @@ namespace WhiteNoise.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var internacoes = await _internacaoRepository.ObterTodasAtivas();
+            var internacoes = await _internacaoService.ObterTodasAtivas();
             var gridModel = _mapper.Map<List<InternacaoGridModel>>(internacoes);
             return View(gridModel);
         }
 
         public async Task<IActionResult> Historico()
         {
-            var internacoes = await _internacaoRepository.ObterHistorico();
+            var internacoes = await _internacaoService.ObterHistorico();
             var gridModel = _mapper.Map<List<InternacaoHistoricoGridModel>>(internacoes);
             return View(gridModel);
         }
@@ -70,7 +70,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var internacao = await _internacaoRepository.ObterPorId(id);
+            var internacao = await _internacaoService.ObterPorId(id);
             if (internacao is null)
                 return NotFound();
 
@@ -108,8 +108,8 @@ namespace WhiteNoise.Controllers
 
                 internacao.Prontuario = prontuario;
 
-                await _leitoRepository.AtualizarStatus(internacaoFormModel.LeitoId, StatusLeitoEnum.Ocupado);
-                await _internacaoRepository.Adicionar(internacao);
+                await _leitoService.AtualizarStatus(internacaoFormModel.LeitoId, StatusLeitoEnum.Ocupado);
+                await _internacaoService.Adicionar(internacao);
 
                 _notyf.Success("As informações foram salvas com sucesso.");
                 return RedirectToAction(nameof(Index));
@@ -124,7 +124,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var internacao = await _internacaoRepository.ObterPorId(id);
+            var internacao = await _internacaoService.ObterPorId(id);
             if (internacao is null)
                 return NotFound();
 
@@ -155,8 +155,8 @@ namespace WhiteNoise.Controllers
 
                 internacao.Prontuario = prontuario;
 
-                await _leitoRepository.AtualizarStatus(internacao.LeitoId, StatusLeitoEnum.Ocupado);
-                await _internacaoRepository.Atualizar(internacao);
+                await _leitoService.AtualizarStatus(internacao.LeitoId, StatusLeitoEnum.Ocupado);
+                await _internacaoService.Atualizar(internacao);
 
                 _notyf.Success("As informações foram atualizadas com sucesso.");
                 return RedirectToAction(nameof(Index));
@@ -171,7 +171,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var internacao = await _internacaoRepository.ObterPorId(id);
+            var internacao = await _internacaoService.ObterPorId(id);
             if (internacao is null)
                 return NotFound();
 
@@ -185,10 +185,10 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                var internacao = await _internacaoRepository.ObterPorId(id);
-                await _leitoRepository.AtualizarStatus(internacao.LeitoId , StatusLeitoEnum.Livre);
+                var internacao = await _internacaoService.ObterPorId(id);
+                await _leitoService.AtualizarStatus(internacao.LeitoId , StatusLeitoEnum.Livre);
 
-                await _internacaoRepository.Remover(id);
+                await _internacaoService.Remover(id);
                 _notyf.Success("As informações foram deletadas com sucesso.");
                 return RedirectToAction(nameof(Index));
             }
@@ -202,7 +202,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Finalizar(Guid id)
         {
-            var internacao = await _internacaoRepository.ObterPorId(id);
+            var internacao = await _internacaoService.ObterPorId(id);
             if (internacao is null)
                 return NotFound();
 
@@ -228,8 +228,8 @@ namespace WhiteNoise.Controllers
 
             try
             {                
-                await _internacaoRepository.FinalizarPorId(id, internacaoFinalizarModel.TipoSaida, internacaoFinalizarModel.DataAlta);
-                await _leitoRepository.AtualizarStatus(internacaoFinalizarModel.LeitoId , StatusLeitoEnum.Livre);
+                await _internacaoService.FinalizarPorId(id, internacaoFinalizarModel.TipoSaida, internacaoFinalizarModel.DataAlta);
+                await _leitoService.AtualizarStatus(internacaoFinalizarModel.LeitoId , StatusLeitoEnum.Livre);
 
                 _notyf.Success("As informações foram atualizadas com sucesso.");
                 return RedirectToAction(nameof(Index));

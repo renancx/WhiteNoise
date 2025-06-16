@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WhiteNoise.Domain.Entities.Base;
 
-namespace WhiteNoise.Domain.Interfaces.Repositories
+namespace WhiteNoise.Application.Interfaces.Repositories
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<T> where T : EntityBase
     {
         Task Salvar();
         Task<List<T>> ObterTodos();

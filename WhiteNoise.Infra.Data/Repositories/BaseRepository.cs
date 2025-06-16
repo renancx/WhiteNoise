@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WhiteNoise.Domain.Interfaces.Repositories;
+using WhiteNoise.Application.Interfaces.Repositories;
+using WhiteNoise.Domain.Entities.Base;
 using WhiteNoise.Infra.Data.Contexts;
 
 namespace WhiteNoise.Infra.Data.Repositories
 {
-    public abstract class Repository<T> : IBaseRepository<T> where T : class
+    public abstract class Repository<T> : IBaseRepository<T> where T : EntityBase
     {
         protected readonly ApplicationDbContext _context;
 
@@ -46,7 +47,7 @@ namespace WhiteNoise.Infra.Data.Repositories
 
         public virtual async Task Remover(Guid? id)
         {
-            var entity = await _context.Set<T>().FindAsync(id) ?? throw new KeyNotFoundException("Registro não encontrado.");
+            var entity = await _context.Set<T>().FindAsync(id);
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
 using WhiteNoise.Domain.Entities;
 
-namespace WhiteNoise.Domain.Interfaces.Repositories
+namespace WhiteNoise.Application.Interfaces.Repositories
 {
     public interface IPacienteRepository : IBaseRepository<Paciente>
     {

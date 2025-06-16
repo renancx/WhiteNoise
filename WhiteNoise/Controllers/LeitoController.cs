@@ -5,8 +5,8 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Leito;
 
 namespace WhiteNoise.Controllers
@@ -14,8 +14,8 @@ namespace WhiteNoise.Controllers
     public class LeitoController : BaseController
     {
         #region Private Fields
-        private readonly ILeitoRepository _leitoRepository;
-        private readonly IDepartamentoRepository _departamentoRepository;
+        private readonly ILeitoService _leitoService;
+        private readonly IDepartamentoService _departamentoService;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyf;
 
@@ -23,12 +23,12 @@ namespace WhiteNoise.Controllers
 
         #region Constructors
         public LeitoController(IMapper mapper, 
-            ILeitoRepository leitoRepository,
+            ILeitoService leitoService,
             INotyfService notyf,
-            IDepartamentoRepository departamentoRepository)
+            IDepartamentoService departamentoService)
         {
-            _departamentoRepository = departamentoRepository;
-            _leitoRepository = leitoRepository;
+            _departamentoService = departamentoService;
+            _leitoService = leitoService;
             _notyf = notyf;
             _mapper = mapper;
         }
@@ -38,7 +38,7 @@ namespace WhiteNoise.Controllers
         #region Private Methods
         private async Task PopularDepartamentos(LeitoFormModel model)
         {
-            var departamentos = await _departamentoRepository.ObterTodos();
+            var departamentos = await _departamentoService.ObterTodos();
             model.Departamentos = new SelectList(departamentos, "Id", "Descricao", model.DepartamentoId);
         }
 
@@ -47,7 +47,7 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var leitos = await _leitoRepository.ObterTodos();
+            var leitos = await _leitoService.ObterTodos();
             var leitosGridModel = _mapper.Map<List<LeitoGridModel>>(leitos);
             return View(leitosGridModel);
         }
@@ -55,7 +55,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var leito = await _leitoRepository.ObterPorId(id);
+            var leito = await _leitoService.ObterPorId(id);
             var leitoGridModel = _mapper.Map<LeitoGridModel>(leito);
             return View(leitoGridModel);
         }
@@ -84,7 +84,7 @@ namespace WhiteNoise.Controllers
                 var leito = _mapper.Map<Leito>(leitoFormModel);
 
                 leito.Id = Guid.NewGuid();
-                await _leitoRepository.Adicionar(leito);
+                await _leitoService.Adicionar(leito);
             }
             catch
             {
@@ -99,7 +99,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var leito = await _leitoRepository.ObterPorId(id);
+            var leito = await _leitoService.ObterPorId(id);
 
             if (leito == null)
                 return NotFound();
@@ -125,7 +125,7 @@ namespace WhiteNoise.Controllers
             try
             {
                 var leito = _mapper.Map<Leito>(leitoFormModel);
-                await _leitoRepository.Atualizar(leito);
+                await _leitoService.Atualizar(leito);
             }
             catch
             {
@@ -140,7 +140,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var leito = await _leitoRepository.ObterPorId(id);
+            var leito = await _leitoService.ObterPorId(id);
 
             if (leito == null)
             {
@@ -158,7 +158,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _leitoRepository.Remover(id);
+                await _leitoService.Remover(id);
             }
             catch
             {

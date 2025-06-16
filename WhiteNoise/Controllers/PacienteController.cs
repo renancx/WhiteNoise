@@ -5,8 +5,8 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Models.Paciente;
 
 namespace WhiteNoise.Controllers
@@ -15,21 +15,21 @@ namespace WhiteNoise.Controllers
     {
         #region Private Fields
         private readonly IMapper _mapper;
-        private readonly IPacienteRepository _pacienteRepository;
-        private readonly IEstadoClinicoRepository _estadoClinicoRepository;
+        private readonly IPacienteService _pacienteService;
+        private readonly IEstadoClinicoService _estadoClinicoService;
         private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
         public PacienteController(IMapper mapper, 
-            IPacienteRepository pacienteRepository, 
-            IEstadoClinicoRepository estadoClinicoRepository, 
+            IPacienteService pacienteService, 
+            IEstadoClinicoService estadoClinicoService, 
             INotyfService notyf)
         {
             _mapper = mapper;
-            _pacienteRepository = pacienteRepository;
-            _estadoClinicoRepository = estadoClinicoRepository;
+            _pacienteService = pacienteService;
+            _estadoClinicoService = estadoClinicoService;
             _notyf = notyf;
         }
 
@@ -38,7 +38,7 @@ namespace WhiteNoise.Controllers
         #region Private Methods
         private async Task PopularEstadosClinicos(PacienteFormModel model)
         {
-            var estados = await _estadoClinicoRepository.ObterTodos();
+            var estados = await _estadoClinicoService.ObterTodos();
             model.EstadosClinicos = new SelectList(estados, "Id", "Descricao", model.EstadoClinicoId);
         }
 
@@ -48,7 +48,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var pacientes = await _pacienteRepository.ObterTodos();
+            var pacientes = await _pacienteService.ObterTodos();
             var pacientesViewModel = _mapper.Map<List<PacienteGridModel>>(pacientes);
             return View(pacientesViewModel);
         }
@@ -56,7 +56,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid? id)
         {
-            var paciente = await _pacienteRepository.ObterPorId(id);
+            var paciente = await _pacienteService.ObterPorId(id);
             var pacienteGridModel = _mapper.Map<PacienteGridModel>(paciente);
             return View(pacienteGridModel);
         }
@@ -64,7 +64,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> ObterPacientesPorEstadoClinico(Guid? id)
         {
-            var paciente = await _pacienteRepository.ObterPorEstadoClinicoId(id);
+            var paciente = await _pacienteService.ObterPorEstadoClinicoId(id);
             var pacienteFormModel = _mapper.Map<PacienteFormModel>(paciente);
             return View(pacienteFormModel);
         }
@@ -91,7 +91,7 @@ namespace WhiteNoise.Controllers
             var paciente = _mapper.Map<Paciente>(pacienteFormModel);
             
             paciente.Id = Guid.NewGuid();
-            await _pacienteRepository.Adicionar(paciente);
+            await _pacienteService.Adicionar(paciente);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
@@ -99,7 +99,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var paciente = await _pacienteRepository.ObterPorId(id);
+            var paciente = await _pacienteService.ObterPorId(id);
 
             if (paciente == null)
                 return NotFound();
@@ -125,7 +125,7 @@ namespace WhiteNoise.Controllers
             try
             {
                 var paciente = _mapper.Map<Paciente>(pacienteFormModel);
-                await _pacienteRepository.Atualizar(paciente);
+                await _pacienteService.Atualizar(paciente);
             }
 
             catch
@@ -141,7 +141,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var paciente = await _pacienteRepository.ObterPorId(id);
+            var paciente = await _pacienteService.ObterPorId(id);
 
             if (paciente == null)
             {
@@ -158,7 +158,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _pacienteRepository.Remover(id);
+                await _pacienteService.Remover(id);
             }
             catch
             {

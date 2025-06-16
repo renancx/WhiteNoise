@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
-using WhiteNoise.Domain.Interfaces.Repositories;
 
 namespace WhiteNoise.Controllers
 {
@@ -12,18 +12,18 @@ namespace WhiteNoise.Controllers
     public class EstadoClinicoController : BaseController
     {
         #region Private Fields
-        private readonly IEstadoClinicoRepository _estadoClinicoRepository;
-        private readonly IPacienteRepository _pacienteRepository;
+        private readonly IEstadoClinicoService _estadoClinicoService;
+        private readonly IPacienteService _pacienteService;
         private readonly INotyfService _notyf;
 
         #endregion
 
         #region Constructors
-        public EstadoClinicoController(IEstadoClinicoRepository estadoClinicoRepository, IPacienteRepository pacienteRepository, INotyfService notyf)
+        public EstadoClinicoController(IEstadoClinicoService estadoClinicoService, IPacienteService pacienteService, INotyfService notyf)
         {
-            _estadoClinicoRepository = estadoClinicoRepository;
+            _estadoClinicoService = estadoClinicoService;
             _notyf = notyf;
-            _pacienteRepository = pacienteRepository;
+            _pacienteService = pacienteService;
         }
 
         #endregion
@@ -31,14 +31,14 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var estadosClinicos = await _estadoClinicoRepository.ObterTodos();
+            var estadosClinicos = await _estadoClinicoService.ObterTodos();
             return View(estadosClinicos);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var estadoClinico = await _estadoClinicoRepository.ObterPorId(id);
+            var estadoClinico = await _estadoClinicoService.ObterPorId(id);
             return View(estadoClinico);
         }
 
@@ -58,7 +58,7 @@ namespace WhiteNoise.Controllers
             }
 
             estadoClinico.Id = Guid.NewGuid();
-            await _estadoClinicoRepository.Adicionar(estadoClinico);
+            await _estadoClinicoService.Adicionar(estadoClinico);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
@@ -66,7 +66,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var estadoClinico = await _estadoClinicoRepository.ObterPorId(id);
+            var estadoClinico = await _estadoClinicoService.ObterPorId(id);
 
             if (estadoClinico == null)
                 return NotFound();
@@ -88,7 +88,7 @@ namespace WhiteNoise.Controllers
 
             try
             {
-                await _estadoClinicoRepository.Atualizar(estadoClinico);
+                await _estadoClinicoService.Atualizar(estadoClinico);
             } 
             catch 
             {
@@ -103,7 +103,7 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var estadoClinico = await _estadoClinicoRepository.ObterPorId(id);
+            var estadoClinico = await _estadoClinicoService.ObterPorId(id);
 
             if (estadoClinico == null) {
                 return NotFound();
@@ -116,7 +116,7 @@ namespace WhiteNoise.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var pacientes = await _pacienteRepository.ObterPorEstadoClinicoId(id);
+            var pacientes = await _pacienteService.ObterPorEstadoClinicoId(id);
 
             if (pacientes != null && pacientes.Any())
             {
@@ -126,7 +126,7 @@ namespace WhiteNoise.Controllers
 
             try
             {
-                await _estadoClinicoRepository.Remover(id);
+                await _estadoClinicoService.Remover(id);
             }
             catch (Exception ex)
             {
