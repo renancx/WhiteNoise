@@ -8,7 +8,6 @@ using WhiteNoise.Domain.Entities;
 
 namespace WhiteNoise.Controllers
 {
-    //[Authorize]
     public class EstadoClinicoController : BaseController
     {
         #region Private Fields
@@ -57,7 +56,6 @@ namespace WhiteNoise.Controllers
                 return View(estadoClinico);
             }
 
-            estadoClinico.Id = Guid.NewGuid();
             await _estadoClinicoService.Adicionar(estadoClinico);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));

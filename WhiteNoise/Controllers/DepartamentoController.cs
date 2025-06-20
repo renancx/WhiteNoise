@@ -13,7 +13,7 @@ namespace WhiteNoise.Controllers
     public class DepartamentoController : BaseController
     {
         #region Private Fields
-        private readonly IDepartamentoService _agendamentoService;
+        private readonly IDepartamentoService _departamentoService;
         private readonly INotyfService _notyf;
         private readonly IMapper _mapper;
 
@@ -22,10 +22,10 @@ namespace WhiteNoise.Controllers
 
         #region Constructors
         public DepartamentoController(IMapper mapper, 
-            IDepartamentoService agendamentoService,
+            IDepartamentoService departamentoService,
             INotyfService notyf)
         {
-            _agendamentoService = agendamentoService;
+            _departamentoService = departamentoService;
             _notyf = notyf;
             _mapper = mapper;
         }
@@ -35,17 +35,17 @@ namespace WhiteNoise.Controllers
         #region Public Methods
         public async Task<IActionResult> Index()
         {
-            var agendamentos = await _agendamentoService.ObterTodos();
-            var agendamentosGridModel = _mapper.Map<List<DepartamentoGridModel>>(agendamentos);
-            return View(agendamentosGridModel);
+            var departamentos = await _departamentoService.ObterTodos();
+            var departamentosGridModel = _mapper.Map<List<DepartamentoGridModel>>(departamentos);
+            return View(departamentosGridModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var agendamento = await _agendamentoService.ObterPorId(id);
-            var agendamentoFormModel = _mapper.Map<DepartamentoFormModel>(agendamento);
-            return View(agendamentoFormModel);
+            var departamento = await _departamentoService.ObterPorId(id);
+            var departamentoFormModel = _mapper.Map<DepartamentoFormModel>(departamento);
+            return View(departamentoFormModel);
         }
 
         [HttpGet]
@@ -55,17 +55,16 @@ namespace WhiteNoise.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(DepartamentoFormModel agendamentoFormModel)
+        public async Task<IActionResult> Create(DepartamentoFormModel departamentoFormModel)
         {
             if (!ModelState.IsValid)
             {
                 _notyf.Error("Preencha todas as informações obrigatórias.");
-                return View(agendamentoFormModel);
+                return View(departamentoFormModel);
 
             }
-            var agendamento = _mapper.Map<Departamento>(agendamentoFormModel);
-            agendamento.Id = Guid.NewGuid();
-            await _agendamentoService.Adicionar(agendamento);
+            var departamento = _mapper.Map<Departamento>(departamentoFormModel);
+            await _departamentoService.Adicionar(departamento);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));
         }
@@ -73,32 +72,32 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var agendamento = await _agendamentoService.ObterPorId(id);
+            var departamento = await _departamentoService.ObterPorId(id);
 
-            if (agendamento == null)
+            if (departamento == null)
                 return NotFound();
 
-            var agendamentoFormModel = _mapper.Map<DepartamentoFormModel>(agendamento);
+            var departamentoFormModel = _mapper.Map<DepartamentoFormModel>(departamento);
 
-            return View(agendamentoFormModel);
+            return View(departamentoFormModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, DepartamentoFormModel agendamentoFormModel)
+        public async Task<IActionResult> Edit(Guid id, DepartamentoFormModel departamentoFormModel)
         {
-            if (id != agendamentoFormModel.Id)
+            if (id != departamentoFormModel.Id)
                 return NotFound();
 
             if (!ModelState.IsValid)
             {
                 _notyf.Error("Preencha todas as informações obrigatórias.");
-                return View(agendamentoFormModel);
+                return View(departamentoFormModel);
             }
 
             try
             {
-                var agendamento = _mapper.Map<Departamento>(agendamentoFormModel);
-                await _agendamentoService.Atualizar(agendamento);
+                var departamento = _mapper.Map<Departamento>(departamentoFormModel);
+                await _departamentoService.Atualizar(departamento);
             }
             catch
             {
@@ -113,16 +112,16 @@ namespace WhiteNoise.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var agendamento = await _agendamentoService.ObterPorId(id);
+            var departamento = await _departamentoService.ObterPorId(id);
 
-            if (agendamento == null)
+            if (departamento == null)
             {
                 return NotFound();
             }
 
-            var agendamentoFormModel = _mapper.Map<DepartamentoFormModel>(agendamento);
+            var departamentoFormModel = _mapper.Map<DepartamentoFormModel>(departamento);
 
-            return View(agendamentoFormModel);
+            return View(departamentoFormModel);
 
         }
 
@@ -131,7 +130,7 @@ namespace WhiteNoise.Controllers
         {
             try
             {
-                await _agendamentoService.Remover(id);
+                await _departamentoService.Remover(id);
             }
             catch (Exception ex)
             {

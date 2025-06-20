@@ -1,3 +1,118 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-info bg-opacity-10 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h1 class="fw-bold text-white mb-1">Bem-vindo</h1>
+                            <p class="lead text-white mb-0">Sistema de Gestão Hospitalar Integrada</p>
+                        </div>
+                        <div>
+                            <i class="bi bi-heart-pulse-fill display-4 text-info"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <vc:pacientes-ativos />
+
+        <vc:internacoes-ativas />       
+
+        <vc:agendamento-por-periodo />
+
+        <vc:profissionais-ativos />
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8 mb-4">
+            <!-- Próximos Agendamentos -->
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="bi bi-calendar-event me-2 text-info"></i>Próximos Agendamentos
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 fw-bold">João Silva - Cardiologia</h6>
+                                <small class="text-muted">10:30 AM</small>
+                            </div>
+                            <small class="text-muted">Dr. Carlos Eduardo - Sala 203</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 fw-bold">Maria Oliveira - Pediatria</h6>
+                                <small class="text-muted">11:15 AM</small>
+                            </div>
+                            <small class="text-muted">Dra. Fernanda Lima - Sala 105</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 fw-bold">Pedro Santos - Ortopedia</h6>
+                                <small class="text-muted">14:00 PM</small>
+                            </div>
+                            <small class="text-muted">Dr. Roberto Alves - Sala 301</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 fw-bold">Ana Costa - Neurologia</h6>
+                                <small class="text-muted">15:30 PM</small>
+                            </div>
+                            <small class="text-muted">Dra. Patrícia Mendes - Sala 204</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <a asp-controller="Agendamento" asp-action="Calendario" class="btn btn-sm btn-outline-info">
+                        Ver calendário completo <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="bi bi-bell-fill me-2 text-warning"></i>Avisos Importantes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning d-flex align-items-center mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                        <div>
+                            <strong>Reunião de equipe</strong>
+                            <div class="small">Amanhã às 14h na sala de reuniões</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info d-flex align-items-center mb-3">
+                        <i class="bi bi-info-circle-fill me-3 fs-4"></i>
+                        <div>
+                            <strong>Atualização do sistema</strong>
+                            <div class="small">Planejada para sábado às 20h</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+                        <div>
+                            <strong>Novos equipamentos</strong>
+                            <div class="small">Chegada prevista para próxima semana</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

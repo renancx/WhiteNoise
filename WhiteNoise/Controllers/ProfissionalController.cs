@@ -10,7 +10,6 @@ using WhiteNoise.Domain.Entities;
 using WhiteNoise.Models.Profissional;
 namespace WhiteNoise.Controllers
 {
-    //[Authorize]
     public class ProfissionalController : BaseController
     {
         #region Private Fields
@@ -74,7 +73,6 @@ namespace WhiteNoise.Controllers
             }
 
             var profissional = _mapper.Map<Profissional>(profissionalViewModel);
-            profissional.Id = Guid.NewGuid();
 
             await _profissionalService.Adicionar(profissional);
 

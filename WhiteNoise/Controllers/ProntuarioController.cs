@@ -64,7 +64,6 @@ namespace WhiteNoise.Controllers
             }
             var prontuario = _mapper.Map<Prontuario>(prontuarioFormModel);
 
-            prontuario.Id = Guid.NewGuid();
             await _prontuarioService.Adicionar(prontuario);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));

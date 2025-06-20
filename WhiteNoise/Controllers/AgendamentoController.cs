@@ -56,8 +56,6 @@ namespace WhiteNoise.Controllers
         {
             var agendamentos = await _agendamentoService.ObterTodos();
 
-
-
             var agendamentosGridModel = _mapper.Map<List<AgendamentoGridModel>>(agendamentos);
             return View(agendamentosGridModel);
         }
@@ -81,9 +79,7 @@ namespace WhiteNoise.Controllers
         public async Task<IActionResult> Create()
         {
             var model = new AgendamentoFormModel { };
-
             await PopularSelectListsAgendamento(model);
-
             return View(model);
         }
 
@@ -99,7 +95,6 @@ namespace WhiteNoise.Controllers
 
             var agendamento = _mapper.Map<Agendamento>(agendamentoFormModel);
 
-            agendamento.Id = Guid.NewGuid();
             await _agendamentoService.Adicionar(agendamento);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Calendario));

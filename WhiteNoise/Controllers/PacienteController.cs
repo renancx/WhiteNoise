@@ -90,7 +90,6 @@ namespace WhiteNoise.Controllers
 
             var paciente = _mapper.Map<Paciente>(pacienteFormModel);
             
-            paciente.Id = Guid.NewGuid();
             await _pacienteService.Adicionar(paciente);
             _notyf.Success("As informações foram salvas com sucesso.");
             return RedirectToAction(nameof(Index));

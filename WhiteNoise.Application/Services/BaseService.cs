@@ -24,7 +24,11 @@ namespace WhiteNoise.Application.Services
             => await _repository.ObterTodos();
 
         public virtual async Task Adicionar(T entity)
-            => await _repository.Adicionar(entity);
+        {
+            entity.Id = Guid.NewGuid();
+
+            await _repository.Adicionar(entity);
+        }
 
         public virtual async Task Atualizar(T entity)
             => await _repository.Atualizar(entity);

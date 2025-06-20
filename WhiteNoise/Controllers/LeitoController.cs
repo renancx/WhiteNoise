@@ -83,7 +83,6 @@ namespace WhiteNoise.Controllers
             {
                 var leito = _mapper.Map<Leito>(leitoFormModel);
 
-                leito.Id = Guid.NewGuid();
                 await _leitoService.Adicionar(leito);
             }
             catch
