@@ -1,4 +1,4 @@
-﻿using WhiteNoise.Application.Interfaces.Repositories;
+﻿using WhiteNoise.Domain.Interfaces.Repositories;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Infra.Data.Contexts;
 

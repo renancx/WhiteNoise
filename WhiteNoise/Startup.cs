@@ -1,9 +1,9 @@
 using System;
 using AspNetCoreHero.ToastNotification;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +12,7 @@ using WhiteNoise.Application.Services;
 using WhiteNoise.Infra.Data.Contexts;
 using WhiteNoise.Infra.Data.Identity;
 using WhiteNoise.Infra.Data.Repositories;
+using WhiteNoise.Validators;
 
 namespace WhiteNoise
 {
@@ -27,7 +28,12 @@ namespace WhiteNoise
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddFluentValidation(config =>
+                {
+                    config.RegisterValidatorsFromAssembly(typeof(PacienteFormValidator).Assembly);
+                    config.AutomaticValidationEnabled = true;
+                });
 
             services.AddRazorPages();
 

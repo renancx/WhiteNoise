@@ -6,11 +6,11 @@ using WhiteNoise.Shared.Helpers;
 
 namespace WhiteNoise.Shared.ViewComponents.Agendamento
 {
-    public class AgendamentoPorPeriodoViewComponent : ViewComponent
+    public class AgendamentoPeriodoViewComponent : ViewComponent
     {
         private readonly ApplicationDbContext _context;
 
-        public AgendamentoPorPeriodoViewComponent(ApplicationDbContext context)
+        public AgendamentoPeriodoViewComponent(ApplicationDbContext context)
         {
             _context = context;
         }

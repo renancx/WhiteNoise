@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
-using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Models.Paciente
 {

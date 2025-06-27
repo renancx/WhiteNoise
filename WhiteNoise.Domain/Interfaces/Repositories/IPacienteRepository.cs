@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhiteNoise.Domain.Entities;
 
-namespace WhiteNoise.Application.Interfaces.Repositories
+namespace WhiteNoise.Domain.Interfaces.Repositories
 {
     public interface IPacienteRepository : IBaseRepository<Paciente>
     {

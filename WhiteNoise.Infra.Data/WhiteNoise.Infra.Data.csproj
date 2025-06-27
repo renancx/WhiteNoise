@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WhiteNoise.Application\WhiteNoise.Application.csproj" />
     <ProjectReference Include="..\WhiteNoise.Domain\WhiteNoise.Domain.csproj" />
   </ItemGroup>
 

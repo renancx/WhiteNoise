@@ -1,6 +1,6 @@
 ﻿using WhiteNoise.Domain.Entities;
 
-namespace WhiteNoise.Application.Interfaces.Repositories
+namespace WhiteNoise.Domain.Interfaces.Repositories
 {
     public interface IProntuarioRepository : IBaseRepository<Prontuario>
     {

@@ -10,7 +10,7 @@ namespace WhiteNoise.Shared.Helpers
         public static int ObterTotalizadorAgendamentosPorPeriodo(ApplicationDbContext context, DateTime dataInicio, DateTime dataFinal)
         {
             return (from agendamento in context.Agendamento.AsNoTracking()
-                    .Where(x => x.DataHora > dataInicio && x.DataHora < dataFinal) select agendamento).Count();
+                    .Where(x => x.DataHora >= dataInicio && x.DataHora <= dataFinal) select agendamento).Count();
         }
     }
 }

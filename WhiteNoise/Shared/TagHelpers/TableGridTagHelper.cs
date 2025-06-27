@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using WhiteNoise.Domain.Extensions;
 using WhiteNoise.Shared.Attributes;
 
 namespace WhiteNoise.Shared.TagHelpers
@@ -85,11 +86,25 @@ namespace WhiteNoise.Shared.TagHelpers
                             string cellContent = value?.ToString() ?? string.Empty;
                             string cellClass = "py-1 px-2";
 
-                            var boolStyle = prop.GetCustomAttribute<StyledBooleanAttribute>();
-                            if (boolStyle != null && value is bool boolValue)
+                            var propertyType = prop.PropertyType;
+                            var isEnum = propertyType.IsEnum || (Nullable.GetUnderlyingType(propertyType)?.IsEnum ?? false);
+
+                            if (isEnum && value != null)
                             {
-                                cellClass += " " + (boolValue ? boolStyle.TrueClass : boolStyle.FalseClass);
-                                cellContent = boolValue ? boolStyle.TrueText : boolStyle.FalseText;
+                                cellContent = ((Enum)value).GetDisplayName();
+                            }
+                            else
+                            {
+                                var boolStyle = prop.GetCustomAttribute<StyledBooleanAttribute>();
+                                if (boolStyle != null && value is bool boolValue)
+                                {
+                                    cellClass += " " + (boolValue ? boolStyle.TrueClass : boolStyle.FalseClass);
+                                    cellContent = boolValue ? boolStyle.TrueText : boolStyle.FalseText;
+                                }
+                                else
+                                {
+                                    cellContent = value?.ToString() ?? string.Empty;
+                                }
                             }
 
                             output.Content.AppendHtml($"<td class=\"{cellClass}\">{cellContent}</td>");

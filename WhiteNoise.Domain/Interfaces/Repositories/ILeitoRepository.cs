@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using WhiteNoise.Domain.Entities;
 using WhiteNoise.Domain.Enums;
 
-namespace WhiteNoise.Application.Interfaces.Repositories
+namespace WhiteNoise.Domain.Interfaces.Repositories
 {
     public interface ILeitoRepository : IBaseRepository<Leito>
     {

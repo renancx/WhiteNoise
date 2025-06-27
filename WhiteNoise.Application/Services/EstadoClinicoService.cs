@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WhiteNoise.Application.Interfaces.Repositories;
-using WhiteNoise.Application.Interfaces.Services;
+﻿using WhiteNoise.Application.Interfaces.Services;
 using WhiteNoise.Domain.Entities;
+using WhiteNoise.Domain.Interfaces.Repositories;
 
 namespace WhiteNoise.Application.Services
 {
