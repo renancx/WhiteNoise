@@ -121,7 +121,6 @@ namespace WhiteNoise.Controllers
             var prontuarioGridModel = _mapper.Map<ProntuarioGridModel>(prontuario);
 
             return View(prontuarioGridModel);
-
         }
 
         [HttpPost]
