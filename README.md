@@ -1,7 +1,9 @@
 **White Noise**
+
 .NET Core Web Application with DDD, Identity and MVC
 
 **Description**
+
 Web application built on .NET Core following Domain-Driven Design (DDD). Includes ASP.NET Core Identity for authentication and authorization, MVC for presentation, and clean architecture principles.
 
 **Technologies & Packages**
